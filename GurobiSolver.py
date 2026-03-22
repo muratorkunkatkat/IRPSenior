@@ -34,6 +34,8 @@ class VDNSolver:
         self.E = m.addVars(self.N, self.C, self.T, vtype=GRB.CONTINUOUS, name="E")
         self.S = m.addVars(self.N, self.C, self.T, vtype=GRB.CONTINUOUS, name="S")
 
+        self.u = m.addVars(self.K, self.N_no_fac, self.T, vtype=GRB.CONTINUOUS, name="u_mtz")
+
         for k in self.K:
             for c in self.C:
                 for t in self.T:
@@ -64,6 +66,15 @@ class VDNSolver:
                         gp.quicksum(self.D[k, i, c, t] + self.U[k, i, c, t] for c in self.C) <= d['M'] * gp.quicksum(self.X[k, j, i, t] for j in self.N),
                         name=f"action_lock_{k}_{i}_{t}"
                     )
+        for k in self.K:
+            for t in self.T:
+                for i in self.N_no_fac:
+                    for j in self.N_no_fac:
+                        if i != j:
+                            m.addConstr(
+                                self.u[k, i, t] - self.u[k, j, t] + len(self.N) * self.X[k, i, j, t] <= len(self.N) - 1,
+                                name=f"mtz_{k}_{i}_{j}_{t}"
+                            )
 
         # Truck Capacity and Load Conservation
         for k in self.K:
@@ -146,3 +157,4 @@ class VDNSolver:
             self.model.computeIIS()
             self.model.write("infeasible.ilp")
             print("Wrote infeasibility to 'infeasible.ilp'")
+            

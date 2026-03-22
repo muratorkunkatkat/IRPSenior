@@ -29,7 +29,7 @@ def generate_network_data(num_dealers=5, num_trucks=10, days=7, num_car_types=2)
         for j in data['N']:
             if i == j:
                 data['A'][i, j] = 0
-                data['R'][i, j] = 0
+                data['R'][i, j] = 0.01 # so that xii route becomes eliminated
             else:
                 dist = math.hypot(coords[i][0] - coords[j][0], coords[i][1] - coords[j][1])
                 # Travel time rounding to int
@@ -59,5 +59,6 @@ def generate_network_data(num_dealers=5, num_trucks=10, days=7, num_car_types=2)
                 data['F'][i, c, t] = random.choices([0, 1, 2, 3], weights=[70, 15, 10, 5])[0]
 
     data['M'] = 10000 
+    data['coords'] = coords
 
     return data
