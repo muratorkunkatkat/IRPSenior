@@ -1,0 +1,28 @@
+for period t (Days) in T:
+    for car type c in C:
+        for dealer i in N-0:
+            is dealer i critical for car type c  = (inventory of dealer i at day t) - (demand for dealer i at day t)
+        while (available trucks > 0) and (number of critical dealers for car type c > 0):
+            current = factory (N = 0)
+            pick an available truck k in K
+            available_capacity of truck k = capacity (given that car type is c)
+            route = []
+            route_time = 0
+            while (available_capacity of truck k > 0) and (number of critical dealers for car type c > 0):
+                route.append(current)
+                for dealer j in N_sorted (according to distance_matrix[current][j]):
+                    if j is critical:
+                        if (available_capacity of truck k < cars needed for dealer j) and (route[-1] is not factory):
+                            if remaining_capacity for dealer route[-1] > available_capacity of truck k
+                                cars dropped off at node route[-1] by truck k on day t = available_capacity of truck k
+                            available_capacity of truck k = 0
+                            break
+                        route_time += time_matrix[current][j]
+                        current = j
+                        available_capacity of truck k -= cars needed for dealer j
+                        cars dropped off at node j by truck k on tour t = cars needed for dealer j
+            if available_capacity of truck k != 0:
+                if remaining_capacity for dealer route[-1] > available_capacity of truck k:
+                    cars dropped off at node route[-1] by truck k on tour t = available_capacity of truck k
+            route.append[0] & route_time += time_matrix[current][0]
+            lock truck k for route_time days
