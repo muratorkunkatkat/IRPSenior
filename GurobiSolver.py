@@ -45,7 +45,6 @@ class VDNSolver:
                     m.addConstr(self.E[0, c, t] == 0)
                     m.addConstr(self.S[0, c, t] == 0)
 
-        print("Adding constraints...")
         # Constraints
         
         # Routing Flow
