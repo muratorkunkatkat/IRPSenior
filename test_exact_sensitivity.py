@@ -9,7 +9,7 @@ def run_exact_sensitivity():
 
     for trucks in truck_scenarios:
         # 7 days, 2 car types, 10 dealers
-        data = generate_network_data(num_dealers=10, num_trucks=trucks, days=30, num_car_types=2)
+        data = generate_network_data(num_dealers=10, num_trucks=trucks, days=7, num_car_types=2)
         
         solver = VDNSolver(data)
         solver.build_model()
