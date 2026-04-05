@@ -1,0 +1,58 @@
+import time
+from data.generator import generate_network_data
+from heuristic.heuristic_greedy import GreedyHeuristic
+
+def adapt_exact_data_for_heuristic(data):
+    """tuple dicts to nested lists conversation so the heuristic can read them."""
+    N_nodes, C_types, days = len(data['N']), len(data['C']), len(data['T'])
+    
+    A_list = [[0]*N_nodes for _ in range(N_nodes)]
+    R_list = [[0.0]*N_nodes for _ in range(N_nodes)]
+    for (i, j), val in data['A'].items(): A_list[i][j] = val
+    for (i, j), val in data['R'].items(): R_list[i][j] = val
+        
+    F_list = [[[0]*days for _ in range(C_types)] for _ in range(N_nodes)]
+    for (i, c, t), val in data['F'].items(): F_list[i][c][t] = val
+        
+    data['A'], data['R'], data['F'] = A_list, R_list, F_list
+    return data
+
+def run_heuristic_sensitivity():
+    truck_scenarios = [4, 6, 8]
+    print(f"{'Trucks':<8} | {'Total Obj':<12} | {'Trans Cost':<12} | {'Hold Cost':<12} | {'Backorder':<12} | {'Unsold Cost':<12} | {'Time (s)':<8}")
+    print("-" * 100)
+
+    for trucks in truck_scenarios:
+        raw_data = generate_network_data(num_dealers=10, num_trucks=trucks, days=7, num_car_types=2)
+        data = adapt_exact_data_for_heuristic(raw_data)
+        
+        start_time = time.time()
+        heuristic = GreedyHeuristic(data)
+        dispatches = heuristic.run()
+        comp_time = time.time() - start_time
+        
+        # costs
+        trans_cost = 0
+        for d in dispatches:
+            route = d['route']
+            for i in range(len(route) - 1):
+                trans_cost += data['R'][route[i]][route[i+1]]
+                
+        back_cost, unsold_cost = 0, 0
+        for c in data['C']:
+            for i in data['nodes_no_factory']:
+                demanded = sum(data['F'][i][c][t] for t in data['T'])
+                delivered = sum(d.get('cars_carried', data['Q'][c]) for d in dispatches if d['car_type'] == c and i in d['route'])
+                
+                if delivered > demanded:
+                    unsold_cost += (delivered - demanded) * data['G'][c]
+                elif demanded > delivered:
+                    back_cost += (demanded - delivered) * data['B'][c]
+
+        hold_cost = 0 # simplified for heuristic comparison
+        total_obj = trans_cost + back_cost + unsold_cost + hold_cost
+        
+        print(f"{trucks:<8} | {total_obj:<12.2f} | {trans_cost:<12.2f} | {hold_cost:<12.2f} | {back_cost:<12.2f} | {unsold_cost:<12.2f} | {comp_time:<8.4f}")
+
+if __name__ == "__main__":
+    run_heuristic_sensitivity()

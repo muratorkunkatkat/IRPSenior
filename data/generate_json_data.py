@@ -4,7 +4,7 @@ import random
 import os
 
 def generate_json():
-    random.seed(42)
+    random.seed(44)
 
     N_nodes = 72
     num_dealers = N_nodes - 1
