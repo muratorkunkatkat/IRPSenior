@@ -19,7 +19,7 @@ def run_backorder_sensitivity():
             
         solver = VDNSolver(data)
         solver.build_model()
-        solver.model.setParam('TimeLimit', 600)
+        solver.model.setParam('TimeLimit', 500)
         solver.model.setParam('OutputFlag', 0)
         
         start_time = time.time()
