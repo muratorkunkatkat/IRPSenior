@@ -4,7 +4,7 @@ import random
 
 def generate_network_data(num_dealers=5, num_trucks=10, days=7, num_car_types=2): # original: 72, 1000, 30, 5
 
-    random.seed(42)
+    random.seed(44)
 
     N_nodes = num_dealers + 1
     C_types = num_car_types
