@@ -1,0 +1,184 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amssymb} 
+\usepackage{geometry}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\geometry{a4paper, top=1in, bottom=1in, right=1in, left=0.6in}
+
+\title{ie401}
+\author{Orkun Katkat}
+\date{March 2026}
+
+\begin{document}
+
+\section*{Mathematical Model: Vehicle Distribution Network}
+
+\subsection*{1. Sets (Indices)}
+\begin{itemize}
+    \item $C$: Set of car models, indexed by $c$.
+    \item $K$: Set of trucks in the fleet, indexed by $k$.
+    \item $N$: Set of all nodes, indexed by $i, j$ (node $0$ = Factory).
+    \item $T$: Set of time periods (days), indexed by $t$.
+\end{itemize}
+
+\subsection*{2. Parameters}
+\begin{itemize}
+    \item $A_{ij}$: Travel time from node $i$ to node $j$.
+    \item $B_c$: Backorder penalty cost per unit of car type $c$ per day.
+    \item $F_{ict}$: Forecasted demand for car type $c$ at node $i \in N \setminus \{0\}$ on day $t$.
+    \item $G_c$: Penalty cost per unsold car of type $c$ at the end of the month.
+    \item $H_c$: Holding cost per unit of car type $c$ per day.
+    \item $M$: Sufficiently large positive number, Big M.
+    \item $P_t$: Binary reset switch; $1$ if day $t$ is the first day of a new month, $0$ otherwise.
+    \item $Q_c$: Maximum truck capacity when loaded with car type $c$.
+    \item $R_{ij}$: Transportation cost to drive from node $i$ to node $j$.
+    \item $V_i$: Maximum vehicle storage capacity at node $i \in N \setminus \{0\}$.
+\end{itemize}
+
+\subsection*{3. Decision Variables}
+\textbf{Routing \& Tour Time:}
+\begin{itemize}
+    \item $X_{kijt} \in \{0, 1\}$: $1$ if truck $k$ travels from $i$ to $j$ on a tour dispatched on day $t$.
+    \item $Y_{kt} \in \{0, 1\}$: $1$ if truck $k$ starts a tour on day $t$.
+    \item $W_{kt} \in \mathbb{Z}_{\ge 0}$: The time the truck $k$'s specific tour takes.
+    \item $L_{kt} \ge 0$: The number of days truck $k$ is currently locked/unavailable on day $t$.
+    \item $Z_{kct} \in \{0, 1\}$: $1$ if truck $k$ is assigned to carry car type $c$ on the tour starting day $t$.
+\end{itemize}
+
+\textbf{Load \& Operations:}
+\begin{itemize}
+    \item $J_{kijt} \ge 0$: Physical number of cars on truck $k$ while driving from $i$ to $j$ on tour $t$.
+    \item $D_{kict} \ge 0$: Cars dropped off at node $i$ by truck $k$ on tour $t$.
+    \item $U_{kict} \ge 0$: Cars picked up at node $i$ by truck $k$ on tour $t$.
+\end{itemize}
+
+\textbf{Inventory:}
+\begin{itemize}
+    \item $I_{ict} \ge 0$: Daily inventory level of car type $c$ at node $i$ on day $t$.
+    \item $E_{ict} \ge 0$: Daily backorder level (unmet demand) for car type $c$ at node $i$ on day $t$.
+    \item $S_{ict} \ge 0$: Unsold cars at node $i$ for car type $c$ on day $t$.
+\end{itemize}
+
+\subsection*{4. Objective Function}
+Minimize total costs. A very small penalty ($\epsilon$) is applied to $W_{kt}$ to ensure the solver selects the smallest integer tour time.
+
+\begin{align}
+\min \quad & \underbrace{\sum_{k \in K} \sum_{i \in N} \sum_{j \in N} \sum_{t \in T} R_{ij} X_{kijt}}_{\text{Transportation Cost}} + \underbrace{\sum_{i \in N \setminus \{0\}} \sum_{c \in C} \sum_{t \in T} H_c I_{ict}}_{\text{Holding Cost}} + \underbrace{\sum_{i \in N \setminus \{0\}} \sum_{c \in C} \sum_{t \in T} B_c E_{ict}}_{\text{Daily Backorder Cost}} \nonumber \\
+& + \underbrace{\sum_{i \in N \setminus \{0\}} \sum_{c \in C} \sum_{t \in T} G_c S_{ict}}_{\text{Unsold Car Cost}} + \underbrace{\epsilon \sum_{k \in K} \sum_{t \in T} W_{kt}}_{\text{Tour Time Penalty}}
+\end{align}
+
+\subsection*{5. Constraints}
+
+\textbf{A. Routing Flow} \\
+Let $u_{kit}$ be an auxiliary continuous variable representing the sequence position of node $i$ in truck $k$'s tour on day $t$.
+\begin{align}
+& \sum_{j \in N} X_{k0jt} = Y_{kt} && \forall k \in K, t \in T \label{eq:start} \\
+& \sum_{i \in N} X_{ki0t} = Y_{kt} && \forall k \in K, t \in T \label{eq:return} \\
+& \sum_{j \in N} X_{kjit} = \sum_{j \in N} X_{kijt} && \forall k \in K, i \in N, t \in T \label{eq:flow_balance} \\
+& \sum_{c \in C} (D_{kict} + U_{kict}) \le M \sum_{j \in N} X_{kjit} && \forall k \in K, i, j \in N, t \in T \label{eq:action_lock} \\
+& u_{kit} - u_{kjt} + |N| \cdot X_{kijt} \le |N| - 1 && \forall k \in K, t \in T, i, j \in N \setminus \{0\} : i \neq j \label{eq:mtz}
+\end{align}
+
+\textbf{B. Truck Capacity and Load Conservation}
+\begin{align}
+& \sum_{c \in C} Z_{kct} \le Y_{kt} && \forall k \in K, t \in T \label{eq:single_car_type} \\
+& D_{kict} + U_{kict} \le Q_c Z_{kct} && \forall k \in K, i \in N \setminus \{0\}, c \in C, t \in T \label{eq:drop_assigned_type} \\
+& J_{kijt} \le M \cdot X_{kijt} && \forall k \in K, i \in N, j \in N, t \in T \label{eq:load_active_arc} \\
+& J_{kijt} \le \sum_{c \in C} Q_c Z_{kct} && \forall k \in K, i \in N, j \in N, t \in T \label{eq:max_capacity} \\
+& \sum_{j \in N} J_{kjit} + \sum_{c \in C} U_{kict} - \sum_{c \in C} D_{kict} = \sum_{j \in N} J_{kijt} && \forall k \in K, i \in N \setminus \{0\}, t \in T \label{eq:load_balance} \\
+& \sum_{j \in N} J_{kj0t} = 0 && \forall k \in K, t \in T \label{eq:empty_return}
+\end{align}
+
+\textbf{C. Route Time Tracking \& No Overlapping Tours}
+\begin{align}
+& \sum_{i \in N} \sum_{j \in N} A_{ij} X_{kijt} \le W_{kt} && \forall k \in K, t \in T \label{eq:tour_time} \\
+& L_{kt} \ge L_{k, (t-1)} - 1 + W_{k, (t-1)} && \forall k \in K, t \in T \label{eq:lock_tracker} \\
+& L_{kt} \le M (1 - Y_{kt}) && \forall k \in K, t \in T \label{eq:no_overlap}
+\end{align}
+
+\newpage
+\textbf{D. Daily Dealer Inventory, Backorders, and Monthly Reset} \\
+\begin{align}
+& I_{ict} - E_{ict} = (1 - P_t)(I_{ic, (t-1)} - E_{ic, (t-1)}) + \sum_{k \in K} D_{kict} - \sum_{k \in K} U_{kict} - F_{ict} && \forall i \in N \setminus \{0\}, c \in C, t \in T \label{eq:inventory_flow} \\
+& S_{ic, (t-1)} = P_t \cdot I_{ic, (t-1)} && \forall i \in N \setminus \{0\}, c \in C, t \in T \label{eq:salvage} \\
+& \sum_{c \in C} I_{ict} \le V_i && \forall i \in N \setminus \{0\}, t \in T \label{eq:dealer_capacity}
+\end{align}
+
+\vspace{1em}
+\textbf{Objective Function and Constraint Explanations:}
+\begin{itemize}
+    \item \textbf{(1):} The objective function, which minimizes total operation costs in the total time period.
+    \item \textbf{(2):} If a truck is dispatched on a given day, it must leave the factory exactly once.
+    \item \textbf{(3):} If a truck is dispatched on a given day, it must return to the factory exactly once.
+    \item \textbf{(4):} Routing flow conservation. If a truck enters a node, it must also depart from that node.
+    \item \textbf{(5):} A truck cannot pick up or drop off cars at a node unless it actually travels to that node.
+    \item \textbf{(6):} Subtour elimination to ensure all truck routes form valid paths connected to the factory.
+    \item \textbf{(7):} A dispatched truck can only be assigned to carry only one specific car type for its entire tour.
+    \item \textbf{(8):} A truck only picks up or drops off the specific car type it was assigned to carry.
+    \item \textbf{(9):} A truck cannot carry any cars on an arc it does not traverse.
+    \item \textbf{(10):} The number of cars on a truck cannot exceed its maximum physical capacity limit.
+    \item \textbf{(11):} Balance equation for the number of cars on the truck as it travels between nodes.
+    \item \textbf{(12):} All trucks needs to be completely empty of inventory when returning to the factory.
+    \item \textbf{(13):} The total travel time required for a truck's tour.
+    \item \textbf{(14):} The locking mechanism to keep a truck unavailable for the duration of its previous tour.
+    \item \textbf{(15):} A truck cannot dispatch on a new tour if it is still locked from a previous trip.
+    \item \textbf{(16):} Daily inventory and backorder level at each dealer
+    \item \textbf{(17):} The trigger for the unsold cars at the end of the month
+    \item \textbf{(18):} The total inventory of all car types held at a dealer never exceeds its storage capacity.
+\end{itemize}
+
+\section*{Heuristic Algorithm}
+
+\begin{algorithm}[H]
+\caption{Greedy Insertion Heuristic}
+\begin{algorithmic}[1]
+\For{period $t$ (Days) $\in T$}
+    \For{car type $c \in C$}
+        \For{dealer $i \in N \setminus \{0\}$}
+            \State Check if dealer $i$ is critical: $(I_{ict} - F_{ict}) < 0$
+        \EndFor
+        \While{(available trucks $> 0$) \textbf{and} (critical dealers for $c > 0$)}
+            \State $current = 0$ (Factory)
+            \State Pick an available truck $k \in K$
+            \State $available\_capacity = Q_c$   (given that car type is c)
+            \State $route = [\,]$
+            \State $route\_time = 0$
+            
+            \While{($available\_capacity > 0$) \textbf{and} (critical dealers for $c > 0$)}
+                \State $route$.append($current$)
+                \For{dealer $j \in N_{sorted}$ (by $A_{current, j}$)}
+                    \If{$j$ is critical}
+                        \If{($available\_capacity < $ cars needed for $j$) \textbf{and} ($route[-1] \neq 0$)}
+                            \If{remaining capacity for $route[-1] > available\_capacity$}
+                                \State Drop off $available\_capacity$ at node $route[-1]$
+                            \EndIf
+                            \State $available\_capacity = 0$
+                            \State \textbf{break}
+                        \EndIf
+                        
+                        \State $route\_time = route\_time + A_{current, j}$
+                        \State $current = j$
+                        \State $available\_capacity = available\_capacity - $ cars needed for $j$
+                        \State Drop off needed cars at node $j$
+                    \EndIf
+                \EndFor
+            \EndWhile
+            
+            \If{$available\_capacity \neq 0$}
+                \If{remaining capacity for $route[-1] > available\_capacity$}
+                    \State Drop off $available\_capacity$ at node $route[-1]$
+                \EndIf
+            \EndIf
+            
+            \State $route$.append($0$)
+            \State $route\_time = route\_time + A_{current, 0}$
+            \State Lock truck $k$ for $route\_time$ days
+        \EndWhile
+    \EndFor
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\end{document}

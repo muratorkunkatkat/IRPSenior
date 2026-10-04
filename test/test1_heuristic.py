@@ -1,8 +1,15 @@
 import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from heuristic.heuristic_greedy import GreedyHeuristic
 
 def run_test():
-    with open('data/data_exp.json', 'r') as f:
+    with open(ROOT / 'data' / 'data_exp.json', 'r') as f:
         data = json.load(f)
         
     heuristic = GreedyHeuristic(data)

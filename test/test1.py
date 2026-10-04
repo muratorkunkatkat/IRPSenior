@@ -1,5 +1,11 @@
-import os
+import sys
 import random
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 import matplotlib.pyplot as plt
 import numpy as np
 from data.generator import generate_network_data
@@ -26,7 +32,8 @@ def main():
         return
 
     # visualization
-    os.makedirs('plots', exist_ok=True)
+    out_dir = ROOT / "plots" / "exact"
+    out_dir.mkdir(parents=True, exist_ok=True)
     plt.style.use('dark_background')
     colors = ['orange', 'deepskyblue', 'yellow', 'limegreen', 'mediumorchid']
     
@@ -103,10 +110,10 @@ def main():
         # clean & save
         ax.grid(True, color='#444444', linestyle='--', linewidth=0.5)
         plt.tight_layout()
-        plt.savefig(f"plots/day_{t:02d}.png", dpi=150)
+        plt.savefig(out_dir / f"day_{t:02d}.png", dpi=150)
         plt.close(fig)
         
-    print("Successfully generated 30 plots in the 'plots/' directory!")
+    print(f"Successfully generated 30 plots in '{out_dir}'!")
 
 if __name__ == "__main__":
     main()
