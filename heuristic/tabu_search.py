@@ -1,9 +1,13 @@
 """Tabu search on the full vehicle-distribution instance.
 
-Each iteration scores a sample of random neighbors and steps to the cheapest
-admissible one. A move whose attribute is still in the tabu list is skipped,
-unless it beats the best solution seen so far (aspiration). If every sampled
-move is tabu, the cheapest of them is taken anyway so the search does not stall.
+Each iteration scores a sample of neighbors and steps to the cheapest admissible
+one. The neighbors are the same decisions annealing uses: exchange, hand-over,
+resequence, swap two stops on one tour, or shift a tour's visit order by one.
+
+The tabu attribute is that decision (the pair of tours, or the tour that was
+reordered). It cannot be repeated for `tenure` iterations, unless it beats the
+best solution seen so far. If every sampled decision is tabu, the cheapest of
+them is taken anyway so the search does not stall.
 """
 
 import random

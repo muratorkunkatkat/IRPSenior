@@ -1,9 +1,12 @@
 """Simulated annealing on the full vehicle-distribution instance.
 
-One random neighbor is drawn per iteration. A cheaper neighbor is always kept.
+One neighbor is drawn per iteration. A cheaper neighbor is always kept.
 A more expensive one is kept with probability exp(-delta / temperature).
-Temperature cools geometrically from a value calibrated on the initial solution,
-so early uphill moves are common and late ones are rare.
+
+When a time limit is set, temperature follows the clock: it starts at T0 and
+reaches final_temp_ratio * T0 when the limit is used up. Cooling must not be
+tied to the iteration ceiling, because a one-million-iteration alpha barely
+moves during a few minutes and the search never starts exploiting.
 """
 
 import math
@@ -31,7 +34,12 @@ def _accept(delta, temperature, rng):
 
 
 def _calibrate(sol, rng, samples):
-    """Temperature at which a typical uphill move is still often accepted."""
+    """T0 so a small worsening is sometimes kept, and a large one almost never is.
+
+    The cap is 0.15% of the starting cost. Without it, one bad sample sets a
+    temperature high enough that the search walks away from the greedy plan
+    and does not come back inside the time limit.
+    """
     uphill = []
     base = sol.cost.total
     for _ in range(samples):
@@ -43,11 +51,18 @@ def _calibrate(sol, rng, samples):
         proposal.undo()
         if delta > 1e-6:
             uphill.append(delta)
+    cap = max(base * 0.0015, 1.0)
     if not uphill:
-        return 1000.0
+        return cap * 0.25
     uphill.sort()
-    median = uphill[len(uphill) // 2]
-    return max(median / -math.log(0.8), 1.0)
+    typical = uphill[len(uphill) // 4]
+    raw = typical / -math.log(0.35)
+    return min(max(raw, 1.0), cap)
+
+
+def _temperature(temperature0, final_temp_ratio, elapsed, time_limit_sec):
+    progress = min(1.0, max(0.0, elapsed / time_limit_sec))
+    return temperature0 * (final_temp_ratio ** progress)
 
 
 def run_simulated_annealing(data, iterations=800, seed=44, trips=None,
@@ -59,9 +74,12 @@ def run_simulated_annealing(data, iterations=800, seed=44, trips=None,
     sol.cost = initial
     sol.aux = aux
 
-    started = time.perf_counter()
     temperature0 = _calibrate(sol, rng, sample_moves)
-    alpha = math.exp(math.log(final_temp_ratio) / max(iterations, 1))
+    started = time.perf_counter()
+    if time_limit_sec:
+        alpha = None
+    else:
+        alpha = math.exp(math.log(final_temp_ratio) / max(iterations, 1))
     temperature = temperature0
 
     best_cost = initial
@@ -86,12 +104,25 @@ def run_simulated_annealing(data, iterations=800, seed=44, trips=None,
 
     ran = 0
     stopped = "iterations"
-    print(f"SA start  total={initial.total:,.2f}  T0={temperature0:,.2f}  alpha={alpha:.6f}", flush=True)
+    if time_limit_sec:
+        print(
+            f"SA start  total={initial.total:,.2f}  T0={temperature0:,.2f}  "
+            f"cools to {100 * final_temp_ratio:.2f}% of T0 over {time_limit_sec:.0f}s",
+            flush=True,
+        )
+    else:
+        print(
+            f"SA start  total={initial.total:,.2f}  T0={temperature0:,.2f}  alpha={alpha:.6f}",
+            flush=True,
+        )
 
     for iteration in range(1, iterations + 1):
-        if time_limit_sec is not None and (time.perf_counter() - started) >= time_limit_sec:
+        elapsed_now = time.perf_counter() - started
+        if time_limit_sec is not None and elapsed_now >= time_limit_sec:
             stopped = "time limit"
             break
+        if time_limit_sec:
+            temperature = _temperature(temperature0, final_temp_ratio, elapsed_now, time_limit_sec)
         ran = iteration
         proposal = propose_move(sol, rng)
         accepted = False
@@ -111,7 +142,8 @@ def run_simulated_annealing(data, iterations=800, seed=44, trips=None,
             else:
                 proposal.undo()
         accepted_flags.append(accepted)
-        temperature *= alpha
+        if not time_limit_sec:
+            temperature *= alpha
         history.append({
             "iteration": iteration,
             "current": current.total,

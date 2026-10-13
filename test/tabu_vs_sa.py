@@ -28,15 +28,14 @@ from heuristic.search_problem import (
 from heuristic.simulated_annealing import run_simulated_annealing
 from heuristic.tabu_search import run_tabu_search
 
-# Budgets for the real-size file (71 dealers, 500 trucks, 5 types, 30 days).
-# One tabu iteration scores TABU_NEIGHBORS solutions, so its wall time is longer.
-SA_ITERATIONS = 1000
-TABU_ITERATIONS = 200
+# Both searches run until the clock stops them. The iteration caps are only a ceiling.
+SA_ITERATIONS = 1_000_000
+TABU_ITERATIONS = 1_000_000
 TABU_NEIGHBORS = 16
 TABU_TENURE = 12
 SEED = 44
-SA_TIME_LIMIT = 180
-TABU_TIME_LIMIT = 240
+SA_TIME_LIMIT = 300
+TABU_TIME_LIMIT = 300
 
 SA_COLOR = "#0072B2"
 TS_COLOR = "#D55E00"
@@ -194,8 +193,15 @@ def save_comparison(sa, tabu, out_dir):
     fig.savefig(out_dir / "total_cost.png", dpi=140)
     plt.close(fig)
 
-    kinds = sorted(set(sa["move_counts"]) | set(tabu["move_counts"]))
-    fig, ax = plt.subplots(figsize=(10, 5))
+    kinds = ["exchange", "hand-over", "resequence", "swap", "shift"]
+    labels = [
+        "exchange\n(dealer between trucks)",
+        "hand-over\n(onto a truck with room)",
+        "resequence\n(cheaper driving order)",
+        "swap\n(two stops on one tour)",
+        "shift\n(rotate visit order by one)",
+    ]
+    fig, ax = plt.subplots(figsize=(11, 5.8))
     width = 0.38
 
     def share(counts):
@@ -208,8 +214,8 @@ def save_comparison(sa, tabu, out_dir):
     ax.bar([i + width / 2 for i in x], share(tabu["move_counts"]), width,
            color=TS_COLOR, label="Tabu search")
     ax.set_xticks(x)
-    ax.set_xticklabels(kinds, rotation=20)
-    _style(ax, "Mix of accepted moves", "Move", "Share of accepted moves (%)")
+    ax.set_xticklabels(labels)
+    _style(ax, "Decisions the search actually kept", "Decision", "Share of accepted decisions (%)")
     fig.tight_layout()
     fig.savefig(out_dir / "move_mix.png", dpi=140)
     plt.close(fig)
@@ -292,6 +298,13 @@ def main():
     print("            + leftover cars after the last day (charged at G)")
     print("            + dealer storage overflow (charged at G per car-day).")
     print("Both algorithms start from the same dynamic-greedy solution.")
+    print("Each neighbor is one decision:")
+    print("  exchange    trade one dealer between two same-day trucks of the same model")
+    print("  hand-over   move one dealer onto a truck that still has an empty slot")
+    print("  resequence  same dealers; rebuild driving order by kilometers")
+    print("  swap        swap the visit index of two dealers on one tour")
+    print("  shift       rotate that tour's dealer list by one (last stop moves first)")
+    print("Days and quantities stay as the greedy set them.")
     print("One tabu iteration scores several neighbors, so equal iteration")
     print("counts are not equal work. cost_vs_time.png is the fair comparison.")
     print()
@@ -310,6 +323,7 @@ def main():
         seed=SEED,
         trips=base,
         time_limit_sec=SA_TIME_LIMIT,
+        log_every=1000,
     )
     print_cost("Simulated annealing best", sa["best_cost"])
     print(f"  Last improvement at iteration {sa['best_iteration']}")
@@ -328,6 +342,7 @@ def main():
         seed=SEED,
         trips=base,
         time_limit_sec=TABU_TIME_LIMIT,
+        log_every=25,
     )
     print_cost("Tabu search best", tabu["best_cost"])
     print(f"  Last improvement at iteration {tabu['best_iteration']}")
