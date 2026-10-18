@@ -19,6 +19,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from heuristic.search_problem import (
+    MOVE_NAMES,
     Solution,
     build_initial_trips,
     clone_trips,
@@ -32,7 +33,7 @@ from heuristic.tabu_search import run_tabu_search
 SA_ITERATIONS = 1_000_000
 TABU_ITERATIONS = 1_000_000
 TABU_NEIGHBORS = 16
-TABU_TENURE = 12
+TABU_SIZE = 12
 SEED = 44
 SA_TIME_LIMIT = 300
 TABU_TIME_LIMIT = 300
@@ -94,7 +95,7 @@ def _zoom_if_close(ax, values):
         ax.margins(y=0.15)
 
 
-def save_comparison(sa, tabu, out_dir):
+def save_comparison(sa, tabu, out_dir, baseline_name="the dynamic greedy"):
     out_dir.mkdir(parents=True, exist_ok=True)
 
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -129,7 +130,7 @@ def save_comparison(sa, tabu, out_dir):
         [improvement(initial_total, value) for value in _series(tabu["history"], "best")],
         color=TS_COLOR, linewidth=2, label="Tabu search",
     )
-    _style(ax, "Improvement over the dynamic greedy", "Seconds", "Improvement in objective (%)")
+    _style(ax, f"Improvement over {baseline_name}", "Seconds", "Improvement in objective (%)")
     fig.tight_layout()
     fig.savefig(out_dir / "improvement_vs_time.png", dpi=140)
     plt.close(fig)
@@ -193,14 +194,8 @@ def save_comparison(sa, tabu, out_dir):
     fig.savefig(out_dir / "total_cost.png", dpi=140)
     plt.close(fig)
 
-    kinds = ["exchange", "hand-over", "resequence", "swap", "shift"]
-    labels = [
-        "exchange\n(dealer between trucks)",
-        "hand-over\n(onto a truck with room)",
-        "resequence\n(cheaper driving order)",
-        "swap\n(two stops on one tour)",
-        "shift\n(rotate visit order by one)",
-    ]
+    kinds = list(MOVE_NAMES)
+    labels = list(MOVE_NAMES)
     fig, ax = plt.subplots(figsize=(11, 5.8))
     width = 0.38
 
@@ -214,7 +209,7 @@ def save_comparison(sa, tabu, out_dir):
     ax.bar([i + width / 2 for i in x], share(tabu["move_counts"]), width,
            color=TS_COLOR, label="Tabu search")
     ax.set_xticks(x)
-    ax.set_xticklabels(labels)
+    ax.set_xticklabels(labels, rotation=25, ha="right")
     _style(ax, "Decisions the search actually kept", "Decision", "Share of accepted decisions (%)")
     fig.tight_layout()
     fig.savefig(out_dir / "move_mix.png", dpi=140)
@@ -338,7 +333,7 @@ def main():
         data,
         iterations=TABU_ITERATIONS,
         neighbors=TABU_NEIGHBORS,
-        tenure=TABU_TENURE,
+        tabu_size=TABU_SIZE,
         seed=SEED,
         trips=base,
         time_limit_sec=TABU_TIME_LIMIT,

@@ -3,10 +3,15 @@
 One neighbor is drawn per iteration. A cheaper neighbor is always kept.
 A more expensive one is kept with probability exp(-delta / temperature).
 
-When a time limit is set, temperature follows the clock: it starts at T0 and
-reaches final_temp_ratio * T0 when the limit is used up. Cooling must not be
-tied to the iteration ceiling, because a one-million-iteration alpha barely
-moves during a few minutes and the search never starts exploiting.
+T0 is set from the construction cost, not from a sample of random worsenings:
+a plan 10% worse than the reference is accepted with a chosen probability
+(75%, 50%, or 25%). The final temperature is the value at which a plan 1%
+worse than the same reference is accepted with probability 0.0001.
+
+Cooling is one of two rules. If `alpha` is set, temperature is multiplied by
+alpha after every block of `cool_every` (L) scored neighbors, and is not
+allowed below T_final. That is the paper schedule. If `alpha` is omitted and
+a time limit is set, temperature follows the clock from T0 to T_final.
 """
 
 import math
@@ -22,6 +27,20 @@ from heuristic.search_problem import (
 )
 
 
+def paper_temperatures(reference):
+    delta10 = 0.10 * reference
+    delta1 = 0.01 * reference
+    return {
+        "reference": reference,
+        "delta10": delta10,
+        "delta1": delta1,
+        "T75": -delta10 / math.log(0.75),
+        "T50": -delta10 / math.log(0.50),
+        "T25": -delta10 / math.log(0.25),
+        "T_final": -delta1 / math.log(0.0001),
+    }
+
+
 def _accept(delta, temperature, rng):
     if delta <= 0:
         return True
@@ -33,53 +52,26 @@ def _accept(delta, temperature, rng):
     return rng.random() < math.exp(-scaled)
 
 
-def _calibrate(sol, rng, samples):
-    """T0 so a small worsening is sometimes kept, and a large one almost never is.
-
-    The cap is 0.15% of the starting cost. Without it, one bad sample sets a
-    temperature high enough that the search walks away from the greedy plan
-    and does not come back inside the time limit.
-    """
-    uphill = []
-    base = sol.cost.total
-    for _ in range(samples):
-        proposal = propose_move(sol, rng)
-        if proposal is None:
-            continue
-        cost, _aux = evaluate(sol)
-        delta = cost.total - base
-        proposal.undo()
-        if delta > 1e-6:
-            uphill.append(delta)
-    cap = max(base * 0.0015, 1.0)
-    if not uphill:
-        return cap * 0.25
-    uphill.sort()
-    typical = uphill[len(uphill) // 4]
-    raw = typical / -math.log(0.35)
-    return min(max(raw, 1.0), cap)
-
-
-def _temperature(temperature0, final_temp_ratio, elapsed, time_limit_sec):
+def _temperature(temperature0, t_final, elapsed, time_limit_sec):
+    if time_limit_sec <= 0 or temperature0 <= t_final:
+        return t_final
     progress = min(1.0, max(0.0, elapsed / time_limit_sec))
-    return temperature0 * (final_temp_ratio ** progress)
+    return temperature0 * (t_final / temperature0) ** progress
 
 
-def run_simulated_annealing(data, iterations=800, seed=44, trips=None,
-                            sample_moves=24, final_temp_ratio=0.001,
-                            time_limit_sec=None, log_every=None):
+def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
+                            t0=None, t_final=None, time_limit_sec=None,
+                            log_every=None, alpha=None, cool_every=10):
     rng = random.Random(seed)
     sol = Solution(data, clone_trips(trips) if trips is not None else build_initial_trips(data))
     initial, aux = evaluate(sol)
     sol.cost = initial
     sol.aux = aux
 
-    temperature0 = _calibrate(sol, rng, sample_moves)
+    temps = paper_temperatures(initial.total)
+    temperature0 = temps["T50"] if t0 is None else float(t0)
+    final_t = temps["T_final"] if t_final is None else float(t_final)
     started = time.perf_counter()
-    if time_limit_sec:
-        alpha = None
-    else:
-        alpha = math.exp(math.log(final_temp_ratio) / max(iterations, 1))
     temperature = temperature0
 
     best_cost = initial
@@ -87,6 +79,8 @@ def run_simulated_annealing(data, iterations=800, seed=44, trips=None,
     best_iteration = 0
     current = initial
     move_counts = {}
+    proposed_counts = {}
+    rejected_counts = {}
     accepted_flags = []
     history = [{
         "iteration": 0,
@@ -94,6 +88,8 @@ def run_simulated_annealing(data, iterations=800, seed=44, trips=None,
         "best": initial.total,
         "best_transport": initial.transport,
         "best_backorder": initial.backorder,
+        "best_holding": initial.holding,
+        "best_unsold": initial.unsold,
         "seconds": 0.0,
         "temperature": temperature0,
         "accepted": False,
@@ -103,30 +99,33 @@ def run_simulated_annealing(data, iterations=800, seed=44, trips=None,
         log_every = max(1, iterations // 10)
 
     ran = 0
+    scored = 0
     stopped = "iterations"
-    if time_limit_sec:
-        print(
-            f"SA start  total={initial.total:,.2f}  T0={temperature0:,.2f}  "
-            f"cools to {100 * final_temp_ratio:.2f}% of T0 over {time_limit_sec:.0f}s",
-            flush=True,
-        )
+    if alpha is not None:
+        cool_note = f"alpha={alpha} every {cool_every} neighbors"
+    elif time_limit_sec:
+        cool_note = f"clock cool over {time_limit_sec:.0f}s"
     else:
-        print(
-            f"SA start  total={initial.total:,.2f}  T0={temperature0:,.2f}  alpha={alpha:.6f}",
-            flush=True,
-        )
+        cool_note = "geometric over iterations"
+    print(
+        f"SA start  total={initial.total:,.2f}  T0={temperature0:,.2f}  "
+        f"T_final={final_t:,.2f}  {cool_note}",
+        flush=True,
+    )
 
     for iteration in range(1, iterations + 1):
         elapsed_now = time.perf_counter() - started
         if time_limit_sec is not None and elapsed_now >= time_limit_sec:
             stopped = "time limit"
             break
-        if time_limit_sec:
-            temperature = _temperature(temperature0, final_temp_ratio, elapsed_now, time_limit_sec)
+        if alpha is None and time_limit_sec:
+            temperature = _temperature(temperature0, final_t, elapsed_now, time_limit_sec)
         ran = iteration
         proposal = propose_move(sol, rng)
         accepted = False
         if proposal is not None:
+            scored += 1
+            proposed_counts[proposal.kind] = proposed_counts.get(proposal.kind, 0) + 1
             trial, trial_aux = evaluate(sol)
             delta = trial.total - current.total
             if _accept(delta, temperature, rng):
@@ -141,15 +140,20 @@ def run_simulated_annealing(data, iterations=800, seed=44, trips=None,
                     best_iteration = iteration
             else:
                 proposal.undo()
+                rejected_counts[proposal.kind] = rejected_counts.get(proposal.kind, 0) + 1
+            if alpha is not None and scored % cool_every == 0:
+                temperature = max(final_t, temperature * alpha)
         accepted_flags.append(accepted)
-        if not time_limit_sec:
-            temperature *= alpha
+        if alpha is None and not time_limit_sec:
+            temperature = max(final_t, temperature * (final_t / temperature0) ** (1 / max(iterations, 1)))
         history.append({
             "iteration": iteration,
             "current": current.total,
             "best": best_cost.total,
             "best_transport": best_cost.transport,
             "best_backorder": best_cost.backorder,
+            "best_holding": best_cost.holding,
+            "best_unsold": best_cost.unsold,
             "seconds": time.perf_counter() - started,
             "temperature": temperature,
             "accepted": accepted,
@@ -165,7 +169,7 @@ def run_simulated_annealing(data, iterations=800, seed=44, trips=None,
     exact, _aux = evaluate(Solution(data, best_trips))
     print(
         f"SA done  best={exact.total:,.2f}  iter={best_iteration}  "
-        f"seconds={elapsed:.1f}  stop={stopped}",
+        f"seconds={elapsed:.1f}  stop={stopped}  T_end={temperature:,.2f}",
         flush=True,
     )
     return {
@@ -178,14 +182,18 @@ def run_simulated_annealing(data, iterations=800, seed=44, trips=None,
         "elapsed": elapsed,
         "iterations_run": ran,
         "move_counts": move_counts,
+        "proposed_counts": proposed_counts,
+        "rejected_counts": rejected_counts,
         "accepted_flags": accepted_flags,
         "stopped": stopped,
         "parameters": {
             "iterations": iterations,
             "seed": seed,
             "T0": temperature0,
+            "T_final": final_t,
             "alpha": alpha,
-            "final_temp_ratio": final_temp_ratio,
+            "cool_every": cool_every,
             "time_limit_sec": time_limit_sec,
+            "temps": temps,
         },
     }

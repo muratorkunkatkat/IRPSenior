@@ -130,6 +130,17 @@ class VDNSolver:
                         name=f"inv_flow_{i}_{c}_{t}"
                     )
 
+        # Leftover positive stock after the last day is unsold, charged at G.
+        # The P-reset constraint only writes S for day t-1, so without this
+        # the horizon-end inventory is never billed.
+        last_t = self.T[-1]
+        for i in self.N_no_fac:
+            for c in self.C:
+                m.addConstr(
+                    self.S[i, c, last_t] == self.I[i, c, last_t],
+                    name=f"unsold_horizon_{i}_{c}",
+                )
+
         # obj. func
         print("setting obj. func")
         obj = (

@@ -260,9 +260,9 @@ def generate_json():
 
     yards = [0] + [yard for _name, _lat, _lon, yard in sites]
     avg_route = estimate_route_days(travel, demand, TRUCK_CAPACITY, dealers, days, types)
-    # Fixed operating fleet. The 715-dispatch formula gave ~98; the team set 75.
-    n_trucks = 75
-    formula_fleet = max(1, int(round(MONTHLY_DISPATCHES * avg_route / DAYS)))
+    # Operating fleet given by the company.
+    n_trucks = 80
+    # formula_fleet = max(1, int(round(MONTHLY_DISPATCHES * avg_route / DAYS)))
 
     data = {
         "C": types,
@@ -287,10 +287,7 @@ def generate_json():
 
     labels = ["Egea Cross", "Egea Sedan", "Scudo", "Scudo kamyonet", "Ulysse"]
     print(f"nodes {n_nodes}  dealers {len(dealers)}  trucks {n_trucks}  days {DAYS}")
-    print(
-        f"average route {avg_route:.2f} days  ->  fleet {n_trucks} trucks "
-        f"(formula would give {formula_fleet} for {MONTHLY_DISPATCHES} monthly dispatches)"
-    )
+    print(f"average route {avg_route:.2f} days  ->  fleet {n_trucks} trucks (company figure)")
     print(f"{'type':<18} {'target':>8} {'realized':>10} {'P0':>7} {'P1':>7} {'P2':>7} {'Q':>4}")
     for car, label in enumerate(labels):
         p0, p1, p2 = weights[car]

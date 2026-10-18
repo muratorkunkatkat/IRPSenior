@@ -11,17 +11,19 @@ Transport uses R. Holding uses H on positive end-of-day stock. Backorder uses B
 on the shortage carried that day. Leftover stock after the horizon is charged at
 G per car. Stock above a dealer's storage limit is charged at G per car per day.
 
-The neighborhood is five driving decisions. Every truck leaves the Bursa factory
-and returns there. A neighbor never moves a delivery onto another day and never
-changes how many cars a dealer gets:
+Eight moves. Driving-cost choices use kilometers (R). A move that cannot be
+built is skipped. After one is built, it is thrown away if two trips of the
+same truck overlap in time. The full objective is scored afterwards, so a
+move is still offered when holding, backorder, or unsold goes up.
 
-  exchange    Two trucks of the same model, same day: trade one dealer each.
-  hand-over   One dealer moves onto another same-day truck that still has room.
-  resequence  Same dealers on the same truck; rebuild the visit order by distance.
-  swap        On one tour, exchange the visit index of two dealers
-              (0-1-2-3-0 becomes 0-2-1-3-0).
-  shift       On one tour, rotate the dealer list by one toward the factory return
-              (0-1-2-3-0 becomes 0-3-1-2-0).
+  2-opt            reverse the cheapest interior segment of one tour
+  insertion        move one dealer to the cheapest other slot on the same tour
+  hand-over        move one dealer onto another same-day same-type truck
+  exchange         swap one dealer between two same-day same-type trucks
+  earlier-car      move one car of a stop onto an earlier tour of that type
+  add-car          pick a tour at random; add one car if that deck has room
+  remove-car       take one car off a tour
+  spare-to-short   after the last stop, pick up one spare and drop it at a short dealer
 """
 
 from collections import defaultdict
@@ -80,11 +82,13 @@ class Cost:
 
 
 class Aux:
-    __slots__ = ("by_day_type", "excess")
+    __slots__ = ("by_day_type", "excess", "spare", "short")
 
-    def __init__(self, by_day_type, excess):
+    def __init__(self, by_day_type, excess, spare, short):
         self.by_day_type = by_day_type
         self.excess = excess
+        self.spare = spare
+        self.short = short
 
 
 class Proposal:
@@ -118,6 +122,7 @@ class Solution:
         self.n_nodes = len(data["N"])
         self.n_types = len(self.C)
         self.days = list(data["T"])
+        self.trucks = list(data["K"])
         self.trips = list(trips)
         self.by_truck = defaultdict(list)
         for trip in self.trips:
@@ -214,8 +219,53 @@ def build_initial_trips(data):
     return trips
 
 
+def build_random_trips(data, rng, attempts=8000):
+    """A nonsense plan. Day, truck, model, dealers, and drop sizes are all draws.
+
+    Demand, distance, and stock are ignored. A draw is kept only when the
+    neighborhood can still edit it: the dealers on a tour are distinct, the
+    dropped cars fit on the deck, and that truck is free for the travel window.
+    """
+    dealers = list(data["nodes_no_factory"])
+    types = list(data["C"])
+    trucks = list(data["K"])
+    days = list(data["T"])
+    A = data["A"]
+    Q = data["Q"]
+    busy = {truck: [] for truck in trucks}
+    trips = []
+    if not dealers or not types or not trucks or not days:
+        return trips
+
+    for _ in range(attempts):
+        car = int(rng.choice(types))
+        cap = int(Q[car])
+        if cap < 1:
+            continue
+        n_stops = rng.randint(1, min(8, len(dealers)))
+        stops = rng.sample(dealers, n_stops)
+        qty = [rng.randint(1, cap) for _stop in stops]
+        if sum(qty) > cap:
+            continue
+        day = int(rng.choice(days))
+        truck = int(rng.choice(trucks))
+        duration = 0
+        prev = 0
+        for stop in stops:
+            duration += A[prev][stop]
+            prev = stop
+        duration += A[prev][0]
+        start = day
+        end = start + max(duration, 1)
+        if any(other_start < end and start < other_end for other_start, other_end in busy[truck]):
+            continue
+        busy[truck].append((start, end))
+        trips.append(Trip(day, truck, car, stops, qty))
+    return trips
+
+
 def travel_time(A, trip):
-    if not trip.stops or sum(trip.qty) <= 0:
+    if not trip.stops:
         return 0
     prev = 0
     total = 0
@@ -227,7 +277,7 @@ def travel_time(A, trip):
 
 
 def route_transport(R, trip):
-    if not trip.stops or sum(trip.qty) <= 0:
+    if not trip.stops:
         return 0.0
     prev = 0
     total = 0.0
@@ -241,7 +291,7 @@ def route_transport(R, trip):
 def schedule_feasible(sol, truck):
     intervals = []
     for trip in sol.by_truck[truck]:
-        if not trip.stops or sum(trip.qty) <= 0:
+        if not trip.stops:
             continue
         if trip.day < 0 or trip.day >= sol.n_days:
             return False
@@ -257,16 +307,25 @@ def schedule_feasible(sol, truck):
 
 
 def trip_structurally_ok(sol, trip):
-    if sum(trip.qty) > sol.Q[trip.car_type]:
-        return False
-    if any(q < 0 for q in trip.qty):
-        return False
+    if not trip.stops:
+        return True
     if len(trip.stops) != len(trip.qty):
+        return False
+    if any(q == 0 for q in trip.qty):
         return False
     if len(set(trip.stops)) != len(trip.stops):
         return False
     if any(stop == 0 or stop >= sol.n_nodes for stop in trip.stops):
         return False
+    cap = sol.Q[trip.car_type]
+    factory_load = sum(trip.qty)
+    if factory_load < 0 or factory_load > cap:
+        return False
+    load = factory_load
+    for qty in trip.qty:
+        load -= qty
+        if load < -1e-9 or load > cap + 1e-9:
+            return False
     return True
 
 
@@ -328,10 +387,11 @@ def evaluate(sol):
         day = trip.day
         car = trip.car_type
         for stop, qty in zip(trip.stops, trip.qty):
-            if qty <= 0:
+            if qty == 0:
                 continue
             delivered[sol.slot(day, stop, car)] += qty
-            shipped += qty
+            if qty > 0:
+                shipped += qty
 
     nets = sol._net
     for dealer in sol.dealers:
@@ -345,6 +405,7 @@ def evaluate(sol):
     backorder_units = 0.0
     capacity = 0.0
     by_day_type = {}
+    spare = {}
     F = sol.F
     H = sol.H
     B = sol.B
@@ -358,7 +419,14 @@ def evaluate(sol):
             on_hand = 0
             dealer_base = day_base + dealer * n_types
             for car in sol.C:
-                net = row[car] + delivered[dealer_base + car] - F[dealer][car][day]
+                opening = row[car]
+                if opening > 0:
+                    bucket = spare.get((day, car))
+                    if bucket is None:
+                        bucket = []
+                        spare[(day, car)] = bucket
+                    bucket.append((dealer, opening))
+                net = opening + delivered[dealer_base + car] - F[dealer][car][day]
                 row[car] = net
                 if net >= 0:
                     holding += H[car] * net
@@ -394,17 +462,11 @@ def evaluate(sol):
         transport, holding, backorder, unsold, capacity,
         backorder_units, unsold_units, holding_units, shipped,
     )
-    return cost, Aux(by_day_type, excess)
-
-
-# Share of proposals that are allowed to look more expensive on kilometers.
-# Annealing then applies the temperature test. Tabu usually skips them,
-# because it keeps the cheapest candidate in its sample.
-UPHILL_SHARE = 0.2
+    return cost, Aux(by_day_type, excess, spare, by_day_type)
 
 
 def _active(sol):
-    return [trip for trip in sol.trips if trip.stops and sum(trip.qty) > 0]
+    return [trip for trip in sol.trips if trip.stops and sum(q for q in trip.qty if q > 0) > 0]
 
 
 def _path_cost(R, stops):
@@ -417,24 +479,6 @@ def _path_cost(R, stops):
         prev = stop
     total += R[prev][0]
     return total
-
-
-def _nn_order(R, stops):
-    """Visit order that always leaves Bursa and returns there, by transport cost."""
-    remaining = list(stops)
-    order = []
-    current = 0
-    while remaining:
-        best_i = 0
-        best_cost = R[current][remaining[0]]
-        for index in range(1, len(remaining)):
-            cost = R[current][remaining[index]]
-            if cost < best_cost:
-                best_cost = cost
-                best_i = index
-        current = remaining.pop(best_i)
-        order.append(current)
-    return order
 
 
 def _insertion_extra(R, stops, dealer):
@@ -457,25 +501,6 @@ def _removal_saving(R, stops, index):
     return R[before][dealer] + R[dealer][after] - R[before][after]
 
 
-def _best_reinsertion(R, stops):
-    """Move one stop to another place on the same tour, if that shortens it."""
-    if len(stops) < 2:
-        return None
-    best = None
-    best_cost = _path_cost(R, stops)
-    for index, dealer in enumerate(stops):
-        reduced = stops[:index] + stops[index + 1:]
-        pos, _extra = _insertion_extra(R, reduced, dealer)
-        trial = reduced[:pos] + [dealer] + reduced[pos:]
-        if trial == stops:
-            continue
-        cost = _path_cost(R, trial)
-        if cost + 1e-6 < best_cost:
-            best_cost = cost
-            best = trial
-    return best
-
-
 def _apply_order(trip, order, qty_of):
     trip.stops = list(order)
     trip.qty = [qty_of[stop] for stop in order]
@@ -488,117 +513,142 @@ def _same_day_groups(sol):
     return groups
 
 
-def try_resequence(sol, rng):
-    """Same dealers, same cars, cheaper driving order back to Bursa."""
+def _qty_map(trip):
+    return {stop: qty for stop, qty in zip(trip.stops, trip.qty)}
+
+
+def _interval(sol, trip):
+    duration = travel_time(sol.A, trip)
+    start = trip.day
+    return start, start + max(duration, 1)
+
+
+def _truck_free(sol, truck, start, end, ignore=None):
+    for trip in sol.by_truck[truck]:
+        if trip is ignore or not trip.stops:
+            continue
+        other_start, other_end = _interval(sol, trip)
+        if other_start < end and start < other_end:
+            return False
+    return True
+
+
+def try_2opt(sol, rng):
     pool = [trip for trip in _active(sol) if len(trip.stops) >= 2]
     if not pool:
         return None
     trip = rng.choice(pool)
     R = sol.R
-    current = trip.stops
-    current_cost = _path_cost(R, current)
-    nearest = _nn_order(R, current)
-    chosen = None
-    if nearest != current and _path_cost(R, nearest) + 1e-6 < current_cost:
-        chosen = nearest
-    if chosen is None:
-        chosen = _best_reinsertion(R, current)
-    if chosen is None and nearest != current and rng.random() < UPHILL_SHARE:
-        chosen = nearest
-    if chosen is None:
+    n = len(trip.stops)
+    best_stops = None
+    best_qty = None
+    best_cost = _path_cost(R, trip.stops)
+    for i in range(n - 1):
+        for j in range(i + 1, n):
+            stops = trip.stops[:i] + trip.stops[i:j + 1][::-1] + trip.stops[j + 1:]
+            cost = _path_cost(R, stops)
+            if cost + 1e-9 < best_cost:
+                best_cost = cost
+                best_stops = stops
+                best_qty = trip.qty[:i] + trip.qty[i:j + 1][::-1] + trip.qty[j + 1:]
+    if best_stops is None:
         return None
-    qty_of = {stop: qty for stop, qty in zip(trip.stops, trip.qty)}
     saved = snapshot([trip])
-    _apply_order(trip, chosen, qty_of)
-    return finish(sol, [trip], saved, "resequence", ("resequence", trip.uid))
+    trip.stops = best_stops
+    trip.qty = best_qty
+    return finish(sol, [trip], saved, "2-opt", ("2-opt", trip.uid, tuple(best_stops)))
+
+
+def try_insertion(sol, rng):
+    pool = [trip for trip in _active(sol) if len(trip.stops) >= 2]
+    if not pool:
+        return None
+    trip = rng.choice(pool)
+    R = sol.R
+    qty_of = _qty_map(trip)
+    best_order = None
+    best_cost = _path_cost(R, trip.stops)
+    for index, dealer in enumerate(trip.stops):
+        reduced = trip.stops[:index] + trip.stops[index + 1:]
+        for pos in range(len(reduced) + 1):
+            order = reduced[:pos] + [dealer] + reduced[pos:]
+            if order == trip.stops:
+                continue
+            cost = _path_cost(R, order)
+            if cost + 1e-9 < best_cost:
+                best_cost = cost
+                best_order = order
+    if best_order is None:
+        return None
+    saved = snapshot([trip])
+    _apply_order(trip, best_order, qty_of)
+    return finish(sol, [trip], saved, "insertion", ("insertion", trip.uid, tuple(best_order)))
 
 
 def try_hand_over(sol, rng):
-    """Move one dealer onto another same-day truck of the same model."""
     groups = _same_day_groups(sol)
     keys = [key for key, trips in groups.items() if len(trips) >= 2]
     if not keys:
         return None
-    rng.shuffle(keys)
+    day, car = rng.choice(keys)
+    trips = groups[(day, car)]
+    src = rng.choice(trips)
     R = sol.R
-    for day, car in keys[:6]:
-        trips = groups[(day, car)]
-        src = rng.choice(trips)
-        index = max(range(len(src.stops)), key=lambda i: _removal_saving(R, src.stops, i))
-        if rng.random() < UPHILL_SHARE:
-            index = rng.randrange(len(src.stops))
-        dealer = src.stops[index]
-        qty = src.qty[index]
-        saving = _removal_saving(R, src.stops, index)
-        receivers = [trip for trip in trips
-                     if trip is not src and sum(trip.qty) + qty <= sol.Q[car]]
-        if len(receivers) > 8:
-            receivers = rng.sample(receivers, 8)
-        best = None
-        best_extra = None
-        for dst in receivers:
-            if dealer in dst.stops:
-                extra = 0.0
-                pos = None
-            else:
-                pos, extra = _insertion_extra(R, dst.stops, dealer)
-            if best_extra is None or extra < best_extra:
-                best_extra = extra
-                best = (dst, pos)
-        if best is None:
-            continue
-        if best_extra + 1e-6 >= saving and rng.random() >= UPHILL_SHARE:
-            continue
-        dst, pos = best
-        saved = snapshot([src, dst])
-        src.stops.pop(index)
-        src.qty.pop(index)
+    index = max(range(len(src.stops)), key=lambda i: _removal_saving(R, src.stops, i))
+    dealer = src.stops[index]
+    qty = src.qty[index]
+    receivers = [trip for trip in trips
+                 if trip is not src and sum(q for q in trip.qty if q > 0) + qty <= sol.Q[car]]
+    if not receivers:
+        return None
+    best = None
+    best_extra = None
+    for dst in receivers:
         if dealer in dst.stops:
-            dst.qty[dst.stops.index(dealer)] += qty
+            extra = 0.0
+            pos = None
         else:
-            dst.stops.insert(pos, dealer)
-            dst.qty.insert(pos, qty)
-        pair = (min(src.uid, dst.uid), max(src.uid, dst.uid))
-        proposal = finish(sol, [src, dst], saved, "hand-over", ("hand-over", dealer, pair))
-        if proposal is not None:
-            return proposal
-    return None
+            pos, extra = _insertion_extra(R, dst.stops, dealer)
+        if best_extra is None or extra < best_extra:
+            best_extra = extra
+            best = (dst, pos)
+    dst, pos = best
+    saved = snapshot([src, dst])
+    src.stops.pop(index)
+    src.qty.pop(index)
+    if dealer in dst.stops:
+        dst.qty[dst.stops.index(dealer)] += qty
+    else:
+        dst.stops.insert(pos, dealer)
+        dst.qty.insert(pos, qty)
+    pair = (min(src.uid, dst.uid), max(src.uid, dst.uid))
+    return finish(sol, [src, dst], saved, "hand-over", ("hand-over", dealer, pair))
 
 
 def try_exchange(sol, rng):
-    """Swap one dealer between two same-day trucks of the same model.
-
-    Hand-over needs an empty slot. Most tours leave full, so the useful
-    decision is to trade two stops that are each a detour on the wrong truck.
-    """
     groups = _same_day_groups(sol)
     keys = [key for key, trips in groups.items() if len(trips) >= 2]
     if not keys:
         return None
-    rng.shuffle(keys)
+    _day, car = rng.choice(keys)
+    trips = groups[(_day, car)]
+    src, dst = rng.sample(trips, 2)
     R = sol.R
-    for _day, car in keys[:4]:
-        trips = groups[(_day, car)]
-        src, dst = rng.sample(trips, 2)
-        src_idx = sorted(range(len(src.stops)),
-                         key=lambda i: _removal_saving(R, src.stops, i), reverse=True)
-        dst_idx = sorted(range(len(dst.stops)),
-                         key=lambda i: _removal_saving(R, dst.stops, i), reverse=True)
-        pairs = [(i, j) for i in src_idx[:2] for j in dst_idx[:2]]
-        for _ in range(4):
-            pairs.append((rng.randrange(len(src.stops)), rng.randrange(len(dst.stops))))
-        best = None
-        best_gain = None
-        capacity = sol.Q[car]
-        src_load = sum(src.qty)
-        dst_load = sum(dst.qty)
-        for i, j in pairs:
-            dealer_a = src.stops[i]
-            dealer_b = dst.stops[j]
+    capacity = sol.Q[car]
+    src_load = sum(q for q in src.qty if q > 0)
+    dst_load = sum(q for q in dst.qty if q > 0)
+    best = None
+    best_gain = None
+    for i, dealer_a in enumerate(src.stops):
+        qty_a = src.qty[i]
+        if qty_a <= 0:
+            continue
+        for j, dealer_b in enumerate(dst.stops):
+            qty_b = dst.qty[j]
+            if qty_b <= 0:
+                continue
             if dealer_a == dealer_b or dealer_a in dst.stops or dealer_b in src.stops:
                 continue
-            qty_a = src.qty[i]
-            qty_b = dst.qty[j]
             if src_load - qty_a + qty_b > capacity or dst_load - qty_b + qty_a > capacity:
                 continue
             src_rest = src.stops[:i] + src.stops[i + 1:]
@@ -612,79 +662,192 @@ def try_exchange(sol, rng):
             if best_gain is None or gain > best_gain:
                 best_gain = gain
                 best = (trial_src, trial_dst, dealer_a, dealer_b, qty_a, qty_b)
-        if best is None:
+    if best is None:
+        return None
+    trial_src, trial_dst, dealer_a, dealer_b, qty_a, qty_b = best
+    qty_src = {stop: qty for stop, qty in zip(src.stops, src.qty) if stop != dealer_a}
+    qty_dst = {stop: qty for stop, qty in zip(dst.stops, dst.qty) if stop != dealer_b}
+    qty_src[dealer_b] = qty_b
+    qty_dst[dealer_a] = qty_a
+    saved = snapshot([src, dst])
+    _apply_order(src, trial_src, qty_src)
+    _apply_order(dst, trial_dst, qty_dst)
+    dealers = tuple(sorted((dealer_a, dealer_b)))
+    tours = (min(src.uid, dst.uid), max(src.uid, dst.uid))
+    return finish(sol, [src, dst], saved, "exchange", ("exchange", dealers, tours))
+
+
+def try_earlier_car(sol, rng):
+    pool = [trip for trip in _active(sol) if trip.day > 0 and any(q > 0 for q in trip.qty)]
+    if not pool:
+        return None
+    src = rng.choice(pool)
+    choices = [i for i, qty in enumerate(src.qty) if qty > 0]
+    index = rng.choice(choices)
+    dealer = src.stops[index]
+    car = src.car_type
+    R = sol.R
+    best = None
+    best_extra = None
+    for dst in sol.trips:
+        if dst is src or dst.car_type != car or dst.day >= src.day or not dst.stops:
             continue
-        if best_gain <= 1e-6 and rng.random() >= UPHILL_SHARE:
+        load = sum(q for q in dst.qty if q > 0)
+        already = dealer in dst.stops
+        if not already and load + 1 > sol.Q[car]:
             continue
-        trial_src, trial_dst, dealer_a, dealer_b, qty_a, qty_b = best
-        qty_src = {stop: qty for stop, qty in zip(src.stops, src.qty) if stop != dealer_a}
-        qty_dst = {stop: qty for stop, qty in zip(dst.stops, dst.qty) if stop != dealer_b}
-        qty_src[dealer_b] = qty_b
-        qty_dst[dealer_a] = qty_a
-        saved = snapshot([src, dst])
-        _apply_order(src, trial_src, qty_src)
-        _apply_order(dst, trial_dst, qty_dst)
-        dealers = tuple(sorted((dealer_a, dealer_b)))
-        tours = (min(src.uid, dst.uid), max(src.uid, dst.uid))
-        proposal = finish(sol, [src, dst], saved, "exchange", ("exchange", dealers, tours))
-        if proposal is not None:
-            return proposal
-    return None
+        if already:
+            extra = 0.0
+            pos = None
+        else:
+            pos, extra = _insertion_extra(R, dst.stops, dealer)
+        if best_extra is None or extra < best_extra:
+            best_extra = extra
+            best = (dst, pos)
+    if best is None:
+        return None
+    dst, pos = best
+    saved = snapshot([src, dst])
+    src.qty[index] -= 1
+    if src.qty[index] == 0:
+        src.stops.pop(index)
+        src.qty.pop(index)
+    if dealer in dst.stops:
+        dst.qty[dst.stops.index(dealer)] += 1
+    else:
+        dst.stops.insert(pos, dealer)
+        dst.qty.insert(pos, 1)
+    return finish(sol, [src, dst], saved, "earlier-car",
+                  ("earlier-car", dealer, src.uid, dst.uid, dst.day))
 
 
-def try_swap(sol, rng):
-    """Exchange the visit index of two dealers on the same tour.
-
-    Example: 0-1-2-3-0 becomes 0-2-1-3-0. The factory stays first and last;
-    only the middle order changes.
-    """
-    pool = [trip for trip in _active(sol) if len(trip.stops) >= 2]
+def try_add_car(sol, rng):
+    pool = _active(sol)
     if not pool:
         return None
     trip = rng.choice(pool)
-    i, j = rng.sample(range(len(trip.stops)), 2)
+    if sum(q for q in trip.qty if q > 0) >= sol.Q[trip.car_type]:
+        return None
+    choices = [i for i, qty in enumerate(trip.qty) if qty > 0]
+    if not choices:
+        return None
+    index = rng.choice(choices)
     saved = snapshot([trip])
-    trip.stops[i], trip.stops[j] = trip.stops[j], trip.stops[i]
-    trip.qty[i], trip.qty[j] = trip.qty[j], trip.qty[i]
-    a, b = sorted((trip.stops[i], trip.stops[j]))
-    return finish(sol, [trip], saved, "swap", ("swap", trip.uid, a, b))
+    trip.qty[index] += 1
+    return finish(sol, [trip], saved, "add-car",
+                  ("add-car", trip.uid, trip.stops[index], trip.day))
 
 
-def try_shift(sol, rng):
-    """Rotate the dealer list by one: last stop moves next to the factory leave.
-
-    Example: 0-1-2-3-0 becomes 0-3-1-2-0. The truck still returns to Bursa;
-    every dealer is still visited once.
-    """
-    pool = [trip for trip in _active(sol) if len(trip.stops) >= 2]
+def try_remove_car(sol, rng):
+    pool = [trip for trip in _active(sol) if any(q > 0 for q in trip.qty)]
     if not pool:
         return None
     trip = rng.choice(pool)
+    choices = [i for i, qty in enumerate(trip.qty) if qty > 0]
+    index = rng.choice(choices)
+    dealer = trip.stops[index]
     saved = snapshot([trip])
-    trip.stops = trip.stops[-1:] + trip.stops[:-1]
-    trip.qty = trip.qty[-1:] + trip.qty[:-1]
-    return finish(sol, [trip], saved, "shift", ("shift", trip.uid, trip.stops[0]))
+    trip.qty[index] -= 1
+    if trip.qty[index] == 0:
+        trip.stops.pop(index)
+        trip.qty.pop(index)
+    return finish(sol, [trip], saved, "remove-car",
+                  ("remove-car", trip.uid, dealer, trip.day))
 
 
+def try_spare_to_short(sol, rng):
+    if sol.aux is None:
+        return None
+    pool = _active(sol)
+    if not pool:
+        return None
+    trip = rng.choice(pool)
+    day = trip.day
+    car = trip.car_type
+    on_route = set(trip.stops)
+    spares = [(dealer, qty) for dealer, qty in sol.aux.spare.get((day, car), [])
+              if dealer not in on_route]
+    shorts = [(dealer, qty) for dealer, qty in sol.aux.short.get((day, car), [])
+              if dealer not in on_route]
+    if not spares or not shorts:
+        return None
+    last = trip.stops[-1]
+    R = sol.R
+    spare_dealer = min(spares, key=lambda item: R[last][item[0]])[0]
+    short_candidates = [item for item in shorts if item[0] != spare_dealer]
+    if not short_candidates:
+        return None
+    short_dealer = min(short_candidates, key=lambda item: R[spare_dealer][item[0]])[0]
+    saved = snapshot([trip])
+    trip.stops.extend([spare_dealer, short_dealer])
+    trip.qty.extend([-1, 1])
+    return finish(sol, [trip], saved, "spare-to-short",
+                  ("spare-to-short", trip.uid, spare_dealer, short_dealer, day))
+
+
+MOVE_NAMES = [
+    "2-opt", "insertion", "hand-over", "exchange", "earlier-car",
+    "add-car", "remove-car", "spare-to-short",
+]
 _BUILDERS = (
-    (try_exchange, 2.5),
-    (try_hand_over, 2.5),
-    (try_resequence, 2.0),
-    (try_swap, 2.0),
-    (try_shift, 2.0),
+    (try_2opt, 1.0),
+    (try_insertion, 1.0),
+    (try_hand_over, 1.0),
+    (try_exchange, 1.0),
+    (try_earlier_car, 1.0),
+    (try_add_car, 1.0),
+    (try_remove_car, 1.0),
+    (try_spare_to_short, 1.0),
 )
 _MOVE_FUNCS = [item[0] for item in _BUILDERS]
 _MOVE_WEIGHTS = [item[1] for item in _BUILDERS]
+_MOVE_STATS = {name: {"attempts": 0, "built": 0} for name in MOVE_NAMES}
+_FUNC_NAME = {func: name for func, name in zip(_MOVE_FUNCS, MOVE_NAMES)}
+
+
+def reset_move_stats():
+    for name in MOVE_NAMES:
+        _MOVE_STATS[name] = {"attempts": 0, "built": 0}
+
+
+def move_stats():
+    return {name: dict(_MOVE_STATS[name]) for name in MOVE_NAMES}
+
+
+def set_move_weights(weights):
+    if len(weights) != len(_MOVE_WEIGHTS):
+        raise ValueError("expected one weight per move")
+    _MOVE_WEIGHTS[:] = [float(value) for value in weights]
+
+
+def current_move_weights():
+    return list(_MOVE_WEIGHTS)
+
+
+def calibrated_weights(cap=5.0):
+    raw = []
+    for name in MOVE_NAMES:
+        attempts = _MOVE_STATS[name]["attempts"]
+        built = _MOVE_STATS[name]["built"]
+        rate = built / attempts if attempts else 0.0
+        raw.append(cap if rate <= 1e-12 else 1.0 / rate)
+    lowest = min(raw)
+    scaled = [value / lowest for value in raw]
+    ceiling = cap
+    return [min(value, ceiling) for value in scaled]
 
 
 def propose_move(sol, rng):
-    for _ in range(40):
+    for _ in range(80):
         builder = rng.choices(_MOVE_FUNCS, weights=_MOVE_WEIGHTS, k=1)[0]
+        name = _FUNC_NAME[builder]
+        _MOVE_STATS[name]["attempts"] += 1
         proposal = builder(sol, rng)
         if proposal is not None:
+            _MOVE_STATS[name]["built"] += 1
             return proposal
     return None
 
 
 def count_active(trips):
-    return sum(1 for trip in trips if trip.stops and sum(trip.qty) > 0)
+    return sum(1 for trip in trips if trip.stops and sum(q for q in trip.qty if q > 0) > 0)

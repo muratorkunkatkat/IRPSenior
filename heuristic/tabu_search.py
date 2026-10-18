@@ -1,13 +1,12 @@
 """Tabu search on the full vehicle-distribution instance.
 
 Each iteration scores a sample of neighbors and steps to the cheapest admissible
-one. The neighbors are the same decisions annealing uses: exchange, hand-over,
-resequence, swap two stops on one tour, or shift a tour's visit order by one.
+one. The neighbors are the same eight decisions annealing uses.
 
-The tabu attribute is that decision (the pair of tours, or the tour that was
-reordered). It cannot be repeated for `tenure` iterations, unless it beats the
-best solution seen so far. If every sampled decision is tabu, the cheapest of
-them is taken anyway so the search does not stall.
+The tabu attribute is that exact decision. It cannot be repeated for
+`tabu_size` iterations, unless it beats the best solution seen so far
+(aspiration). If every sampled decision is tabu, the cheapest of them is
+taken anyway so the search does not stall.
 """
 
 import random
@@ -22,8 +21,8 @@ from heuristic.search_problem import (
 )
 
 
-def run_tabu_search(data, iterations=250, neighbors=16, tenure=12, seed=44,
-                    trips=None, time_limit_sec=None, log_every=None):
+def run_tabu_search(data, iterations=1_000_000, neighbors=16, tabu_size=12,
+                    seed=44, trips=None, time_limit_sec=None, log_every=None):
     rng = random.Random(seed)
     sol = Solution(data, clone_trips(trips) if trips is not None else build_initial_trips(data))
     initial, aux = evaluate(sol)
@@ -36,12 +35,19 @@ def run_tabu_search(data, iterations=250, neighbors=16, tenure=12, seed=44,
     current = initial
     tabu_until = {}
     move_counts = {}
+    scored = 0
+    forbidden = 0
+    all_tabu_iterations = 0
+    worse_steps = 0
+    skipped = 0
     history = [{
         "iteration": 0,
         "current": initial.total,
         "best": initial.total,
         "best_transport": initial.transport,
         "best_backorder": initial.backorder,
+        "best_holding": initial.holding,
+        "best_unsold": initial.unsold,
         "seconds": 0.0,
     }]
 
@@ -52,7 +58,8 @@ def run_tabu_search(data, iterations=250, neighbors=16, tenure=12, seed=44,
     ran = 0
     stopped = "iterations"
     print(
-        f"Tabu start  total={initial.total:,.2f}  neighbors={neighbors}  tenure={tenure}",
+        f"Tabu start  total={initial.total:,.2f}  neighbors={neighbors}  "
+        f"tabu_size={tabu_size}",
         flush=True,
     )
 
@@ -63,7 +70,8 @@ def run_tabu_search(data, iterations=250, neighbors=16, tenure=12, seed=44,
         ran = iteration
         candidates = []
         attempts = 0
-        while len(candidates) < neighbors and attempts < neighbors * 5:
+        cap = neighbors * 5
+        while len(candidates) < neighbors and attempts < cap:
             attempts += 1
             proposal = propose_move(sol, rng)
             if proposal is None:
@@ -73,29 +81,39 @@ def run_tabu_search(data, iterations=250, neighbors=16, tenure=12, seed=44,
             candidates.append((trial, trial_aux, proposal))
 
         if not candidates:
+            skipped += 1
             history.append({
                 "iteration": iteration,
                 "current": current.total,
                 "best": best_cost.total,
                 "best_transport": best_cost.transport,
                 "best_backorder": best_cost.backorder,
+                "best_holding": best_cost.holding,
+                "best_unsold": best_cost.unsold,
                 "seconds": time.perf_counter() - started,
             })
             continue
 
+        scored += len(candidates)
         admissible = []
         for trial, trial_aux, proposal in candidates:
             expires = tabu_until.get(proposal.key, -1)
             is_tabu = expires >= iteration
+            if is_tabu:
+                forbidden += 1
             if (not is_tabu) or trial.total + 1e-6 < best_cost.total:
                 admissible.append((trial, trial_aux, proposal))
+        if not admissible:
+            all_tabu_iterations += 1
         pool = admissible if admissible else candidates
         trial, trial_aux, proposal = min(pool, key=lambda item: item[0].total)
+        if trial.total > current.total + 1e-6:
+            worse_steps += 1
         proposal.redo()
         sol.cost = trial
         sol.aux = trial_aux
         current = trial
-        tabu_until[proposal.key] = iteration + tenure
+        tabu_until[proposal.key] = iteration + tabu_size
         move_counts[proposal.kind] = move_counts.get(proposal.kind, 0) + 1
         if trial.total + 1e-6 < best_cost.total:
             best_cost = trial
@@ -108,6 +126,8 @@ def run_tabu_search(data, iterations=250, neighbors=16, tenure=12, seed=44,
             "best": best_cost.total,
             "best_transport": best_cost.transport,
             "best_backorder": best_cost.backorder,
+            "best_holding": best_cost.holding,
+            "best_unsold": best_cost.unsold,
             "seconds": time.perf_counter() - started,
         })
         if iteration % log_every == 0 or iteration == iterations:
@@ -119,9 +139,12 @@ def run_tabu_search(data, iterations=250, neighbors=16, tenure=12, seed=44,
 
     elapsed = time.perf_counter() - started
     exact, _aux = evaluate(Solution(data, best_trips))
+    forbidden_share = (100.0 * forbidden / scored) if scored else 0.0
     print(
         f"Tabu done  best={exact.total:,.2f}  iter={best_iteration}  "
-        f"seconds={elapsed:.1f}  stop={stopped}",
+        f"seconds={elapsed:.1f}  stop={stopped}  "
+        f"forbidden={forbidden_share:.2f}%  all_tabu={all_tabu_iterations}  "
+        f"worse_steps={worse_steps}",
         flush=True,
     )
     return {
@@ -135,10 +158,16 @@ def run_tabu_search(data, iterations=250, neighbors=16, tenure=12, seed=44,
         "iterations_run": ran,
         "move_counts": move_counts,
         "stopped": stopped,
+        "scored_candidates": scored,
+        "forbidden_candidates": forbidden,
+        "forbidden_share": forbidden_share,
+        "all_tabu_iterations": all_tabu_iterations,
+        "worse_steps": worse_steps,
+        "skipped_iterations": skipped,
         "parameters": {
             "iterations": iterations,
             "neighbors": neighbors,
-            "tenure": tenure,
+            "tabu_size": tabu_size,
             "seed": seed,
             "time_limit_sec": time_limit_sec,
         },
