@@ -1,0 +1,115 @@
+Instance: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/data/data_exp.json
+Paper T75=721,687.31  T50=299,527.29  T25=149,763.65  T_final=2,254.17  ratio=0.015051
+Fast alpha 0.9974692099  (T50 reaches 2,254.17 at 20 min at 16.08 scored neighbors/s)
+
+============================================================
+s0 equal weights  T0=15  floor=0.2258  clock  3600s
+============================================================
+  Improvement 18.22%  best iter 444153 / 541488  end T=0.23  current=1,697,954.18
+move              attempts     built   build%  accepted   weight
+2-opt               324976       603     0.2%       603    5.000
+insertion           324738       667     0.2%       667    5.000
+hand-over           324304     37246    11.5%       988    5.000
+exchange            324030    135847    41.9%      5949    2.178
+earlier-car         325111      2791     0.9%       103    5.000
+add-car             324384     53756    16.6%        79    5.000
+remove-car          324720    296468    91.3%        53    1.000
+spare-to-short      325447     14110     4.3%         0    5.000
+Weights: [5.0, 5.0, 5.0, 2.177729599401344, 5.0, 5.0, 1.0, 5.0]
+Weight plots: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/final/weights
+
+
+############################################################
+greedy  baseline 2,076,165.00
+############################################################
+
+============================================================
+greedy 1e1  T0=15.00  floor=0.2258  clock
+============================================================
+  Improvement 18.48%  best iter 373745 / 435723  end T=0.23  current=1,692,507.16
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/final/greedy
+
+============================================================
+greedy 1e2  T0=150.00  floor=2.2577  clock
+============================================================
+  Improvement 18.10%  best iter 410529 / 414405  end T=2.26  current=1,700,341.50
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/final/greedy
+
+============================================================
+greedy 1e3  T0=1,500.00  floor=22.5772  clock
+============================================================
+  Improvement 6.95%  best iter 1764 / 368775  end T=22.58  current=2,702,187.44
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/final/greedy
+
+============================================================
+greedy 1e4  T0=15,000.00  floor=225.7725  clock
+============================================================
+  Improvement 0.86%  best iter 80 / 84743  end T=225.78  current=26,625,562.50
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/final/greedy
+
+============================================================
+greedy T25 fast  T0=149,763.65  floor=2,254.1675  alpha=0.9974692099
+============================================================
+  Improvement 0.13%  best iter 19 / 107842  end T=2,254.17  current=16,781,854.78
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/final/greedy
+
+============================================================
+greedy T50 fast  T0=299,527.29  floor=2,254.1675  alpha=0.9974692099
+============================================================
+  Improvement 0.13%  best iter 19 / 99306  end T=2,254.17  current=18,479,373.17
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/final/greedy
+
+============================================================
+greedy T75 fast  T0=721,687.31  floor=2,254.1675  alpha=0.9974692099
+============================================================
+  Improvement 0.13%  best iter 19 / 88012  end T=2,254.17  current=21,936,811.74
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/final/greedy
+Best greedy: 1e1 (1,692,507.16)
+
+############################################################
+random  baseline 36,603,643.31
+############################################################
+
+============================================================
+random 1e1  T0=15.00  floor=0.2258  clock
+============================================================
+  Improvement 49.01%  best iter 94127 / 469341  end T=0.23  current=18,663,404.85
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/final/random
+
+============================================================
+random 1e2  T0=150.00  floor=2.2577  clock
+============================================================
+  Improvement 49.19%  best iter 145947 / 437436  end T=2.26  current=18,599,614.59
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/final/random
+
+============================================================
+random 1e3  T0=1,500.00  floor=22.5772  clock
+============================================================
+  Improvement 47.52%  best iter 49739 / 378504  end T=22.58  current=19,209,343.91
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/final/random
+
+============================================================
+random 1e4  T0=15,000.00  floor=225.7725  clock
+============================================================
+  Improvement 26.65%  best iter 17054 / 81393  end T=225.79  current=31,196,781.16
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/final/random
+
+============================================================
+random T25 fast  T0=149,763.65  floor=2,254.1675  alpha=0.9974692099
+============================================================
+  Improvement 36.46%  best iter 36539 / 190782  end T=2,254.17  current=26,298,937.16
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/final/random
+
+============================================================
+random T50 fast  T0=299,527.29  floor=2,254.1675  alpha=0.9974692099
+============================================================
+  Improvement 31.39%  best iter 38422 / 168272  end T=2,254.17  current=27,340,713.37
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/final/random
+
+============================================================
+random T75 fast  T0=721,687.31  floor=2,254.1675  alpha=0.9974692099
+============================================================
+  Improvement 26.44%  best iter 32261 / 160740  end T=2,254.17  current=28,732,148.13
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/final/random
+Best random: 1e2 (18,599,614.59)
+Finished.

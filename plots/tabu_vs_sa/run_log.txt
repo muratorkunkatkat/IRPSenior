@@ -1,0 +1,20 @@
+Instance: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/data/data_exp.json
+Weights: [5.0, 5.0, 5.0, 2.177729599401344, 5.0, 5.0, 1.0, 5.0]
+Clock ratio T_final/T25 = 0.015051
+
+############################################################
+greedy  SA T0=15 floor=0.2258 clock  |  tabu n=35 size=125
+############################################################
+  SA improvement 18.48%  best iter 373727 / 444579  end T=0.23
+  Tabu improvement 21.07%  best iter 10922 / 11610  forbidden 4.712%  worse steps 4276  all-tabu 0
+  tabu lower by 53,802.95
+Plots: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/tabu_vs_sa/hour/greedy
+
+############################################################
+random  SA T0=150 floor=2.2577 clock  |  tabu n=35 size=5
+############################################################
+  SA improvement 49.06%  best iter 253134 / 426341  end T=2.26
+  Tabu improvement 57.02%  best iter 4200 / 11498  forbidden 0.408%  worse steps 3742  all-tabu 0
+  tabu lower by 2,911,293.31
+Plots: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/tabu_vs_sa/hour/random
+Finished.

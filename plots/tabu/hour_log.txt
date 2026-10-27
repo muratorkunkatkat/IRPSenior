@@ -1,0 +1,116 @@
+Instance: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/data/data_exp.json
+Weights: [5.0, 5.0, 5.0, 2.177729599401344, 5.0, 5.0, 1.0, 5.0]
+Sizes [5, 25, 125]  neighbors [8, 16, 35]  3600s each
+
+############################################################
+greedy  baseline 2,076,165.00
+############################################################
+
+============================================================
+greedy  size=5  n=8
+============================================================
+  Improvement 16.66%  best iter 3224 / 29373  forbidden 0.277%  worse steps 10862  all-tabu 0
+
+============================================================
+greedy  size=5  n=16
+============================================================
+  Improvement 20.35%  best iter 24614 / 24671  forbidden 0.538%  worse steps 9758  all-tabu 0
+
+============================================================
+greedy  size=5  n=35
+============================================================
+  Improvement 20.48%  best iter 11615 / 11744  forbidden 0.424%  worse steps 4542  all-tabu 0
+Best greedy size 5: n=35 (1,650,884.55)
+Plots: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/tabu/greedy/size_5
+
+============================================================
+greedy  size=25  n=8
+============================================================
+  Improvement 16.44%  best iter 1888 / 28691  forbidden 0.931%  worse steps 10671  all-tabu 0
+
+============================================================
+greedy  size=25  n=16
+============================================================
+  Improvement 20.17%  best iter 22618 / 25170  forbidden 2.041%  worse steps 9524  all-tabu 0
+
+============================================================
+greedy  size=25  n=35
+============================================================
+  Improvement 20.63%  best iter 11214 / 11630  forbidden 1.627%  worse steps 4335  all-tabu 0
+Best greedy size 25: n=35 (1,647,802.96)
+Plots: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/tabu/greedy/size_25
+
+============================================================
+greedy  size=125  n=8
+============================================================
+  Improvement 16.12%  best iter 2384 / 27506  forbidden 3.046%  worse steps 10177  all-tabu 0
+
+============================================================
+greedy  size=125  n=16
+============================================================
+  Improvement 19.84%  best iter 13619 / 24715  forbidden 6.474%  worse steps 9147  all-tabu 0
+
+============================================================
+greedy  size=125  n=35
+============================================================
+  Improvement 21.07%  best iter 10922 / 11516  forbidden 4.702%  worse steps 4232  all-tabu 0
+Best greedy size 125: n=35 (1,638,700.86)
+Plots: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/tabu/greedy/size_125
+
+
+############################################################
+random  baseline 36,603,643.31
+############################################################
+
+============================================================
+random  size=5  n=8
+============================================================
+  Improvement 52.12%  best iter 5800 / 25540  forbidden 0.531%  worse steps 9394  all-tabu 0
+
+============================================================
+random  size=5  n=16
+============================================================
+  Improvement 55.08%  best iter 3996 / 19977  forbidden 0.440%  worse steps 7268  all-tabu 0
+
+============================================================
+random  size=5  n=35
+============================================================
+  Improvement 57.02%  best iter 4200 / 11753  forbidden 0.414%  worse steps 3857  all-tabu 0
+Best random size 5: n=35 (15,733,013.23)
+Plots: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/tabu/random/size_5
+
+============================================================
+random  size=25  n=8
+============================================================
+  Improvement 51.26%  best iter 5424 / 25415  forbidden 1.610%  worse steps 9533  all-tabu 0
+
+============================================================
+random  size=25  n=16
+============================================================
+  Improvement 55.21%  best iter 4543 / 19784  forbidden 1.084%  worse steps 7173  all-tabu 0
+
+============================================================
+random  size=25  n=35
+============================================================
+  Improvement 57.00%  best iter 3581 / 11879  forbidden 1.239%  worse steps 3889  all-tabu 0
+Best random size 25: n=35 (15,739,455.39)
+Plots: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/tabu/random/size_25
+
+============================================================
+random  size=125  n=8
+============================================================
+  Improvement 51.44%  best iter 5447 / 23519  forbidden 4.162%  worse steps 8506  all-tabu 0
+
+============================================================
+random  size=125  n=16
+============================================================
+  Improvement 54.85%  best iter 5121 / 19282  forbidden 3.857%  worse steps 6909  all-tabu 0
+
+============================================================
+random  size=125  n=35
+============================================================
+  Improvement 57.00%  best iter 3386 / 11610  forbidden 3.933%  worse steps 3946  all-tabu 0
+Best random size 125: n=35 (15,739,132.74)
+Plots: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/tabu/random/size_125
+
+Finished.

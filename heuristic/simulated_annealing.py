@@ -61,7 +61,8 @@ def _temperature(temperature0, t_final, elapsed, time_limit_sec):
 
 def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
                             t0=None, t_final=None, time_limit_sec=None,
-                            log_every=None, alpha=None, cool_every=10):
+                            log_every=None, alpha=None, cool_every=10,
+                            history_every=1):
     rng = random.Random(seed)
     sol = Solution(data, clone_trips(trips) if trips is not None else build_initial_trips(data))
     initial, aux = evaluate(sol)
@@ -123,6 +124,7 @@ def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
         ran = iteration
         proposal = propose_move(sol, rng)
         accepted = False
+        improved = False
         if proposal is not None:
             scored += 1
             proposed_counts[proposal.kind] = proposed_counts.get(proposal.kind, 0) + 1
@@ -138,26 +140,29 @@ def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
                     best_cost = trial
                     best_trips = clone_trips(sol.trips)
                     best_iteration = iteration
+                    improved = True
             else:
                 proposal.undo()
                 rejected_counts[proposal.kind] = rejected_counts.get(proposal.kind, 0) + 1
             if alpha is not None and scored % cool_every == 0:
                 temperature = max(final_t, temperature * alpha)
-        accepted_flags.append(accepted)
+        if history_every <= 1:
+            accepted_flags.append(accepted)
         if alpha is None and not time_limit_sec:
             temperature = max(final_t, temperature * (final_t / temperature0) ** (1 / max(iterations, 1)))
-        history.append({
-            "iteration": iteration,
-            "current": current.total,
-            "best": best_cost.total,
-            "best_transport": best_cost.transport,
-            "best_backorder": best_cost.backorder,
-            "best_holding": best_cost.holding,
-            "best_unsold": best_cost.unsold,
-            "seconds": time.perf_counter() - started,
-            "temperature": temperature,
-            "accepted": accepted,
-        })
+        if history_every <= 1 or iteration % history_every == 0 or improved:
+            history.append({
+                "iteration": iteration,
+                "current": current.total,
+                "best": best_cost.total,
+                "best_transport": best_cost.transport,
+                "best_backorder": best_cost.backorder,
+                "best_holding": best_cost.holding,
+                "best_unsold": best_cost.unsold,
+                "seconds": time.perf_counter() - started,
+                "temperature": temperature,
+                "accepted": accepted,
+            })
         if iteration % log_every == 0 or iteration == iterations:
             print(
                 f"SA  iter {iteration:>5}  current={current.total:,.2f}  "
@@ -166,6 +171,19 @@ def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
             )
 
     elapsed = time.perf_counter() - started
+    if ran and history[-1]["iteration"] != ran:
+        history.append({
+            "iteration": ran,
+            "current": current.total,
+            "best": best_cost.total,
+            "best_transport": best_cost.transport,
+            "best_backorder": best_cost.backorder,
+            "best_holding": best_cost.holding,
+            "best_unsold": best_cost.unsold,
+            "seconds": elapsed,
+            "temperature": temperature,
+            "accepted": False,
+        })
     exact, _aux = evaluate(Solution(data, best_trips))
     print(
         f"SA done  best={exact.total:,.2f}  iter={best_iteration}  "

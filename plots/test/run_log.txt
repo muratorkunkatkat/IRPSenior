@@ -1,0 +1,59 @@
+Instance: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/data/data_exp.json
+Weights: [5.0, 5.0, 5.0, 2.312, 5.0, 5.0, 1.0, 3.754]
+Paper T75=721,687.31  T50=299,527.29  T25=149,763.65  T_final=2,254.17
+Scored-neighbor rate 16.08/s  (57,886 scored in one hot hour)
+Cooling steps in one hour at L=10: 5,789
+Standard alpha 0.9991556907  (T50 reaches 2,254.17 at 60 min)
+Fast alpha 0.9974692099  (T50 reaches 2,254.17 at 20 min)
+  T75 std: floor at 70.8 min if the rate holds
+  T75 fast: floor at 23.6 min if the rate holds
+  T50 std: floor at 60.0 min if the rate holds
+  T50 fast: floor at 20.0 min if the rate holds
+  T25 std: floor at 51.5 min if the rate holds
+  T25 fast: floor at 17.2 min if the rate holds
+Seventh run: T0=15 clock-cooled to 0.2258 over 3600s
+
+============================================================
+T75 std  T0=721,687.31  floor=2,254.1675  alpha=0.9991556906575398
+============================================================
+  Improvement 0.54%  best iter 44 / 92579  scored 64238 (17.84/s)  end T=3,178.16
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/test
+
+============================================================
+T75 fast  T0=721,687.31  floor=2,254.1675  alpha=0.9974692099455441
+============================================================
+  Improvement 0.54%  best iter 44 / 98732  scored 72164 (20.05/s)  end T=2,254.17
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/test
+
+============================================================
+T50 std  T0=299,527.29  floor=2,254.1675  alpha=0.9991556906575398
+============================================================
+  Improvement 0.54%  best iter 44 / 82483  scored 50230 (13.95/s)  end T=4,303.58
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/test
+
+============================================================
+T50 fast  T0=299,527.29  floor=2,254.1675  alpha=0.9974692099455441
+============================================================
+  Improvement 0.54%  best iter 44 / 99554  scored 74759 (20.77/s)  end T=2,254.17
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/test
+
+============================================================
+T25 std  T0=149,763.65  floor=2,254.1675  alpha=0.9991556906575398
+============================================================
+  Improvement 0.54%  best iter 44 / 86354  scored 52812 (14.67/s)  end T=2,254.17
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/test
+
+============================================================
+T25 fast  T0=149,763.65  floor=2,254.1675  alpha=0.9974692099455441
+============================================================
+  Improvement 0.54%  best iter 44 / 111534  scored 93624 (26.01/s)  end T=2,254.17
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/test
+
+============================================================
+T15 clock  T0=15.00  floor=0.2258  alpha=None
+============================================================
+  Improvement 17.93%  best iter 243059 / 423390  scored 423352 (117.60/s)  end T=0.23
+Plots updated: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/test
+
+Best of the seven: T15 clock (1,703,944.57)
+Finished.
