@@ -1,0 +1,194 @@
+Waiting for the T25 random-start calibration to write plots/initial/weights.json
+Weights: rebuild=5.000, hand-over=1.405, exchange=2.447, add-car=1.453, remove-car=1.000, add-dealer=1.243, remove-dealer=1.055
+Pending jobs: 90  workers=4
+started 00_original sa_T75 pid=10386
+started 00_original sa_T50 pid=10387
+started 00_original sa_T25 pid=10388
+started 00_original sa_500 pid=10389
+done 00_original SA 500  best=1,887,095.40  imp=9.11%  iter=209970/210270
+done 00_original SA T75  best=2,076,165.00  imp=0.00%  iter=0/244102
+done 00_original SA T50  best=2,076,165.00  imp=0.00%  iter=0/236606
+done 00_original SA T25  best=2,076,165.00  imp=0.00%  iter=0/236156
+started 00_original sa_50 pid=10930
+started 00_original tabu_n35_t25 pid=10931
+started 00_original tabu_n35_t625 pid=10932
+started 00_original tabu_n70_t25 pid=10933
+done 00_original Tabu 35/25  best=1,641,737.27  imp=20.92%  iter=6979/6983
+done 00_original SA 50  best=1,642,567.65  imp=20.88%  iter=238919/239450
+done 00_original Tabu 70/25  best=1,632,471.98  imp=21.37%  iter=3778/3778
+done 00_original Tabu 35/625  best=1,648,325.26  imp=20.61%  iter=6730/6831
+started 00_original tabu_n70_t625 pid=11286
+started 01_scaled sa_T75 pid=11287
+started 01_scaled sa_T50 pid=11288
+started 01_scaled sa_T25 pid=11289
+done 01_scaled SA T25  best=2,729,849.95  imp=0.07%  iter=11/164466
+done 01_scaled SA T50  best=2,731,272.53  imp=0.02%  iter=8/163632
+done 01_scaled SA T75  best=2,731,803.80  imp=0.00%  iter=0/165221
+done 00_original Tabu 70/625  best=1,626,819.99  imp=21.64%  iter=3767/3767
+plots 00_original
+started 01_scaled sa_500 pid=11610
+started 01_scaled sa_50 pid=11611
+started 01_scaled tabu_n35_t25 pid=11612
+started 01_scaled tabu_n35_t625 pid=11613
+done 01_scaled SA 500  best=2,652,886.38  imp=2.89%  iter=2787/162912
+done 01_scaled SA 50  best=2,296,909.61  imp=15.92%  iter=174963/174994
+done 01_scaled Tabu 35/625  best=2,300,528.45  imp=15.79%  iter=5302/5306
+done 01_scaled Tabu 35/25  best=2,300,208.33  imp=15.80%  iter=5292/5396
+started 01_scaled tabu_n70_t25 pid=11965
+started 01_scaled tabu_n70_t625 pid=11966
+started 02_growth_no_fleet sa_T75 pid=11967
+started 02_growth_no_fleet sa_T50 pid=11968
+done 02_growth_no_fleet SA T50  best=28,550,491.46  imp=2.37%  iter=163437/163441
+done 02_growth_no_fleet SA T75  best=29,242,969.50  imp=0.00%  iter=0/167265
+done 01_scaled Tabu 70/625  best=2,279,201.27  imp=16.57%  iter=2955/2955
+done 01_scaled Tabu 70/25  best=2,271,589.04  imp=16.85%  iter=2941/2942
+plots 01_scaled
+started 02_growth_no_fleet sa_T25 pid=12289
+started 02_growth_no_fleet sa_500 pid=12290
+started 02_growth_no_fleet sa_50 pid=12291
+started 02_growth_no_fleet tabu_n35_t25 pid=12292
+done 02_growth_no_fleet SA 500  best=27,205,891.23  imp=6.97%  iter=169819/170293
+done 02_growth_no_fleet SA T25  best=27,684,017.33  imp=5.33%  iter=160659/160661
+done 02_growth_no_fleet SA 50  best=28,779,522.96  imp=1.58%  iter=220884/220923
+done 02_growth_no_fleet Tabu 35/25  best=28,916,709.80  imp=1.12%  iter=5948/5975
+started 02_growth_no_fleet tabu_n35_t625 pid=12646
+started 02_growth_no_fleet tabu_n70_t25 pid=12647
+started 02_growth_no_fleet tabu_n70_t625 pid=12648
+started 03_large_tight sa_T75 pid=12649
+done 03_large_tight SA T75  best=18,334,066.24  imp=7.84%  iter=182810/182901
+done 02_growth_no_fleet Tabu 35/625  best=28,890,520.36  imp=1.21%  iter=6084/6085
+done 02_growth_no_fleet Tabu 70/25  best=29,122,725.49  imp=0.41%  iter=2975/2976
+done 02_growth_no_fleet Tabu 70/625  best=29,120,576.36  imp=0.42%  iter=3060/3070
+plots 02_growth_no_fleet
+started 03_large_tight sa_T50 pid=13080
+started 03_large_tight sa_T25 pid=13081
+started 03_large_tight sa_500 pid=13082
+started 03_large_tight sa_50 pid=13083
+done 03_large_tight SA T50  best=17,189,755.00  imp=13.59%  iter=173234/173234
+done 03_large_tight SA 500  best=17,435,616.02  imp=12.35%  iter=159297/159492
+done 03_large_tight SA 50  best=19,467,772.77  imp=2.14%  iter=148039/148232
+done 03_large_tight SA T25  best=17,078,150.69  imp=14.15%  iter=166569/166613
+started 03_large_tight tabu_n35_t25 pid=13428
+started 03_large_tight tabu_n35_t625 pid=13429
+started 03_large_tight tabu_n70_t25 pid=13430
+started 03_large_tight tabu_n70_t625 pid=13431
+done 03_large_tight Tabu 35/625  best=19,673,992.57  imp=1.10%  iter=4417/4476
+done 03_large_tight Tabu 35/25  best=19,728,037.88  imp=0.83%  iter=4412/4412
+done 03_large_tight Tabu 70/625  best=19,773,352.26  imp=0.60%  iter=2279/2374
+done 03_large_tight Tabu 70/25  best=19,804,114.22  imp=0.45%  iter=2353/2353
+plots 03_large_tight
+started 04_near_tight_heavy sa_T75 pid=13732
+started 04_near_tight_heavy sa_T50 pid=13733
+started 04_near_tight_heavy sa_T25 pid=13734
+started 04_near_tight_heavy sa_500 pid=13735
+done 04_near_tight_heavy SA 500  best=261,297.61  imp=0.18%  iter=19/792344
+done 04_near_tight_heavy SA T75  best=261,774.84  imp=0.00%  iter=0/476096
+done 04_near_tight_heavy SA T25  best=261,774.84  imp=0.00%  iter=0/509997
+done 04_near_tight_heavy SA T50  best=261,774.84  imp=0.00%  iter=0/485266
+started 04_near_tight_heavy sa_50 pid=13966
+started 04_near_tight_heavy tabu_n35_t25 pid=13967
+started 04_near_tight_heavy tabu_n35_t625 pid=13968
+started 04_near_tight_heavy tabu_n70_t25 pid=13969
+done 04_near_tight_heavy SA 50  best=213,309.08  imp=18.51%  iter=1170204/1171715
+done 04_near_tight_heavy Tabu 35/625  best=229,158.61  imp=12.46%  iter=17548/29579
+done 04_near_tight_heavy Tabu 70/25  best=212,931.62  imp=18.66%  iter=16063/16123
+done 04_near_tight_heavy Tabu 35/25  best=224,446.05  imp=14.26%  iter=28967/30221
+started 04_near_tight_heavy tabu_n70_t625 pid=14174
+started 05_sparse_slack sa_T75 pid=14175
+started 05_sparse_slack sa_T50 pid=14176
+started 05_sparse_slack sa_T25 pid=14177
+done 04_near_tight_heavy Tabu 70/625  best=211,521.78  imp=19.20%  iter=15453/16097
+done 05_sparse_slack SA T75  best=324,515.75  imp=53.72%  iter=1015528/1052525
+done 05_sparse_slack SA T50  best=330,187.97  imp=52.91%  iter=1075153/1085539
+done 05_sparse_slack SA T25  best=338,454.41  imp=51.73%  iter=1168961/1188999
+plots 04_near_tight_heavy
+started 05_sparse_slack sa_500 pid=14379
+started 05_sparse_slack sa_50 pid=14380
+started 05_sparse_slack tabu_n35_t25 pid=14381
+started 05_sparse_slack tabu_n35_t625 pid=14382
+done 05_sparse_slack SA 50  best=363,681.66  imp=48.13%  iter=844780/846928
+done 05_sparse_slack Tabu 35/625  best=339,730.39  imp=51.55%  iter=23278/23686
+done 05_sparse_slack SA 500  best=326,066.65  imp=53.50%  iter=1223447/1226269
+done 05_sparse_slack Tabu 35/25  best=331,163.51  imp=52.77%  iter=20011/22458
+started 05_sparse_slack tabu_n70_t25 pid=14690
+started 05_sparse_slack tabu_n70_t625 pid=14691
+started 06_full_tight_heavy sa_T75 pid=14692
+started 06_full_tight_heavy sa_T50 pid=14693
+done 06_full_tight_heavy SA T75  best=27,632,306.49  imp=15.37%  iter=251449/251475
+done 05_sparse_slack Tabu 70/25  best=347,265.28  imp=50.47%  iter=8957/8967
+done 06_full_tight_heavy SA T50  best=26,457,606.72  imp=18.97%  iter=235120/235167
+done 05_sparse_slack Tabu 70/625  best=336,911.63  imp=51.95%  iter=9758/9893
+plots 05_sparse_slack
+started 06_full_tight_heavy sa_T25 pid=15080
+started 06_full_tight_heavy sa_500 pid=15081
+started 06_full_tight_heavy sa_50 pid=15082
+started 06_full_tight_heavy tabu_n35_t25 pid=15083
+done 06_full_tight_heavy SA 50  best=31,640,182.76  imp=3.09%  iter=349880/350045
+done 06_full_tight_heavy SA 500  best=27,755,311.12  imp=14.99%  iter=259489/259693
+done 06_full_tight_heavy SA T25  best=26,236,508.51  imp=19.64%  iter=225377/225461
+done 06_full_tight_heavy Tabu 35/25  best=31,826,294.99  imp=2.52%  iter=9246/9261
+started 06_full_tight_heavy tabu_n35_t625 pid=15544
+started 06_full_tight_heavy tabu_n70_t25 pid=15545
+started 06_full_tight_heavy tabu_n70_t625 pid=15546
+started 07_full_slack_thin sa_T75 pid=15547
+done 06_full_tight_heavy Tabu 35/625  best=31,861,941.63  imp=2.41%  iter=9348/9361
+done 07_full_slack_thin SA T75  best=1,188,111.38  imp=10.09%  iter=305036/305060
+done 06_full_tight_heavy Tabu 70/625  best=32,375,882.98  imp=0.84%  iter=4684/4687
+done 06_full_tight_heavy Tabu 70/25  best=32,369,481.90  imp=0.86%  iter=4661/4679
+plots 06_full_tight_heavy
+started 07_full_slack_thin sa_T50 pid=16634
+started 07_full_slack_thin sa_T25 pid=16635
+started 07_full_slack_thin sa_500 pid=16636
+started 07_full_slack_thin sa_50 pid=16637
+done 07_full_slack_thin SA T25  best=967,366.89  imp=26.80%  iter=312939/313354
+done 07_full_slack_thin SA 500  best=969,935.37  imp=26.60%  iter=278850/279052
+done 07_full_slack_thin SA T50  best=1,052,162.38  imp=20.38%  iter=315500/315653
+done 07_full_slack_thin SA 50  best=947,451.00  imp=28.30%  iter=207891/207925
+started 07_full_slack_thin tabu_n35_t25 pid=17001
+started 07_full_slack_thin tabu_n35_t625 pid=17002
+started 07_full_slack_thin tabu_n70_t25 pid=17003
+started 07_full_slack_thin tabu_n70_t625 pid=17004
+done 07_full_slack_thin Tabu 70/25  best=951,763.49  imp=27.98%  iter=2572/2572
+done 07_full_slack_thin Tabu 70/625  best=946,509.86  imp=28.38%  iter=2548/2562
+done 07_full_slack_thin Tabu 35/25  best=953,401.12  imp=27.85%  iter=5574/5619
+done 07_full_slack_thin Tabu 35/625  best=952,162.29  imp=27.95%  iter=5354/5471
+plots 07_full_slack_thin
+started 08_near_thin sa_T75 pid=17324
+started 08_near_thin sa_T50 pid=17325
+started 08_near_thin sa_T25 pid=17326
+started 08_near_thin sa_500 pid=17327
+done 08_near_thin SA T25  best=120,135.55  imp=16.17%  iter=933479/934131
+done 08_near_thin SA T50  best=115,962.26  imp=19.08%  iter=837371/852557
+done 08_near_thin SA T75  best=116,361.33  imp=18.81%  iter=750586/757069
+done 08_near_thin SA 500  best=122,976.66  imp=14.19%  iter=1233945/1287929
+started 08_near_thin sa_50 pid=17588
+started 08_near_thin tabu_n35_t25 pid=17589
+started 08_near_thin tabu_n35_t625 pid=17590
+started 08_near_thin tabu_n70_t25 pid=17591
+done 08_near_thin SA 50  best=83,136.10  imp=41.99%  iter=707429/718729
+done 08_near_thin Tabu 35/625  best=92,250.68  imp=35.63%  iter=7253/18181
+done 08_near_thin Tabu 35/25  best=89,693.71  imp=37.41%  iter=13309/16808
+done 08_near_thin Tabu 70/25  best=83,866.66  imp=41.48%  iter=7033/7058
+started 08_near_thin tabu_n70_t625 pid=17863
+started 09_far_tight sa_T75 pid=17864
+started 09_far_tight sa_T50 pid=17865
+started 09_far_tight sa_T25 pid=17866
+done 09_far_tight SA T25  best=774,679.02  imp=51.88%  iter=586833/600323
+done 09_far_tight SA T50  best=956,646.39  imp=40.58%  iter=630232/640424
+done 09_far_tight SA T75  best=1,314,027.91  imp=18.38%  iter=716914/719796
+done 08_near_thin Tabu 70/625  best=83,460.49  imp=41.76%  iter=5797/7454
+plots 08_near_thin
+started 09_far_tight sa_500 pid=18120
+started 09_far_tight sa_50 pid=18121
+started 09_far_tight tabu_n35_t25 pid=18122
+started 09_far_tight tabu_n35_t625 pid=18123
+done 09_far_tight Tabu 35/25  best=1,062,852.49  imp=33.98%  iter=12904/13046
+done 09_far_tight SA 500  best=794,831.00  imp=50.63%  iter=596008/596125
+done 09_far_tight Tabu 35/625  best=985,461.89  imp=38.79%  iter=14615/14651
+done 09_far_tight SA 50  best=1,038,299.25  imp=35.51%  iter=529812/530720
+started 09_far_tight tabu_n70_t25 pid=18374
+started 09_far_tight tabu_n70_t625 pid=18375
+done 09_far_tight Tabu 70/25  best=1,073,677.16  imp=33.31%  iter=7267/7344
+done 09_far_tight Tabu 70/625  best=1,055,967.27  imp=34.41%  iter=6783/6851
+plots 09_far_tight
+Grid finished

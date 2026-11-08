@@ -1,0 +1,10 @@
+SA start  total=19,892,915.98  T0=50.00  T_final=0.75  clock cool over 1800s
+SA  iter 20000  current=19,716,781.65  best=19,716,659.84  T=28.68
+SA  iter 40000  current=19,551,761.58  best=19,551,760.90  T=15.65
+SA  iter 60000  current=19,535,170.55  best=19,535,168.27  T=8.39
+SA  iter 80000  current=19,507,726.02  best=19,507,721.26  T=4.68
+SA  iter 100000  current=19,491,423.08  best=19,491,423.08  T=2.66
+SA  iter 120000  current=19,480,050.60  best=19,480,050.60  T=1.55
+SA  iter 140000  current=19,470,882.04  best=19,470,882.04  T=0.93
+SA done  best=19,467,772.77  iter=148039  seconds=1800.0  stop=time limit  T_end=0.75
+done 03_large_tight SA 50  best=19,467,772.77  imp=2.14%  iter=148039/148232

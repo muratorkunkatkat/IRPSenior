@@ -1,7 +1,7 @@
 """Tabu search on the full vehicle-distribution instance.
 
 Each iteration scores a sample of neighbors and steps to the cheapest admissible
-one. The neighbors are the same eight decisions annealing uses.
+one. The neighbors are the same decisions annealing uses.
 
 The tabu attribute is that exact decision. It cannot be repeated for
 `tabu_size` iterations, unless it beats the best solution seen so far

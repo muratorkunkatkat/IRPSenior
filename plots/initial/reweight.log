@@ -1,0 +1,49 @@
+Instance: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/data/data_exp.json
+Random start, seed 44. Equal weights. T0=4,822.21  floor=72.58  1800s
+SA start  total=36,603,643.31  T0=4,822.21  T_final=72.58  clock cool over 1800s
+SA  iter 20000  current=15,458,717.44  best=15,457,571.34  T=3,782.56
+SA  iter 40000  current=11,903,231.10  best=11,900,164.99  T=2,938.76
+SA  iter 60000  current=10,614,655.40  best=10,610,521.44  T=2,258.43
+SA  iter 80000  current=9,644,162.63  best=9,641,712.27  T=1,728.62
+SA  iter 100000  current=9,253,329.51  best=9,237,641.69  T=1,325.31
+SA  iter 120000  current=8,868,683.25  best=8,868,683.25  T=1,021.73
+SA  iter 140000  current=8,602,070.28  best=8,599,403.49  T=801.01
+SA  iter 160000  current=8,419,253.84  best=8,417,692.48  T=629.40
+SA  iter 180000  current=8,110,898.92  best=8,107,518.92  T=494.50
+SA  iter 200000  current=7,891,028.78  best=7,886,117.97  T=390.16
+SA  iter 220000  current=7,599,636.34  best=7,598,176.37  T=308.60
+SA  iter 240000  current=7,300,284.25  best=7,296,726.75  T=244.65
+SA  iter 260000  current=7,094,120.38  best=7,093,468.80  T=194.13
+SA  iter 280000  current=6,968,001.23  best=6,967,831.62  T=154.36
+SA  iter 300000  current=6,734,960.23  best=6,733,538.42  T=123.61
+SA  iter 320000  current=6,554,709.36  best=6,553,976.20  T=98.86
+SA  iter 340000  current=6,393,233.89  best=6,392,935.02  T=79.26
+SA done  best=6,355,573.05  iter=347659  seconds=1800.0  stop=time limit  T_end=72.58
+Best
+  Transport                   739,713.05
+  Holding                     232,360.00
+  Backorder                 5,383,500.00   (10,767 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                     6,355,573.05
+  Cars delivered                   3,511
+  Improvement 82.64%
+  Iterations 348128  best at 347659
+move              attempts     built   build%  proposed  accepted  accept%
+rebuild              76719      1765     2.3%      1765      1765   100.0%
+hand-over            76090     54169    71.2%     54169     30415    56.1%
+exchange             75865     31001    40.9%     31001     17045    55.0%
+add-car              75688     52092    68.8%     52092     17395    33.4%
+remove-car           75733     75733   100.0%     75733     12639    16.7%
+add-dealer           76575     61608    80.5%     61608     29368    47.7%
+remove-dealer        75683     71760    94.8%     71760     27444    38.2%
+Calibrated weights (proportional to 1 / build success, capped at 5x):
+  rebuild           5.000   draw  36.8%
+  hand-over         1.405   draw  10.3%
+  exchange          2.447   draw  18.0%
+  add-car           1.453   draw  10.7%
+  remove-car        1.000   draw   7.4%
+  add-dealer        1.243   draw   9.1%
+  remove-dealer     1.055   draw   7.8%
+WEIGHTS = [5.000, 1.405, 2.447, 1.453, 1.000, 1.243, 1.055]
+Plots: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/initial

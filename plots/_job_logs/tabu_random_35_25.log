@@ -1,0 +1,10 @@
+Tabu start  total=36,603,643.31  neighbors=35  tabu_size=25
+Tabu  iter  1000  current=17,304,749.72  best=17,304,749.72
+Tabu  iter  2000  current=15,960,417.92  best=15,960,417.92
+Tabu  iter  3000  current=15,163,431.91  best=15,163,423.97
+Tabu  iter  4000  current=14,605,699.57  best=14,605,429.84
+Tabu  iter  5000  current=14,028,477.45  best=14,028,200.25
+Tabu  iter  6000  current=13,462,411.85  best=13,462,407.00
+Tabu  iter  7000  current=13,192,841.42  best=13,192,475.70
+Tabu  iter  8000  current=12,870,474.40  best=12,870,245.03
+Tabu done  best=12,619,824.89  iter=8620  seconds=1800.1  stop=time limit  forbidden=0.10%  all_tabu=0  worse_steps=2761

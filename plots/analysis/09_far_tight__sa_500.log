@@ -1,0 +1,32 @@
+SA start  total=1,609,929.61  T0=500.00  T_final=72.58  clock cool over 1800s
+SA  iter 20000  current=1,337,518.01  best=1,334,501.54  T=443.85
+SA  iter 40000  current=1,236,554.47  best=1,233,313.94  T=402.59
+SA  iter 60000  current=1,151,225.53  best=1,149,232.82  T=369.26
+SA  iter 80000  current=1,112,335.39  best=1,107,920.41  T=340.03
+SA  iter 100000  current=1,063,833.16  best=1,063,068.89  T=315.78
+SA  iter 120000  current=1,052,358.33  best=1,050,596.67  T=294.39
+SA  iter 140000  current=1,019,924.26  best=1,010,265.28  T=275.08
+SA  iter 160000  current=994,683.10  best=991,794.52  T=256.93
+SA  iter 180000  current=963,232.62  best=961,004.13  T=241.31
+SA  iter 200000  current=955,651.21  best=952,850.04  T=227.05
+SA  iter 220000  current=912,060.89  best=909,537.99  T=213.37
+SA  iter 240000  current=914,096.20  best=907,937.56  T=199.45
+SA  iter 260000  current=899,005.22  best=898,090.01  T=187.96
+SA  iter 280000  current=885,333.25  best=885,283.00  T=177.06
+SA  iter 300000  current=877,517.28  best=873,516.71  T=166.42
+SA  iter 320000  current=859,885.52  best=859,301.34  T=156.69
+SA  iter 340000  current=856,158.67  best=856,153.01  T=147.10
+SA  iter 360000  current=850,565.68  best=849,188.63  T=138.69
+SA  iter 380000  current=836,191.24  best=833,869.97  T=130.91
+SA  iter 400000  current=829,424.09  best=828,438.69  T=123.62
+SA  iter 420000  current=819,514.21  best=818,752.37  T=116.67
+SA  iter 440000  current=816,130.29  best=813,699.10  T=110.53
+SA  iter 460000  current=815,432.25  best=810,427.65  T=104.57
+SA  iter 480000  current=810,935.96  best=809,929.03  T=99.27
+SA  iter 500000  current=809,066.40  best=807,442.18  T=93.62
+SA  iter 520000  current=806,049.12  best=805,850.57  T=88.70
+SA  iter 540000  current=803,379.96  best=802,722.75  T=84.04
+SA  iter 560000  current=801,514.51  best=801,098.54  T=79.91
+SA  iter 580000  current=797,224.64  best=797,224.42  T=76.00
+SA done  best=794,831.00  iter=596008  seconds=1800.0  stop=time limit  T_end=72.58
+done 09_far_tight SA 500  best=794,831.00  imp=50.63%  iter=596008/596125

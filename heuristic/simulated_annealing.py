@@ -10,8 +10,11 @@ worse than the same reference is accepted with probability 0.0001.
 
 Cooling is one of two rules. If `alpha` is set, temperature is multiplied by
 alpha after every block of `cool_every` (L) scored neighbors, and is not
-allowed below T_final. That is the paper schedule. If `alpha` is omitted and
-a time limit is set, temperature follows the clock from T0 to T_final.
+allowed below the T_final passed for this run. Each initial temperature needs
+its own alpha: the paper fixes one final temperature and one neighbor budget,
+so the multiplier that lands on that floor is different for each T0. If
+`alpha` is omitted and a time limit is set, temperature follows the clock
+from T0 to T_final.
 """
 
 import math
@@ -62,7 +65,7 @@ def _temperature(temperature0, t_final, elapsed, time_limit_sec):
 def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
                             t0=None, t_final=None, time_limit_sec=None,
                             log_every=None, alpha=None, cool_every=10,
-                            history_every=1):
+                            history_every=1, cool_seconds=None):
     rng = random.Random(seed)
     sol = Solution(data, clone_trips(trips) if trips is not None else build_initial_trips(data))
     initial, aux = evaluate(sol)
@@ -102,8 +105,11 @@ def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
     ran = 0
     scored = 0
     stopped = "iterations"
+    cool_horizon = cool_seconds if cool_seconds else time_limit_sec
     if alpha is not None:
         cool_note = f"alpha={alpha} every {cool_every} neighbors"
+    elif cool_horizon and time_limit_sec and cool_horizon < time_limit_sec:
+        cool_note = f"clock cool over {cool_horizon:.0f}s, search until {time_limit_sec:.0f}s"
     elif time_limit_sec:
         cool_note = f"clock cool over {time_limit_sec:.0f}s"
     else:
@@ -119,8 +125,8 @@ def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
         if time_limit_sec is not None and elapsed_now >= time_limit_sec:
             stopped = "time limit"
             break
-        if alpha is None and time_limit_sec:
-            temperature = _temperature(temperature0, final_t, elapsed_now, time_limit_sec)
+        if alpha is None and cool_horizon:
+            temperature = _temperature(temperature0, final_t, elapsed_now, cool_horizon)
         ran = iteration
         proposal = propose_move(sol, rng)
         accepted = False
@@ -203,6 +209,7 @@ def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
         "proposed_counts": proposed_counts,
         "rejected_counts": rejected_counts,
         "accepted_flags": accepted_flags,
+        "scored": scored,
         "stopped": stopped,
         "parameters": {
             "iterations": iterations,
@@ -212,6 +219,7 @@ def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
             "alpha": alpha,
             "cool_every": cool_every,
             "time_limit_sec": time_limit_sec,
+            "cool_seconds": cool_horizon,
             "temps": temps,
         },
     }

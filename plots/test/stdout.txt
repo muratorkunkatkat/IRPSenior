@@ -1,0 +1,4 @@
+started T75 pid=25084
+started T25 pid=25085
+exit codes [0, 0]
+plots written under /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/test

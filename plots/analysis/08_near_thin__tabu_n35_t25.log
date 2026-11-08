@@ -1,0 +1,19 @@
+Tabu start  total=143,312.99  neighbors=35  tabu_size=25
+Tabu  iter  1000  current=99,990.46  best=99,990.46
+Tabu  iter  2000  current=98,541.42  best=97,953.45
+Tabu  iter  3000  current=95,853.19  best=95,562.50
+Tabu  iter  4000  current=94,530.00  best=94,057.41
+Tabu  iter  5000  current=94,142.77  best=93,958.66
+Tabu  iter  6000  current=93,849.12  best=93,510.49
+Tabu  iter  7000  current=92,911.47  best=91,744.40
+Tabu  iter  8000  current=92,982.63  best=91,744.40
+Tabu  iter  9000  current=93,169.82  best=91,744.40
+Tabu  iter 10000  current=91,665.28  best=91,665.28
+Tabu  iter 11000  current=90,968.66  best=90,719.19
+Tabu  iter 12000  current=91,453.21  best=89,973.30
+Tabu  iter 13000  current=91,302.60  best=89,973.30
+Tabu  iter 14000  current=91,729.88  best=89,693.71
+Tabu  iter 15000  current=92,380.32  best=89,693.71
+Tabu  iter 16000  current=92,924.18  best=89,693.71
+Tabu done  best=89,693.71  iter=13309  seconds=1800.1  stop=time limit  forbidden=0.12%  all_tabu=0  worse_steps=6929
+done 08_near_thin Tabu 35/25  best=89,693.71  imp=37.41%  iter=13309/16808

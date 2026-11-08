@@ -1,0 +1,171 @@
+Pending jobs: 28
+T75=23,237.46  T50=9,644.42  T25=4,822.21  floor=72.58  T0=50 floor=0.75  each 1800s  workers=8
+start sa greedy T75  pid=13236
+start sa greedy T50  pid=13237
+start sa greedy T25  pid=13238
+start sa greedy 500  pid=13239
+start sa greedy 50  pid=13240
+start tabu greedy 35 25  pid=13241
+start tabu greedy 35 125  pid=13242
+start tabu greedy 35 625  pid=13243
+done sa greedy T75  30.2 min
+done sa greedy T50  30.2 min
+done sa greedy T25  30.2 min
+done sa greedy 500  30.2 min
+done sa greedy 50  30.2 min
+done tabu greedy 35 25  30.2 min
+done tabu greedy 35 125  30.2 min
+done tabu greedy 35 625  30.2 min
+start tabu greedy 70 25  pid=16111
+start tabu greedy 70 125  pid=16112
+start tabu greedy 70 625  pid=16113
+start tabu greedy 150 25  pid=16114
+start tabu greedy 150 125  pid=16115
+start tabu greedy 150 625  pid=16116
+start sa random T75  pid=16117
+start sa random T50  pid=16118
+done tabu greedy 70 25  30.2 min
+done tabu greedy 70 125  30.2 min
+done tabu greedy 70 625  30.2 min
+done tabu greedy 150 25  30.2 min
+done tabu greedy 150 125  30.2 min
+done tabu greedy 150 625  30.2 min
+done sa random T75  30.2 min
+done sa random T50  30.2 min
+start sa random T25  pid=16381
+start sa random 500  pid=16382
+start sa random 50  pid=16383
+start tabu random 35 25  pid=16384
+start tabu random 35 125  pid=16385
+start tabu random 35 625  pid=16386
+start tabu random 70 25  pid=16387
+start tabu random 70 125  pid=16388
+done sa random T25  30.2 min
+done sa random 500  30.2 min
+done sa random 50  30.2 min
+done tabu random 35 25  30.2 min
+done tabu random 35 125  30.2 min
+done tabu random 35 625  30.2 min
+done tabu random 70 25  30.2 min
+done tabu random 70 125  30.2 min
+start tabu random 70 625  pid=16621
+start tabu random 150 25  pid=16622
+start tabu random 150 125  pid=16623
+start tabu random 150 625  pid=16624
+done tabu random 70 625  30.2 min
+done tabu random 150 25  30.2 min
+done tabu random 150 125  30.2 min
+done tabu random 150 625  30.2 min
+greedy SA T75
+  Transport                 1,902,665.00
+  Holding                           0.00
+  Backorder                   173,500.00   (347 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                     2,076,165.00
+  Cars delivered                   4,306
+greedy SA T75  T0=23,237.46  floor=72.58  best=2,076,165.00  improvement=0.00%  iter=0/265274
+greedy SA T50
+  Transport                 1,902,665.00
+  Holding                           0.00
+  Backorder                   173,500.00   (347 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                     2,076,165.00
+  Cars delivered                   4,306
+greedy SA T50  T0=9,644.42  floor=72.58  best=2,076,165.00  improvement=0.00%  iter=0/265258
+greedy SA T25
+  Transport                 1,902,620.09
+  Holding                           0.00
+  Backorder                   173,500.00   (347 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                     2,076,120.09
+  Cars delivered                   4,306
+greedy SA T25  T0=4,822.21  floor=72.58  best=2,076,120.09  improvement=0.00%  iter=2/267080
+greedy SA 500
+  Transport                 1,574,797.81
+  Holding                     161,100.00
+  Backorder                    75,000.00   (150 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                     1,810,897.81
+  Cars delivered                   4,318
+greedy SA 500  T0=500.00  floor=72.58  best=1,810,897.81  improvement=12.78%  iter=272532/272553
+greedy SA 50
+  Transport                 1,563,394.35
+  Holding                      46,000.00
+  Backorder                    54,000.00   (108 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                     1,663,394.35
+  Cars delivered                   4,335
+greedy SA 50  T0=50.00  floor=0.75  best=1,663,394.35  improvement=19.88%  iter=314358/314458
+greedy tabu n=35 t=25  best=1,658,720.03  improvement=20.11%  forbidden=0.004%
+greedy tabu n=35 t=125  best=1,667,957.16  improvement=19.66%  forbidden=0.016%
+greedy tabu n=35 t=625  best=1,660,545.07  improvement=20.02%  forbidden=0.098%
+greedy tabu n=70 t=25  best=1,649,610.29  improvement=20.55%  forbidden=0.006%
+greedy tabu n=70 t=125  best=1,651,205.73  improvement=20.47%  forbidden=0.025%
+greedy tabu n=70 t=625  best=1,630,469.94  improvement=21.47%  forbidden=0.146%
+greedy tabu n=150 t=25  best=1,635,594.90  improvement=21.22%  forbidden=0.003%
+greedy tabu n=150 t=125  best=1,634,207.43  improvement=21.29%  forbidden=0.031%
+greedy tabu n=150 t=625  best=1,636,020.01  improvement=21.20%  forbidden=0.150%
+1v1 greedy: SA 50 vs Tabu n=70, t=625
+Plots: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/tabu_vs_sa/greedy
+random SA T75
+  Transport                   652,208.84
+  Holding                     218,320.00
+  Backorder                 8,191,500.00   (16,383 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                     9,062,028.84
+  Cars delivered                   3,174
+random SA T75  T0=23,237.46  floor=72.58  best=9,062,028.84  improvement=75.24%  iter=291157/291269
+random SA T50
+  Transport                   756,857.42
+  Holding                     234,480.00
+  Backorder                 6,065,500.00   (12,131 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                     7,056,837.42
+  Cars delivered                   3,472
+random SA T50  T0=9,644.42  floor=72.58  best=7,056,837.42  improvement=80.72%  iter=282855/282883
+random SA T25
+  Transport                   749,347.66
+  Holding                     240,640.00
+  Backorder                 5,894,000.00   (11,788 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                     6,883,987.66
+  Cars delivered                   3,502
+random SA T25  T0=4,822.21  floor=72.58  best=6,883,987.66  improvement=81.19%  iter=279648/279759
+random SA 500
+  Transport                   654,462.74
+  Holding                     259,180.00
+  Backorder                 5,884,000.00   (11,768 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                     6,797,642.74
+  Cars delivered                   3,353
+random SA 500  T0=500.00  floor=72.58  best=6,797,642.74  improvement=81.43%  iter=307434/307515
+random SA 50
+  Transport                   484,199.82
+  Holding                     124,160.00
+  Backorder                13,641,500.00   (27,283 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                    14,249,859.82
+  Cars delivered                   2,307
+random SA 50  T0=50.00  floor=0.75  best=14,249,859.82  improvement=61.07%  iter=333287/336851
+random tabu n=35 t=25  best=12,619,824.89  improvement=65.52%  forbidden=0.101%
+random tabu n=35 t=125  best=12,949,333.64  improvement=64.62%  forbidden=0.378%
+random tabu n=35 t=625  best=12,514,912.53  improvement=65.81%  forbidden=1.101%
+random tabu n=70 t=25  best=14,996,146.28  improvement=59.03%  forbidden=0.120%
+random tabu n=70 t=125  best=15,005,640.81  improvement=59.01%  forbidden=0.372%
+random tabu n=70 t=625  best=14,850,862.35  improvement=59.43%  forbidden=0.722%
+random tabu n=150 t=25  best=16,476,937.82  improvement=54.99%  forbidden=0.094%
+random tabu n=150 t=125  best=16,286,994.80  improvement=55.50%  forbidden=0.279%
+random tabu n=150 t=625  best=16,302,036.13  improvement=55.46%  forbidden=0.615%
+1v1 random: SA 500 vs Tabu n=35, t=625
+Plots: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/tabu_vs_sa/random
+Finished.

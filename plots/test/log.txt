@@ -1,0 +1,13 @@
+T75=23237.46  T25=4822.21  floor=72.58  cool=1800s  run=7200s  seed=44  greedy
+T75  stop=time limit  elapsed=7200.0  scored=1462934
+  t=1800  current=4742282.61  best=2076165.00  T=72.59  iter=335825
+  t=3600  current=4075299.58  best=2076165.00  T=72.58  iter=713375
+  t=5400  current=3803841.34  best=2076165.00  T=72.58  iter=1090400
+  t=7200  current=3637467.86  best=2076165.00  T=72.58  iter=1462934
+  end current=3637467.86  best=2076165.00  best_iter=0  T=72.58
+T25  stop=time limit  elapsed=7200.0  scored=1420073
+  t=1800  current=2061065.84  best=2060695.43  T=72.59  iter=334850
+  t=3600  current=1773197.80  best=1771475.14  T=72.58  iter=694350
+  t=5400  current=1689395.04  best=1688018.15  T=72.58  iter=1056500
+  t=7200  current=1660220.95  best=1659848.13  T=72.58  iter=1420073
+  end current=1660220.95  best=1659848.13  best_iter=1361444  T=72.58

@@ -1,0 +1,116 @@
+Waiting for the T25 random-start calibration to write plots/initial/weights.json
+Weights: rebuild=5.000, hand-over=1.405, exchange=2.447, add-car=1.453, remove-car=1.000, add-dealer=1.243, remove-dealer=1.055
+Wrote /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/analysis/results.docx  finished_configs=0  runs=0
+Pending jobs: 90  workers=4
+started 00_original sa_T75 pid=10386
+started 00_original sa_T50 pid=10387
+started 00_original sa_T25 pid=10388
+started 00_original sa_500 pid=10389
+started 00_original sa_50 pid=10930
+started 00_original tabu_n35_t25 pid=10931
+started 00_original tabu_n35_t625 pid=10932
+started 00_original tabu_n70_t25 pid=10933
+started 00_original tabu_n70_t625 pid=11286
+started 01_scaled sa_T75 pid=11287
+started 01_scaled sa_T50 pid=11288
+started 01_scaled sa_T25 pid=11289
+plots 00_original
+Wrote /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/analysis/results.docx  finished_configs=1  runs=12
+started 01_scaled sa_500 pid=11610
+started 01_scaled sa_50 pid=11611
+started 01_scaled tabu_n35_t25 pid=11612
+started 01_scaled tabu_n35_t625 pid=11613
+started 01_scaled tabu_n70_t25 pid=11965
+started 01_scaled tabu_n70_t625 pid=11966
+started 02_growth_no_fleet sa_T75 pid=11967
+started 02_growth_no_fleet sa_T50 pid=11968
+plots 01_scaled
+Wrote /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/analysis/results.docx  finished_configs=2  runs=20
+started 02_growth_no_fleet sa_T25 pid=12289
+started 02_growth_no_fleet sa_500 pid=12290
+started 02_growth_no_fleet sa_50 pid=12291
+started 02_growth_no_fleet tabu_n35_t25 pid=12292
+started 02_growth_no_fleet tabu_n35_t625 pid=12646
+started 02_growth_no_fleet tabu_n70_t25 pid=12647
+started 02_growth_no_fleet tabu_n70_t625 pid=12648
+started 03_large_tight sa_T75 pid=12649
+plots 02_growth_no_fleet
+Wrote /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/analysis/results.docx  finished_configs=3  runs=28
+started 03_large_tight sa_T50 pid=13080
+started 03_large_tight sa_T25 pid=13081
+started 03_large_tight sa_500 pid=13082
+started 03_large_tight sa_50 pid=13083
+started 03_large_tight tabu_n35_t25 pid=13428
+started 03_large_tight tabu_n35_t625 pid=13429
+started 03_large_tight tabu_n70_t25 pid=13430
+started 03_large_tight tabu_n70_t625 pid=13431
+plots 03_large_tight
+Wrote /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/analysis/results.docx  finished_configs=4  runs=36
+started 04_near_tight_heavy sa_T75 pid=13732
+started 04_near_tight_heavy sa_T50 pid=13733
+started 04_near_tight_heavy sa_T25 pid=13734
+started 04_near_tight_heavy sa_500 pid=13735
+started 04_near_tight_heavy sa_50 pid=13966
+started 04_near_tight_heavy tabu_n35_t25 pid=13967
+started 04_near_tight_heavy tabu_n35_t625 pid=13968
+started 04_near_tight_heavy tabu_n70_t25 pid=13969
+started 04_near_tight_heavy tabu_n70_t625 pid=14174
+started 05_sparse_slack sa_T75 pid=14175
+started 05_sparse_slack sa_T50 pid=14176
+started 05_sparse_slack sa_T25 pid=14177
+plots 04_near_tight_heavy
+Wrote /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/analysis/results.docx  finished_configs=5  runs=48
+started 05_sparse_slack sa_500 pid=14379
+started 05_sparse_slack sa_50 pid=14380
+started 05_sparse_slack tabu_n35_t25 pid=14381
+started 05_sparse_slack tabu_n35_t625 pid=14382
+started 05_sparse_slack tabu_n70_t25 pid=14690
+started 05_sparse_slack tabu_n70_t625 pid=14691
+started 06_full_tight_heavy sa_T75 pid=14692
+started 06_full_tight_heavy sa_T50 pid=14693
+plots 05_sparse_slack
+Wrote /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/analysis/results.docx  finished_configs=6  runs=56
+started 06_full_tight_heavy sa_T25 pid=15080
+started 06_full_tight_heavy sa_500 pid=15081
+started 06_full_tight_heavy sa_50 pid=15082
+started 06_full_tight_heavy tabu_n35_t25 pid=15083
+started 06_full_tight_heavy tabu_n35_t625 pid=15544
+started 06_full_tight_heavy tabu_n70_t25 pid=15545
+started 06_full_tight_heavy tabu_n70_t625 pid=15546
+started 07_full_slack_thin sa_T75 pid=15547
+plots 06_full_tight_heavy
+Wrote /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/analysis/results.docx  finished_configs=7  runs=64
+started 07_full_slack_thin sa_T50 pid=16634
+started 07_full_slack_thin sa_T25 pid=16635
+started 07_full_slack_thin sa_500 pid=16636
+started 07_full_slack_thin sa_50 pid=16637
+started 07_full_slack_thin tabu_n35_t25 pid=17001
+started 07_full_slack_thin tabu_n35_t625 pid=17002
+started 07_full_slack_thin tabu_n70_t25 pid=17003
+started 07_full_slack_thin tabu_n70_t625 pid=17004
+plots 07_full_slack_thin
+Wrote /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/analysis/results.docx  finished_configs=8  runs=72
+started 08_near_thin sa_T75 pid=17324
+started 08_near_thin sa_T50 pid=17325
+started 08_near_thin sa_T25 pid=17326
+started 08_near_thin sa_500 pid=17327
+started 08_near_thin sa_50 pid=17588
+started 08_near_thin tabu_n35_t25 pid=17589
+started 08_near_thin tabu_n35_t625 pid=17590
+started 08_near_thin tabu_n70_t25 pid=17591
+started 08_near_thin tabu_n70_t625 pid=17863
+started 09_far_tight sa_T75 pid=17864
+started 09_far_tight sa_T50 pid=17865
+started 09_far_tight sa_T25 pid=17866
+plots 08_near_thin
+Wrote /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/analysis/results.docx  finished_configs=9  runs=84
+started 09_far_tight sa_500 pid=18120
+started 09_far_tight sa_50 pid=18121
+started 09_far_tight tabu_n35_t25 pid=18122
+started 09_far_tight tabu_n35_t625 pid=18123
+started 09_far_tight tabu_n70_t25 pid=18374
+started 09_far_tight tabu_n70_t625 pid=18375
+plots 09_far_tight
+Wrote /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/analysis/results.docx  finished_configs=10  runs=90
+Grid finished
+Wrote /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/analysis/results.docx  finished_configs=10  runs=90

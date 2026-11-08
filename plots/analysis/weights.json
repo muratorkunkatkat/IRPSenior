@@ -1,0 +1,75 @@
+{
+  "weights": [
+    5.0,
+    1.4046779523343609,
+    2.447179123254089,
+    1.452967826153728,
+    1.0,
+    1.242939228671601,
+    1.0546683389074694
+  ],
+  "names": [
+    "rebuild",
+    "hand-over",
+    "exchange",
+    "add-car",
+    "remove-car",
+    "add-dealer",
+    "remove-dealer"
+  ],
+  "stats": {
+    "rebuild": {
+      "attempts": 76719,
+      "built": 1765
+    },
+    "hand-over": {
+      "attempts": 76090,
+      "built": 54169
+    },
+    "exchange": {
+      "attempts": 75865,
+      "built": 31001
+    },
+    "add-car": {
+      "attempts": 75688,
+      "built": 52092
+    },
+    "remove-car": {
+      "attempts": 75733,
+      "built": 75733
+    },
+    "add-dealer": {
+      "attempts": 76575,
+      "built": 61608
+    },
+    "remove-dealer": {
+      "attempts": 75683,
+      "built": 71760
+    }
+  },
+  "move_counts": {
+    "rebuild": 1765,
+    "hand-over": 30415,
+    "exchange": 17045,
+    "add-car": 17395,
+    "remove-car": 12639,
+    "add-dealer": 29368,
+    "remove-dealer": 27444
+  },
+  "proposed_counts": {
+    "rebuild": 1765,
+    "hand-over": 54169,
+    "exchange": 31001,
+    "add-car": 52092,
+    "remove-car": 75733,
+    "add-dealer": 61608,
+    "remove-dealer": 71760
+  },
+  "t0": 4822.20817417136,
+  "floor": 72.58146528808096,
+  "seed": 44,
+  "seconds": 1800,
+  "start": "random",
+  "initial_total": 36603643.31,
+  "best_total": 6355573.050000001
+}
