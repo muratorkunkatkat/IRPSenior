@@ -1,6 +1,7 @@
 exp
 __pycache__
 .vscode
+.venv
 data/data.json
 *.zip
 docs/speech.docx

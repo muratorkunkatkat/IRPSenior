@@ -1,0 +1,46 @@
+random 00_original start
+  Transport                   895,403.31
+  Holding                     327,240.00
+  Backorder                21,596,000.00   (43,192 car-days)
+  End-of-month unsold      13,785,000.00   (919 cars)
+  Capacity penalty                  0.00
+  Total                    36,603,643.31
+  Cars delivered                   2,599
+Tabu start  total=36,603,643.31  neighbors=70  tabu_size=25
+Tabu  iter  2000  current=16,601,818.16  best=16,601,818.16
+Tabu  iter  4000  current=15,745,519.59  best=15,745,514.77
+Tabu  iter  6000  current=15,229,221.44  best=15,229,198.46
+Tabu  iter  8000  current=14,800,440.50  best=14,800,183.71
+Tabu  iter 10000  current=14,391,681.02  best=14,391,618.64
+Tabu  iter 12000  current=14,091,895.67  best=14,091,833.83
+Tabu  iter 14000  current=13,572,842.16  best=13,572,842.16
+Tabu  iter 16000  current=13,121,134.80  best=13,121,134.80
+Tabu  iter 18000  current=12,694,980.48  best=12,694,950.15
+Tabu  iter 20000  current=12,457,983.89  best=12,457,930.62
+Tabu  iter 22000  current=12,162,376.85  best=12,162,311.03
+Tabu  iter 24000  current=11,937,973.95  best=11,937,829.77
+Tabu  iter 26000  current=11,812,122.41  best=11,812,023.62
+Tabu  iter 28000  current=11,645,383.22  best=11,645,383.22
+Tabu  iter 30000  current=11,449,122.52  best=11,449,122.52
+Tabu  iter 32000  current=11,362,332.97  best=11,361,940.84
+Tabu  iter 34000  current=11,264,711.31  best=11,264,707.15
+Tabu  iter 36000  current=11,132,047.00  best=11,131,981.38
+Tabu  iter 38000  current=11,111,201.46  best=11,110,831.01
+Tabu  iter 40000  current=11,103,202.06  best=11,102,923.44
+Tabu  iter 42000  current=10,965,181.18  best=10,964,992.33
+Tabu  iter 44000  current=10,718,723.94  best=10,718,693.40
+Tabu  iter 46000  current=10,399,038.85  best=10,399,038.85
+Tabu  iter 48000  current=10,302,241.06  best=10,301,991.14
+Tabu  iter 50000  current=10,298,240.56  best=10,298,057.81
+Tabu  iter 52000  current=10,276,491.96  best=10,276,336.17
+Tabu  iter 54000  current=10,187,394.79  best=10,187,382.86
+Tabu  iter 56000  current=10,168,961.01  best=10,168,772.21
+Tabu  iter 58000  current=10,142,968.78  best=10,142,848.56
+Tabu  iter 60000  current=10,109,498.35  best=10,109,498.35
+Tabu  iter 62000  current=10,092,786.81  best=10,092,611.46
+Tabu  iter 64000  current=9,963,676.25  best=9,963,387.98
+Tabu  iter 66000  current=9,963,611.75  best=9,962,708.77
+Tabu  iter 68000  current=9,934,107.92  best=9,934,104.91
+Tabu  iter 70000  current=9,928,638.97  best=9,928,554.23
+Tabu done  best=9,922,460.01  iter=71165  seconds=24000.2  stop=time limit  forbidden=0.02%  all_tabu=0  worse_steps=24197
+done random 00_original Tabu 70/25  best=9,922,460.01  imp=72.89%  iter=71165/71173

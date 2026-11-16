@@ -845,6 +845,50 @@ def current_move_weights():
     return list(_MOVE_WEIGHTS)
 
 
+# Ropke & Pisinger, Transportation Science 2006: a new global best scores 33,
+# a solution better than the current one scores 9, an accepted solution that
+# is not better scores 13, and a rejected solution scores 0.
+ALNS_SIGMA_NEW_BEST = 33
+ALNS_SIGMA_BETTER = 9
+ALNS_SIGMA_ACCEPTED = 13
+
+
+def bounded_score_weights(outcome_counts, cap=5.0, floor=1.0):
+    """Turn one pilot's ALNS scores into draw weights on [floor, cap].
+
+    The raw value of a move is its total score divided by the number of
+    neighbors that were actually scored. A neighbor that cannot be built is
+    not a use. The smallest positive raw value becomes `floor`. Every other
+    positive value is divided by that minimum and then cut at `cap`. A move
+    that scored nothing stays at the floor, so it is still drawn.
+    """
+    raw = []
+    for name in MOVE_NAMES:
+        stats = outcome_counts.get(name) or {}
+        new_best = int(stats.get("new_best", 0))
+        improved = int(stats.get("improved", 0))
+        accepted = int(stats.get("accepted_worse", 0))
+        rejected = int(stats.get("rejected", 0))
+        uses = new_best + improved + accepted + rejected
+        score = (
+            ALNS_SIGMA_NEW_BEST * new_best
+            + ALNS_SIGMA_BETTER * improved
+            + ALNS_SIGMA_ACCEPTED * accepted
+        )
+        raw.append(0.0 if uses == 0 else score / uses)
+    positive = [value for value in raw if value > 1e-12]
+    if not positive:
+        return [float(floor)] * len(MOVE_NAMES)
+    base = min(positive)
+    weights = []
+    for value in raw:
+        if value <= 1e-12:
+            weights.append(float(floor))
+        else:
+            weights.append(min(float(cap), float(floor) * (value / base)))
+    return weights
+
+
 def calibrated_weights(cap=5.0):
     raw = []
     for name in MOVE_NAMES:

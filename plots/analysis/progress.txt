@@ -1,4 +1,0 @@
-done 90/90
-waiting 0
-running 0
-finished 2026-11-04 11:11

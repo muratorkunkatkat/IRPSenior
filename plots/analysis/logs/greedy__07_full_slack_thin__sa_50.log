@@ -1,0 +1,101 @@
+greedy 07_full_slack_thin start
+  Transport                 1,321,491.85
+  Holding                           0.00
+  Backorder                         0.00   (0 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                     1,321,491.85
+  Cars delivered                   2,170
+SA start  total=1,321,491.85  T0=50.00  T_final=0.75  clock cool over 24000s
+SA  iter 50000  current=1,018,681.99  best=1,018,409.96  T=47.28
+SA  iter 100000  current=994,348.55  best=994,262.37  T=44.81
+SA  iter 150000  current=973,835.43  best=973,685.38  T=42.47
+SA  iter 200000  current=961,309.54  best=960,588.16  T=40.28
+SA  iter 250000  current=954,106.09  best=953,693.77  T=38.27
+SA  iter 300000  current=945,634.38  best=945,518.59  T=36.34
+SA  iter 350000  current=938,313.12  best=938,304.79  T=34.57
+SA  iter 400000  current=929,784.22  best=929,560.03  T=32.90
+SA  iter 450000  current=918,792.36  best=918,789.75  T=31.28
+SA  iter 500000  current=914,750.55  best=914,656.49  T=29.74
+SA  iter 550000  current=909,878.96  best=909,644.81  T=28.33
+SA  iter 600000  current=904,943.53  best=904,889.42  T=26.98
+SA  iter 650000  current=900,538.55  best=900,538.46  T=25.69
+SA  iter 700000  current=896,272.72  best=895,844.41  T=24.48
+SA  iter 750000  current=892,060.30  best=891,845.78  T=23.33
+SA  iter 800000  current=886,877.65  best=886,418.90  T=22.24
+SA  iter 850000  current=884,143.46  best=883,741.53  T=21.20
+SA  iter 900000  current=880,874.67  best=880,852.47  T=20.22
+SA  iter 950000  current=875,343.08  best=875,180.52  T=19.29
+SA  iter 1000000  current=872,265.09  best=872,148.96  T=18.41
+SA  iter 1050000  current=868,935.81  best=868,909.08  T=17.58
+SA  iter 1100000  current=866,710.27  best=866,599.95  T=16.78
+SA  iter 1150000  current=863,685.04  best=863,661.08  T=16.01
+SA  iter 1200000  current=859,731.34  best=859,563.84  T=15.28
+SA  iter 1250000  current=858,167.70  best=858,154.53  T=14.58
+SA  iter 1300000  current=857,393.92  best=857,195.31  T=13.91
+SA  iter 1350000  current=855,592.89  best=855,562.06  T=13.28
+SA  iter 1400000  current=853,028.24  best=852,928.65  T=12.67
+SA  iter 1450000  current=851,428.44  best=851,395.57  T=12.09
+SA  iter 1500000  current=851,097.39  best=851,023.38  T=11.54
+SA  iter 1550000  current=848,685.31  best=848,653.06  T=11.01
+SA  iter 1600000  current=847,358.79  best=847,322.53  T=10.52
+SA  iter 1650000  current=846,704.87  best=846,684.99  T=10.05
+SA  iter 1700000  current=844,376.37  best=844,365.11  T=9.60
+SA  iter 1750000  current=843,448.40  best=843,371.14  T=9.17
+SA  iter 1800000  current=842,890.11  best=842,777.81  T=8.76
+SA  iter 1850000  current=842,084.25  best=842,041.39  T=8.36
+SA  iter 1900000  current=841,568.26  best=841,534.12  T=7.99
+SA  iter 1950000  current=840,634.30  best=840,483.66  T=7.63
+SA  iter 2000000  current=839,608.01  best=839,604.86  T=7.29
+SA  iter 2050000  current=839,042.00  best=838,999.77  T=6.96
+SA  iter 2100000  current=838,553.78  best=838,438.92  T=6.65
+SA  iter 2150000  current=838,317.70  best=838,312.93  T=6.35
+SA  iter 2200000  current=837,895.53  best=837,870.51  T=6.07
+SA  iter 2250000  current=837,001.02  best=836,989.25  T=5.79
+SA  iter 2300000  current=835,699.37  best=835,668.05  T=5.53
+SA  iter 2350000  current=834,688.16  best=834,667.89  T=5.28
+SA  iter 2400000  current=834,577.58  best=834,553.88  T=5.05
+SA  iter 2450000  current=834,427.52  best=834,373.28  T=4.82
+SA  iter 2500000  current=834,210.74  best=834,180.66  T=4.61
+SA  iter 2550000  current=833,514.31  best=833,506.32  T=4.41
+SA  iter 2600000  current=833,260.60  best=833,253.15  T=4.21
+SA  iter 2650000  current=831,646.22  best=831,645.05  T=4.02
+SA  iter 2700000  current=830,888.96  best=830,888.96  T=3.85
+SA  iter 2750000  current=830,371.67  best=830,349.33  T=3.68
+SA  iter 2800000  current=830,312.92  best=830,307.46  T=3.51
+SA  iter 2850000  current=829,998.85  best=829,986.32  T=3.36
+SA  iter 2900000  current=829,431.50  best=829,422.40  T=3.21
+SA  iter 2950000  current=828,656.27  best=828,638.24  T=3.07
+SA  iter 3000000  current=827,585.13  best=827,585.13  T=2.93
+SA  iter 3050000  current=826,871.71  best=826,871.58  T=2.80
+SA  iter 3100000  current=826,387.50  best=826,383.91  T=2.68
+SA  iter 3150000  current=824,833.48  best=824,826.91  T=2.56
+SA  iter 3200000  current=824,808.34  best=824,805.55  T=2.44
+SA  iter 3250000  current=824,372.99  best=824,369.92  T=2.34
+SA  iter 3300000  current=824,332.50  best=824,322.34  T=2.23
+SA  iter 3350000  current=823,637.22  best=823,633.91  T=2.13
+SA  iter 3400000  current=823,493.38  best=823,493.38  T=2.04
+SA  iter 3450000  current=823,485.64  best=823,468.19  T=1.95
+SA  iter 3500000  current=823,162.82  best=823,139.20  T=1.86
+SA  iter 3550000  current=823,130.99  best=823,117.37  T=1.78
+SA  iter 3600000  current=822,758.71  best=822,748.26  T=1.70
+SA  iter 3650000  current=822,189.61  best=822,177.09  T=1.63
+SA  iter 3700000  current=821,304.82  best=821,303.05  T=1.55
+SA  iter 3750000  current=820,909.35  best=820,900.48  T=1.49
+SA  iter 3800000  current=819,693.74  best=819,683.46  T=1.42
+SA  iter 3850000  current=819,269.05  best=819,265.76  T=1.36
+SA  iter 3900000  current=819,219.56  best=819,216.76  T=1.30
+SA  iter 3950000  current=819,185.08  best=819,176.52  T=1.24
+SA  iter 4000000  current=818,916.77  best=818,916.39  T=1.18
+SA  iter 4050000  current=818,854.69  best=818,852.91  T=1.13
+SA  iter 4100000  current=818,800.85  best=818,798.94  T=1.08
+SA  iter 4150000  current=818,220.60  best=818,219.66  T=1.03
+SA  iter 4200000  current=818,035.65  best=818,035.65  T=0.99
+SA  iter 4250000  current=817,609.36  best=817,604.61  T=0.94
+SA  iter 4300000  current=817,155.40  best=817,150.78  T=0.90
+SA  iter 4350000  current=817,154.84  best=817,150.78  T=0.86
+SA  iter 4400000  current=817,029.72  best=817,019.49  T=0.82
+SA  iter 4450000  current=816,871.59  best=816,870.72  T=0.79
+SA  iter 4500000  current=816,775.66  best=816,775.66  T=0.75
+SA done  best=816,774.12  iter=4500296  seconds=24000.0  stop=time limit  T_end=0.75
+done greedy 07_full_slack_thin SA 50  best=816,774.12  imp=38.19%  iter=4500296/4502444

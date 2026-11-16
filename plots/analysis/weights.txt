@@ -1,0 +1,13 @@
+Pilot: original instance, random start, seed 44, equal weights, T25, 400 minutes.
+Score per scored neighbor: new best 33, better than current 9, accepted worse 13, rejected 0.
+Raw weight = total score / scored neighbors. Divide by the smallest positive raw value, then cap at 5.
+A move with no score stays at 1. Build rate is recorded and not used.
+Temperatures are not taken from this pilot.
+
+rebuild	4.143817	draw=24.28%	uses=25882	new_best=296	improved=25586	accepted_worse=0	rejected=0
+hand-over	2.861643	draw=16.77%	uses=776085	new_best=4245	improved=222520	accepted_worse=217530	rejected=331790
+exchange	3.018968	draw=17.69%	uses=431874	new_best=1891	improved=98107	accepted_worse=151751	rejected=180125
+add-car	1.528509	draw=8.96%	uses=750339	new_best=7042	improved=234918	accepted_worse=16945	rejected=491434
+remove-car	1.000000	draw=5.86%	uses=1182032	new_best=567	improved=12280	accepted_worse=193564	rejected=975621
+add-dealer	2.820634	draw=16.53%	uses=923961	new_best=0	improved=31	accepted_worse=448668	rejected=475262
+remove-dealer	1.693475	draw=9.92%	uses=1094463	new_best=7339	improved=382674	accepted_worse=35541	rejected=668909

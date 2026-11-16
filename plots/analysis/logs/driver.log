@@ -1,0 +1,112 @@
+Calibration /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/data/data_exp.json  random start  seed 44  equal weights  T0=4,822.21  floor=72.58  24000s
+Initial plots: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/initial
+Weights: rebuild=4.144, hand-over=2.862, exchange=3.019, add-car=1.529, remove-car=1.000, add-dealer=2.821, remove-dealer=1.693
+Pending jobs: 48  workers=8  seconds=24000
+started greedy 00_original sa_T75 pid=46545
+started greedy 00_original sa_T25 pid=46546
+started greedy 00_original sa_500 pid=46547
+started greedy 00_original sa_50 pid=46548
+started greedy 00_original tabu_n70_t25 pid=46549
+started greedy 00_original tabu_n70_t625 pid=46550
+started greedy 02_growth_no_fleet sa_T75 pid=46551
+started greedy 02_growth_no_fleet sa_T25 pid=46552
+done greedy 00_original SA T75  best=2,076,165.00  imp=0.00%  iter=0/3197401
+done greedy 00_original SA T25  best=1,759,381.33  imp=15.26%  iter=3384496/3384848
+done greedy 00_original SA 500  best=1,569,089.55  imp=24.42%  iter=3878138/3880523
+done greedy 00_original SA 50  best=1,517,212.49  imp=26.92%  iter=3880303/3880920
+done greedy 02_growth_no_fleet SA T75  best=24,531,505.40  imp=16.11%  iter=1928556/1928558
+done greedy 02_growth_no_fleet SA T25  best=20,819,111.73  imp=28.81%  iter=1894513/1894513
+done greedy 00_original Tabu 70/25  best=1,518,534.60  imp=26.86%  iter=60530/60544
+done greedy 00_original Tabu 70/625  best=1,502,347.71  imp=27.64%  iter=60222/60290
+plots greedy 00_original
+started greedy 02_growth_no_fleet sa_500 pid=58043
+started greedy 02_growth_no_fleet sa_50 pid=58044
+started greedy 02_growth_no_fleet tabu_n70_t25 pid=58045
+started greedy 02_growth_no_fleet tabu_n70_t625 pid=58046
+started greedy 07_full_slack_thin sa_T75 pid=58047
+plots greedy 00_original
+started greedy 07_full_slack_thin sa_T25 pid=58055
+started greedy 07_full_slack_thin sa_500 pid=58056
+started greedy 07_full_slack_thin sa_50 pid=58057
+done greedy 07_full_slack_thin SA T75  best=832,874.98  imp=36.97%  iter=3563663/3566733
+done greedy 02_growth_no_fleet SA 50  best=27,824,334.96  imp=4.85%  iter=2715876/2716223
+done greedy 02_growth_no_fleet SA 500  best=22,814,941.88  imp=21.98%  iter=2139523/2139817
+done greedy 02_growth_no_fleet Tabu 70/625  best=28,907,725.87  imp=1.15%  iter=40999/41060
+done greedy 02_growth_no_fleet Tabu 70/25  best=28,835,231.98  imp=1.39%  iter=40493/40522
+plots greedy 02_growth_no_fleet
+started greedy 07_full_slack_thin tabu_n70_t25 pid=64003
+started greedy 07_full_slack_thin tabu_n70_t625 pid=64004
+started greedy 09_far_tight sa_T75 pid=64005
+started greedy 09_far_tight sa_T25 pid=64006
+started greedy 09_far_tight sa_500 pid=64007
+done greedy 07_full_slack_thin SA 500  best=806,229.15  imp=38.99%  iter=5044520/5078392
+done greedy 07_full_slack_thin SA T25  best=836,980.15  imp=36.66%  iter=4036247/4046135
+done greedy 07_full_slack_thin SA 50  best=816,774.12  imp=38.19%  iter=4500296/4502444
+started greedy 09_far_tight sa_50 pid=64026
+started greedy 09_far_tight tabu_n70_t25 pid=64027
+started greedy 09_far_tight tabu_n70_t625 pid=64028
+done greedy 09_far_tight SA T75  best=612,738.45  imp=61.94%  iter=9646302/9647154
+done greedy 09_far_tight SA T25  best=610,408.31  imp=62.08%  iter=9802801/9952060
+done greedy 09_far_tight SA 500  best=595,680.14  imp=63.00%  iter=10548229/10717175
+done greedy 07_full_slack_thin Tabu 70/25  best=820,084.54  imp=37.94%  iter=62666/62729
+done greedy 07_full_slack_thin Tabu 70/625  best=802,705.80  imp=39.26%  iter=63585/63634
+done greedy 09_far_tight SA 50  best=873,008.97  imp=45.77%  iter=11450359/11655002
+done greedy 09_far_tight Tabu 70/25  best=876,403.04  imp=45.56%  iter=152686/153961
+done greedy 09_far_tight Tabu 70/625  best=868,934.09  imp=46.03%  iter=162061/162296
+plots greedy 09_far_tight
+plots greedy 07_full_slack_thin
+started random 00_original sa_T75 pid=70405
+started random 00_original sa_T25 pid=70406
+started random 00_original sa_500 pid=70407
+started random 00_original sa_50 pid=70408
+started random 00_original tabu_n70_t25 pid=70409
+plots greedy 09_far_tight
+started random 00_original tabu_n70_t625 pid=70412
+started random 02_growth_no_fleet sa_T75 pid=70413
+started random 02_growth_no_fleet sa_T25 pid=70414
+done random 00_original SA 50  best=9,164,981.07  imp=74.96%  iter=4797245/4917464
+done random 00_original SA T25  best=3,538,143.40  imp=90.33%  iter=3447961/3456062
+done random 00_original SA T75  best=4,716,117.09  imp=87.12%  iter=3315972/3316034
+done random 00_original SA 500  best=3,950,099.30  imp=89.21%  iter=4232807/4233293
+done random 00_original Tabu 70/25  best=9,922,460.01  imp=72.89%  iter=71165/71173
+started random 02_growth_no_fleet sa_500 pid=77473
+started random 02_growth_no_fleet sa_50 pid=77474
+started random 02_growth_no_fleet tabu_n70_t25 pid=77475
+started random 02_growth_no_fleet tabu_n70_t625 pid=77476
+started random 07_full_slack_thin sa_T75 pid=77477
+done random 02_growth_no_fleet SA T75  best=29,614,504.38  imp=69.27%  iter=1987620/1987801
+done random 02_growth_no_fleet SA T25  best=27,251,976.91  imp=71.72%  iter=1982963/1983023
+done random 00_original Tabu 70/625  best=9,613,576.25  imp=73.74%  iter=72776/72778
+started random 07_full_slack_thin sa_T25 pid=77504
+plots random 00_original
+started random 07_full_slack_thin sa_500 pid=77514
+started random 07_full_slack_thin sa_50 pid=77515
+done random 07_full_slack_thin SA T75  best=852,097.58  imp=98.02%  iter=3547900/3555175
+done random 02_growth_no_fleet SA 50  best=54,237,757.02  imp=43.72%  iter=3134494/3154492
+done random 02_growth_no_fleet SA 500  best=33,196,987.78  imp=65.55%  iter=2362478/2362931
+done random 02_growth_no_fleet Tabu 70/625  best=65,283,197.65  imp=32.26%  iter=47776/47793
+done random 02_growth_no_fleet Tabu 70/25  best=67,393,931.53  imp=30.07%  iter=46947/46961
+plots random 02_growth_no_fleet
+started random 07_full_slack_thin tabu_n70_t25 pid=83824
+started random 07_full_slack_thin tabu_n70_t625 pid=83825
+started random 09_far_tight sa_T75 pid=83826
+started random 09_far_tight sa_T25 pid=83827
+started random 09_far_tight sa_500 pid=83828
+done random 07_full_slack_thin SA T25  best=847,058.48  imp=98.03%  iter=4067510/4068031
+started random 09_far_tight sa_50 pid=83834
+done random 07_full_slack_thin SA 50  best=2,154,854.26  imp=94.99%  iter=4563582/5525820
+done random 07_full_slack_thin SA 500  best=856,051.81  imp=98.01%  iter=5224466/5231456
+started random 09_far_tight tabu_n70_t25 pid=83838
+started random 09_far_tight tabu_n70_t625 pid=83839
+done random 09_far_tight SA T75  best=638,737.75  imp=95.40%  iter=9629248/9639892
+done random 09_far_tight SA T25  best=575,622.24  imp=95.85%  iter=9779680/9780076
+done random 09_far_tight SA 500  best=591,582.30  imp=95.74%  iter=10971443/10979835
+done random 07_full_slack_thin Tabu 70/25  best=1,988,372.04  imp=95.38%  iter=79672/79748
+done random 07_full_slack_thin Tabu 70/625  best=1,948,864.97  imp=95.47%  iter=79085/81235
+done random 09_far_tight SA 50  best=2,842,791.66  imp=79.52%  iter=5934169/14521615
+plots random 07_full_slack_thin
+done random 09_far_tight Tabu 70/625  best=2,974,008.94  imp=78.58%  iter=195227/201292
+done random 09_far_tight Tabu 70/25  best=2,931,796.59  imp=78.88%  iter=194326/197405
+plots random 09_far_tight
+Grid finished
+Reports written

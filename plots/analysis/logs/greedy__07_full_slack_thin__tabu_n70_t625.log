@@ -1,0 +1,42 @@
+greedy 07_full_slack_thin start
+  Transport                 1,321,491.85
+  Holding                           0.00
+  Backorder                         0.00   (0 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                     1,321,491.85
+  Cars delivered                   2,170
+Tabu start  total=1,321,491.85  neighbors=70  tabu_size=625
+Tabu  iter  2000  current=950,309.81  best=950,309.81
+Tabu  iter  4000  current=914,205.90  best=914,177.46
+Tabu  iter  6000  current=896,807.11  best=896,486.56
+Tabu  iter  8000  current=882,689.88  best=882,518.09
+Tabu  iter 10000  current=876,847.45  best=876,760.26
+Tabu  iter 12000  current=872,637.68  best=872,637.68
+Tabu  iter 14000  current=867,785.08  best=867,581.57
+Tabu  iter 16000  current=862,219.33  best=862,042.69
+Tabu  iter 18000  current=858,026.68  best=857,899.13
+Tabu  iter 20000  current=852,383.12  best=852,340.01
+Tabu  iter 22000  current=848,168.87  best=847,933.96
+Tabu  iter 24000  current=842,341.78  best=842,108.97
+Tabu  iter 26000  current=839,535.68  best=839,405.84
+Tabu  iter 28000  current=835,945.79  best=835,790.17
+Tabu  iter 30000  current=833,201.05  best=832,061.96
+Tabu  iter 32000  current=831,015.62  best=830,588.13
+Tabu  iter 34000  current=829,810.52  best=829,236.95
+Tabu  iter 36000  current=826,269.43  best=825,678.22
+Tabu  iter 38000  current=823,638.19  best=823,257.00
+Tabu  iter 40000  current=821,059.30  best=820,856.60
+Tabu  iter 42000  current=819,786.35  best=818,661.90
+Tabu  iter 44000  current=817,602.05  best=817,323.49
+Tabu  iter 46000  current=815,861.58  best=815,826.83
+Tabu  iter 48000  current=813,674.13  best=812,723.59
+Tabu  iter 50000  current=810,868.65  best=810,638.35
+Tabu  iter 52000  current=809,191.55  best=808,924.06
+Tabu  iter 54000  current=808,692.86  best=808,692.86
+Tabu  iter 56000  current=808,040.60  best=807,733.16
+Tabu  iter 58000  current=806,904.22  best=806,551.51
+Tabu  iter 60000  current=805,043.76  best=804,858.75
+Tabu  iter 62000  current=803,908.40  best=803,681.83
+Tabu done  best=802,705.80  iter=63585  seconds=24000.2  stop=time limit  forbidden=0.19%  all_tabu=0  worse_steps=27577
+done greedy 07_full_slack_thin Tabu 70/625  best=802,705.80  imp=39.26%  iter=63585/63634

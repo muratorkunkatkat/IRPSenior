@@ -1,0 +1,48 @@
+greedy 02_growth_no_fleet start
+  Transport                 1,771,969.50
+  Holding                           0.00
+  Backorder                27,471,000.00   (54,942 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                    29,242,969.50
+  Cars delivered                   9,842
+SA start  total=29,242,969.50  T0=4,822.21  T_final=72.58  clock cool over 24000s
+SA  iter 50000  current=33,327,686.71  best=29,242,969.50  T=4,443.29
+SA  iter 100000  current=32,849,246.53  best=29,242,969.50  T=4,043.96
+SA  iter 150000  current=32,327,418.35  best=29,242,969.50  T=3,670.57
+SA  iter 200000  current=31,702,888.62  best=29,242,969.50  T=3,322.72
+SA  iter 250000  current=31,056,651.97  best=29,242,969.50  T=3,003.26
+SA  iter 300000  current=30,306,637.91  best=29,242,969.50  T=2,709.26
+SA  iter 350000  current=29,836,958.62  best=29,242,969.50  T=2,440.19
+SA  iter 400000  current=29,144,023.78  best=29,092,877.98  T=2,195.19
+SA  iter 450000  current=28,518,452.43  best=28,500,170.22  T=1,969.97
+SA  iter 500000  current=27,937,259.04  best=27,932,241.96  T=1,765.92
+SA  iter 550000  current=27,458,731.81  best=27,454,793.48  T=1,580.88
+SA  iter 600000  current=27,016,213.76  best=27,007,669.57  T=1,414.50
+SA  iter 650000  current=26,568,227.33  best=26,526,848.50  T=1,264.07
+SA  iter 700000  current=26,124,752.19  best=26,104,989.55  T=1,128.51
+SA  iter 750000  current=25,890,544.88  best=25,849,304.17  T=1,007.97
+SA  iter 800000  current=25,603,681.09  best=25,598,790.21  T=899.56
+SA  iter 850000  current=25,303,014.28  best=25,294,611.25  T=802.07
+SA  iter 900000  current=25,074,794.06  best=25,070,626.25  T=715.04
+SA  iter 950000  current=24,785,271.93  best=24,778,088.76  T=636.91
+SA  iter 1000000  current=24,563,942.51  best=24,552,177.55  T=566.50
+SA  iter 1050000  current=24,261,159.32  best=24,253,757.26  T=504.22
+SA  iter 1100000  current=24,024,234.43  best=24,002,114.37  T=448.88
+SA  iter 1150000  current=23,790,645.44  best=23,790,645.44  T=399.63
+SA  iter 1200000  current=23,564,833.50  best=23,559,415.73  T=355.71
+SA  iter 1250000  current=23,338,909.65  best=23,337,634.14  T=316.81
+SA  iter 1300000  current=23,157,139.21  best=23,155,271.34  T=282.20
+SA  iter 1350000  current=22,923,331.22  best=22,922,856.18  T=251.37
+SA  iter 1400000  current=22,650,780.97  best=22,650,780.97  T=223.96
+SA  iter 1450000  current=22,456,862.79  best=22,456,267.47  T=199.57
+SA  iter 1500000  current=22,246,413.88  best=22,245,760.62  T=177.79
+SA  iter 1550000  current=21,992,894.66  best=21,992,652.33  T=158.46
+SA  iter 1600000  current=21,783,936.05  best=21,783,918.22  T=141.22
+SA  iter 1650000  current=21,622,124.84  best=21,621,141.47  T=125.99
+SA  iter 1700000  current=21,471,578.83  best=21,471,578.83  T=112.50
+SA  iter 1750000  current=21,325,880.42  best=21,325,810.29  T=100.46
+SA  iter 1800000  current=21,107,053.67  best=21,106,917.57  T=89.72
+SA  iter 1850000  current=20,936,148.70  best=20,936,058.35  T=80.13
+SA done  best=20,819,111.73  iter=1894513  seconds=24000.0  stop=time limit  T_end=72.58
+done greedy 02_growth_no_fleet SA T25  best=20,819,111.73  imp=28.81%  iter=1894513/1894513

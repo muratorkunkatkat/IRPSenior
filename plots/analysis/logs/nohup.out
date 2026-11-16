@@ -1,0 +1,187 @@
+Calibration /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/data/data_exp.json  random start  seed 44  equal weights  T0=4,822.21  floor=72.58  24000s
+Random start
+  Transport                   895,403.31
+  Holding                     327,240.00
+  Backorder                21,596,000.00   (43,192 car-days)
+  End-of-month unsold      13,785,000.00   (919 cars)
+  Capacity penalty                  0.00
+  Total                    36,603,643.31
+  Cars delivered                   2,599
+SA start  total=36,603,643.31  T0=4,822.21  T_final=72.58  clock cool over 24000s
+SA  iter 50000  current=12,689,646.34  best=12,618,096.15  T=4,645.58
+SA  iter 100000  current=11,719,073.04  best=11,707,981.01  T=4,455.65
+SA  iter 150000  current=11,201,900.25  best=11,056,641.94  T=4,257.67
+SA  iter 200000  current=11,097,650.64  best=10,912,402.26  T=4,067.22
+SA  iter 250000  current=10,727,417.93  best=10,672,051.62  T=3,884.12
+SA  iter 300000  current=10,482,096.77  best=10,420,445.48  T=3,710.05
+SA  iter 350000  current=10,325,101.69  best=10,277,050.85  T=3,558.38
+SA  iter 400000  current=10,122,874.06  best=10,006,829.04  T=3,413.57
+SA  iter 450000  current=9,668,301.51  best=9,614,814.05  T=3,275.01
+SA  iter 500000  current=9,515,126.47  best=9,495,624.27  T=3,141.23
+SA  iter 550000  current=9,423,419.31  best=9,316,716.55  T=3,012.43
+SA  iter 600000  current=9,261,600.89  best=9,127,487.87  T=2,888.31
+SA  iter 650000  current=8,972,536.33  best=8,967,732.18  T=2,769.15
+SA  iter 700000  current=8,840,706.45  best=8,758,624.77  T=2,655.24
+SA  iter 750000  current=8,634,411.01  best=8,569,774.16  T=2,546.08
+SA  iter 800000  current=8,522,458.99  best=8,427,788.61  T=2,441.36
+SA  iter 850000  current=8,341,876.14  best=8,310,254.03  T=2,340.81
+SA  iter 900000  current=8,179,631.71  best=8,126,678.69  T=2,244.66
+SA  iter 950000  current=7,976,026.17  best=7,887,430.97  T=2,152.03
+SA  iter 1000000  current=7,790,903.53  best=7,687,909.85  T=2,062.44
+SA  iter 1050000  current=7,650,803.30  best=7,587,693.10  T=1,977.08
+SA  iter 1100000  current=7,320,843.25  best=7,319,829.79  T=1,894.44
+SA  iter 1150000  current=7,299,414.98  best=7,275,475.70  T=1,815.89
+SA  iter 1200000  current=7,270,212.71  best=7,136,030.00  T=1,739.58
+SA  iter 1250000  current=6,996,681.41  best=6,996,681.41  T=1,666.47
+SA  iter 1300000  current=6,864,745.42  best=6,820,701.03  T=1,597.18
+SA  iter 1350000  current=6,712,494.68  best=6,685,284.76  T=1,530.51
+SA  iter 1400000  current=6,557,098.57  best=6,541,944.77  T=1,466.11
+SA  iter 1450000  current=6,495,558.68  best=6,439,107.47  T=1,404.63
+SA  iter 1500000  current=6,390,178.13  best=6,351,989.34  T=1,345.89
+SA  iter 1550000  current=6,267,795.77  best=6,266,103.60  T=1,289.91
+SA  iter 1600000  current=6,152,480.43  best=6,122,193.76  T=1,236.04
+SA  iter 1650000  current=6,120,570.07  best=6,064,310.05  T=1,184.59
+SA  iter 1700000  current=5,983,551.96  best=5,971,257.97  T=1,134.95
+SA  iter 1750000  current=5,929,798.67  best=5,918,943.24  T=1,087.43
+SA  iter 1800000  current=5,875,495.96  best=5,849,184.86  T=1,041.91
+SA  iter 1850000  current=5,812,414.18  best=5,778,750.14  T=998.54
+SA  iter 1900000  current=5,703,191.83  best=5,693,701.59  T=957.22
+SA  iter 1950000  current=5,659,194.30  best=5,650,309.12  T=917.52
+SA  iter 2000000  current=5,587,568.52  best=5,560,898.94  T=879.68
+SA  iter 2050000  current=5,463,592.17  best=5,433,926.90  T=843.22
+SA  iter 2100000  current=5,351,658.04  best=5,350,881.38  T=808.14
+SA  iter 2150000  current=5,254,098.84  best=5,236,979.68  T=774.73
+SA  iter 2200000  current=5,148,115.84  best=5,131,607.28  T=742.63
+SA  iter 2250000  current=5,071,182.82  best=5,064,447.22  T=712.09
+SA  iter 2300000  current=5,029,136.99  best=5,015,562.01  T=682.70
+SA  iter 2350000  current=4,985,534.60  best=4,966,023.78  T=652.36
+SA  iter 2400000  current=4,947,149.41  best=4,927,715.86  T=624.72
+SA  iter 2450000  current=4,823,215.52  best=4,799,752.68  T=599.29
+SA  iter 2500000  current=4,765,387.80  best=4,739,464.45  T=574.93
+SA  iter 2550000  current=4,729,437.85  best=4,719,599.26  T=551.44
+SA  iter 2600000  current=4,624,327.52  best=4,624,327.52  T=529.03
+SA  iter 2650000  current=4,553,688.72  best=4,535,344.92  T=507.48
+SA  iter 2700000  current=4,486,591.28  best=4,478,586.36  T=487.04
+SA  iter 2750000  current=4,478,283.29  best=4,459,098.23  T=467.60
+SA  iter 2800000  current=4,444,507.69  best=4,425,898.83  T=448.92
+SA  iter 2850000  current=4,432,862.39  best=4,414,859.32  T=431.06
+SA  iter 2900000  current=4,366,203.47  best=4,359,436.67  T=413.79
+SA  iter 2950000  current=4,319,097.64  best=4,318,341.80  T=397.47
+SA  iter 3000000  current=4,284,622.32  best=4,269,823.51  T=381.73
+SA  iter 3050000  current=4,251,242.15  best=4,248,899.19  T=366.61
+SA  iter 3100000  current=4,201,705.39  best=4,195,316.60  T=352.21
+SA  iter 3150000  current=4,199,541.82  best=4,194,869.81  T=338.44
+SA  iter 3200000  current=4,144,572.68  best=4,144,168.21  T=325.34
+SA  iter 3250000  current=4,061,942.57  best=4,059,612.28  T=312.72
+SA  iter 3300000  current=4,056,828.72  best=4,043,119.26  T=300.59
+SA  iter 3350000  current=3,977,980.10  best=3,975,336.09  T=288.92
+SA  iter 3400000  current=3,938,556.34  best=3,935,327.08  T=277.79
+SA  iter 3450000  current=3,910,210.61  best=3,897,153.21  T=267.09
+SA  iter 3500000  current=3,871,022.17  best=3,865,859.12  T=256.85
+SA  iter 3550000  current=3,828,650.39  best=3,826,950.10  T=247.03
+SA  iter 3600000  current=3,819,324.85  best=3,804,168.57  T=237.56
+SA  iter 3650000  current=3,752,640.01  best=3,747,600.47  T=228.51
+SA  iter 3700000  current=3,745,394.88  best=3,733,384.04  T=219.89
+SA  iter 3750000  current=3,663,371.34  best=3,662,834.33  T=211.47
+SA  iter 3800000  current=3,637,855.46  best=3,637,515.09  T=203.50
+SA  iter 3850000  current=3,596,962.36  best=3,592,840.92  T=195.89
+SA  iter 3900000  current=3,595,797.83  best=3,589,099.33  T=188.62
+SA  iter 3950000  current=3,547,419.69  best=3,541,394.44  T=181.62
+SA  iter 4000000  current=3,493,886.18  best=3,493,688.49  T=174.88
+SA  iter 4050000  current=3,460,547.89  best=3,457,578.97  T=168.35
+SA  iter 4100000  current=3,435,744.52  best=3,435,566.97  T=162.13
+SA  iter 4150000  current=3,393,466.29  best=3,391,950.61  T=156.15
+SA  iter 4200000  current=3,360,463.31  best=3,359,275.74  T=150.33
+SA  iter 4250000  current=3,348,295.75  best=3,345,182.02  T=144.75
+SA  iter 4300000  current=3,323,879.99  best=3,319,709.37  T=139.41
+SA  iter 4350000  current=3,247,741.71  best=3,245,922.40  T=134.26
+SA  iter 4400000  current=3,236,222.00  best=3,229,804.63  T=129.30
+SA  iter 4450000  current=3,215,929.28  best=3,215,072.03  T=124.55
+SA  iter 4500000  current=3,181,591.42  best=3,177,789.88  T=120.02
+SA  iter 4550000  current=3,170,926.09  best=3,170,746.03  T=115.64
+SA  iter 4600000  current=3,166,571.75  best=3,163,306.54  T=111.43
+SA  iter 4650000  current=3,156,877.85  best=3,152,881.84  T=107.40
+SA  iter 4700000  current=3,148,931.98  best=3,145,202.76  T=103.53
+SA  iter 4750000  current=3,129,961.58  best=3,128,271.82  T=99.77
+SA  iter 4800000  current=3,107,940.78  best=3,106,708.68  T=96.15
+SA  iter 4850000  current=3,094,271.57  best=3,093,562.94  T=92.68
+SA  iter 4900000  current=3,084,318.49  best=3,083,486.58  T=89.33
+SA  iter 4950000  current=3,077,451.62  best=3,076,444.55  T=86.12
+SA  iter 5000000  current=3,074,001.96  best=3,072,399.87  T=83.04
+SA  iter 5050000  current=3,061,941.09  best=3,058,900.58  T=80.06
+SA  iter 5100000  current=3,048,294.18  best=3,048,294.18  T=77.19
+SA  iter 5150000  current=3,041,120.68  best=3,039,554.19  T=74.42
+SA done  best=3,018,554.49  iter=5182648  seconds=24000.0  stop=time limit  T_end=72.58
+Calibration best
+  Transport                   906,114.49
+  Holding                     276,940.00
+  Backorder                 1,835,500.00   (3,671 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                     3,018,554.49
+  Cars delivered                   4,055
+Initial plots: /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/initial
+Weights: rebuild=4.144, hand-over=2.862, exchange=3.019, add-car=1.529, remove-car=1.000, add-dealer=2.821, remove-dealer=1.693
+Pending jobs: 48  workers=8  seconds=24000
+started greedy 00_original sa_T75 pid=46545
+started greedy 00_original sa_T25 pid=46546
+started greedy 00_original sa_500 pid=46547
+started greedy 00_original sa_50 pid=46548
+started greedy 00_original tabu_n70_t25 pid=46549
+started greedy 00_original tabu_n70_t625 pid=46550
+started greedy 02_growth_no_fleet sa_T75 pid=46551
+started greedy 02_growth_no_fleet sa_T25 pid=46552
+plots greedy 00_original
+started greedy 02_growth_no_fleet sa_500 pid=58043
+started greedy 02_growth_no_fleet sa_50 pid=58044
+started greedy 02_growth_no_fleet tabu_n70_t25 pid=58045
+started greedy 02_growth_no_fleet tabu_n70_t625 pid=58046
+started greedy 07_full_slack_thin sa_T75 pid=58047
+plots greedy 00_original
+started greedy 07_full_slack_thin sa_T25 pid=58055
+started greedy 07_full_slack_thin sa_500 pid=58056
+started greedy 07_full_slack_thin sa_50 pid=58057
+plots greedy 02_growth_no_fleet
+started greedy 07_full_slack_thin tabu_n70_t25 pid=64003
+started greedy 07_full_slack_thin tabu_n70_t625 pid=64004
+started greedy 09_far_tight sa_T75 pid=64005
+started greedy 09_far_tight sa_T25 pid=64006
+started greedy 09_far_tight sa_500 pid=64007
+started greedy 09_far_tight sa_50 pid=64026
+started greedy 09_far_tight tabu_n70_t25 pid=64027
+started greedy 09_far_tight tabu_n70_t625 pid=64028
+plots greedy 09_far_tight
+plots greedy 07_full_slack_thin
+started random 00_original sa_T75 pid=70405
+started random 00_original sa_T25 pid=70406
+started random 00_original sa_500 pid=70407
+started random 00_original sa_50 pid=70408
+started random 00_original tabu_n70_t25 pid=70409
+plots greedy 09_far_tight
+started random 00_original tabu_n70_t625 pid=70412
+started random 02_growth_no_fleet sa_T75 pid=70413
+started random 02_growth_no_fleet sa_T25 pid=70414
+started random 02_growth_no_fleet sa_500 pid=77473
+started random 02_growth_no_fleet sa_50 pid=77474
+started random 02_growth_no_fleet tabu_n70_t25 pid=77475
+started random 02_growth_no_fleet tabu_n70_t625 pid=77476
+started random 07_full_slack_thin sa_T75 pid=77477
+started random 07_full_slack_thin sa_T25 pid=77504
+plots random 00_original
+started random 07_full_slack_thin sa_500 pid=77514
+started random 07_full_slack_thin sa_50 pid=77515
+plots random 02_growth_no_fleet
+started random 07_full_slack_thin tabu_n70_t25 pid=83824
+started random 07_full_slack_thin tabu_n70_t625 pid=83825
+started random 09_far_tight sa_T75 pid=83826
+started random 09_far_tight sa_T25 pid=83827
+started random 09_far_tight sa_500 pid=83828
+started random 09_far_tight sa_50 pid=83834
+started random 09_far_tight tabu_n70_t25 pid=83838
+started random 09_far_tight tabu_n70_t625 pid=83839
+plots random 07_full_slack_thin
+plots random 09_far_tight
+Grid finished
+Wrote /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/plots/analysis/results.docx  runs=48/48
+Wrote /home/orkun/Desktop/Files/Dersler/IE401/IRPSenior/docs/speech2.docx
+Reports written

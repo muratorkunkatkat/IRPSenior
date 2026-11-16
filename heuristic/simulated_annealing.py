@@ -22,6 +22,7 @@ import random
 import time
 
 from heuristic.search_problem import (
+    MOVE_NAMES,
     Solution,
     build_initial_trips,
     clone_trips,
@@ -85,6 +86,10 @@ def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
     move_counts = {}
     proposed_counts = {}
     rejected_counts = {}
+    outcome_counts = {
+        name: {"new_best": 0, "improved": 0, "accepted_worse": 0, "rejected": 0}
+        for name in MOVE_NAMES
+    }
     accepted_flags = []
     history = [{
         "iteration": 0,
@@ -143,13 +148,19 @@ def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
                 sol.aux = trial_aux
                 move_counts[proposal.kind] = move_counts.get(proposal.kind, 0) + 1
                 if trial.total + 1e-6 < best_cost.total:
+                    outcome_counts[proposal.kind]["new_best"] += 1
                     best_cost = trial
                     best_trips = clone_trips(sol.trips)
                     best_iteration = iteration
                     improved = True
+                elif delta < -1e-6:
+                    outcome_counts[proposal.kind]["improved"] += 1
+                else:
+                    outcome_counts[proposal.kind]["accepted_worse"] += 1
             else:
                 proposal.undo()
                 rejected_counts[proposal.kind] = rejected_counts.get(proposal.kind, 0) + 1
+                outcome_counts[proposal.kind]["rejected"] += 1
             if alpha is not None and scored % cool_every == 0:
                 temperature = max(final_t, temperature * alpha)
         if history_every <= 1:
@@ -208,6 +219,7 @@ def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
         "move_counts": move_counts,
         "proposed_counts": proposed_counts,
         "rejected_counts": rejected_counts,
+        "outcome_counts": outcome_counts,
         "accepted_flags": accepted_flags,
         "scored": scored,
         "stopped": stopped,

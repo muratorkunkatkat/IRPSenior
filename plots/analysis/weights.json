@@ -1,12 +1,24 @@
 {
-  "weights": [
-    5.0,
-    1.4046779523343609,
-    2.447179123254089,
-    1.452967826153728,
+  "method": "alns-bounded",
+  "source": "Ropke and Pisinger, Transportation Science 2006, scores 33 / 9 / 13",
+  "scores": {
+    "new_best": 33,
+    "improved": 9,
+    "accepted_worse": 13,
+    "rejected": 0
+  },
+  "bound": [
     1.0,
-    1.242939228671601,
-    1.0546683389074694
+    5.0
+  ],
+  "weights": [
+    4.143816635984498,
+    2.8616430278989498,
+    3.0189683036294794,
+    1.5285094882533887,
+    1.0,
+    2.8206338094722456,
+    1.6934747769620035
   ],
   "names": [
     "rebuild",
@@ -17,59 +29,107 @@
     "add-dealer",
     "remove-dealer"
   ],
-  "stats": {
+  "outcomes": {
     "rebuild": {
-      "attempts": 76719,
-      "built": 1765
+      "new_best": 296,
+      "improved": 25586,
+      "accepted_worse": 0,
+      "rejected": 0
     },
     "hand-over": {
-      "attempts": 76090,
-      "built": 54169
+      "new_best": 4245,
+      "improved": 222520,
+      "accepted_worse": 217530,
+      "rejected": 331790
     },
     "exchange": {
-      "attempts": 75865,
-      "built": 31001
+      "new_best": 1891,
+      "improved": 98107,
+      "accepted_worse": 151751,
+      "rejected": 180125
     },
     "add-car": {
-      "attempts": 75688,
-      "built": 52092
+      "new_best": 7042,
+      "improved": 234918,
+      "accepted_worse": 16945,
+      "rejected": 491434
     },
     "remove-car": {
-      "attempts": 75733,
-      "built": 75733
+      "new_best": 567,
+      "improved": 12280,
+      "accepted_worse": 193564,
+      "rejected": 975621
     },
     "add-dealer": {
-      "attempts": 76575,
-      "built": 61608
+      "new_best": 0,
+      "improved": 31,
+      "accepted_worse": 448668,
+      "rejected": 475262
     },
     "remove-dealer": {
-      "attempts": 75683,
-      "built": 71760
+      "new_best": 7339,
+      "improved": 382674,
+      "accepted_worse": 35541,
+      "rejected": 668909
+    }
+  },
+  "stats": {
+    "rebuild": {
+      "attempts": 1183157,
+      "built": 25882
+    },
+    "hand-over": {
+      "attempts": 1182245,
+      "built": 776085
+    },
+    "exchange": {
+      "attempts": 1181700,
+      "built": 431874
+    },
+    "add-car": {
+      "attempts": 1183680,
+      "built": 750339
+    },
+    "remove-car": {
+      "attempts": 1182032,
+      "built": 1182032
+    },
+    "add-dealer": {
+      "attempts": 1184079,
+      "built": 923961
+    },
+    "remove-dealer": {
+      "attempts": 1181735,
+      "built": 1094463
     }
   },
   "move_counts": {
-    "rebuild": 1765,
-    "hand-over": 30415,
-    "exchange": 17045,
-    "add-car": 17395,
-    "remove-car": 12639,
-    "add-dealer": 29368,
-    "remove-dealer": 27444
+    "remove-car": 206411,
+    "add-dealer": 448699,
+    "remove-dealer": 425554,
+    "hand-over": 444295,
+    "exchange": 251749,
+    "add-car": 258905,
+    "rebuild": 25882
   },
   "proposed_counts": {
-    "rebuild": 1765,
-    "hand-over": 54169,
-    "exchange": 31001,
-    "add-car": 52092,
-    "remove-car": 75733,
-    "add-dealer": 61608,
-    "remove-dealer": 71760
+    "remove-car": 1182032,
+    "add-dealer": 923961,
+    "add-car": 750339,
+    "remove-dealer": 1094463,
+    "hand-over": 776085,
+    "exchange": 431874,
+    "rebuild": 25882
   },
   "t0": 4822.20817417136,
   "floor": 72.58146528808096,
   "seed": 44,
-  "seconds": 1800,
+  "seconds": 24000,
   "start": "random",
   "initial_total": 36603643.31,
-  "best_total": 6355573.050000001
+  "best_total": 3018554.4899999993,
+  "improvement": 91.75340425969198,
+  "iterations": 5184636,
+  "best_iteration": 5182648,
+  "elapsed": 24000.001962803
 }

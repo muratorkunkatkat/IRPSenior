@@ -1,0 +1,31 @@
+greedy 02_growth_no_fleet start
+  Transport                 1,771,969.50
+  Holding                           0.00
+  Backorder                27,471,000.00   (54,942 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                    29,242,969.50
+  Cars delivered                   9,842
+Tabu start  total=29,242,969.50  neighbors=70  tabu_size=625
+Tabu  iter  2000  current=29,152,857.51  best=29,152,832.39
+Tabu  iter  4000  current=29,134,520.75  best=29,134,508.35
+Tabu  iter  6000  current=29,096,883.46  best=29,096,864.54
+Tabu  iter  8000  current=29,087,174.05  best=29,087,174.05
+Tabu  iter 10000  current=29,084,780.15  best=29,084,754.65
+Tabu  iter 12000  current=29,080,627.74  best=29,080,599.53
+Tabu  iter 14000  current=29,077,965.42  best=29,077,947.18
+Tabu  iter 16000  current=29,073,336.12  best=29,073,298.18
+Tabu  iter 18000  current=29,067,510.68  best=29,067,506.47
+Tabu  iter 20000  current=29,034,177.48  best=29,034,177.48
+Tabu  iter 22000  current=29,022,309.83  best=29,022,290.71
+Tabu  iter 24000  current=29,006,121.39  best=29,006,121.39
+Tabu  iter 26000  current=28,985,255.25  best=28,985,216.64
+Tabu  iter 28000  current=28,976,701.84  best=28,976,697.41
+Tabu  iter 30000  current=28,973,168.83  best=28,973,158.19
+Tabu  iter 32000  current=28,969,847.81  best=28,969,775.92
+Tabu  iter 34000  current=28,967,856.85  best=28,967,767.31
+Tabu  iter 36000  current=28,938,606.77  best=28,938,599.31
+Tabu  iter 38000  current=28,923,590.14  best=28,923,590.14
+Tabu  iter 40000  current=28,908,350.80  best=28,908,326.58
+Tabu done  best=28,907,725.87  iter=40999  seconds=24000.3  stop=time limit  forbidden=0.23%  all_tabu=0  worse_steps=17614
+done greedy 02_growth_no_fleet Tabu 70/625  best=28,907,725.87  imp=1.15%  iter=40999/41060

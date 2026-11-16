@@ -1,0 +1,6 @@
+done 46/48
+waiting 0
+running 2
+updated 2026-11-14 18:59:42
+  pid 83838  random  09_far_tight  tabu_n70_t25
+  pid 83839  random  09_far_tight  tabu_n70_t625
