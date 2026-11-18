@@ -1,0 +1,22 @@
+plots greedy 00_original
+plots greedy 02_growth_no_fleet
+plots greedy 07_full_slack_thin
+plots greedy 09_far_tight
+plots random 00_original
+plots random 02_growth_no_fleet
+plots random 07_full_slack_thin
+plots random 09_far_tight
+Extend 60000s  jobs=6  one core each
+started greedy 00_original sa_T75 pid=12952
+started greedy 00_original sa_500 pid=12953
+started random 00_original sa_T75 pid=12954
+started greedy 02_growth_no_fleet sa_500 pid=12955
+started greedy 02_growth_no_fleet sa_T25 pid=12956
+started greedy 02_growth_no_fleet sa_T75 pid=12957
+done greedy 00_original SA T75  best=1,702,076.97  stop=time limit  iter=8392717/8398090
+done greedy 00_original SA 500  best=1,471,750.02  stop=time limit  iter=10078238/10290944
+done random 00_original SA T75  best=2,573,460.49  stop=time limit  iter=8472603/8475037
+done greedy 02_growth_no_fleet SA 500  best=20,105,294.57  stop=time limit  iter=5468575/5469681
+done greedy 02_growth_no_fleet SA T75  best=15,152,473.28  stop=time limit  iter=4619112/4619347
+done greedy 02_growth_no_fleet SA T25  best=13,471,818.03  stop=time limit  iter=4520738/4520868
+Extend finished  failed=0

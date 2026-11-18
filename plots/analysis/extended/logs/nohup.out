@@ -1,0 +1,8 @@
+Extend 60000s  jobs=6  one core each
+started greedy 00_original sa_T75 pid=12952
+started greedy 00_original sa_500 pid=12953
+started random 00_original sa_T75 pid=12954
+started greedy 02_growth_no_fleet sa_500 pid=12955
+started greedy 02_growth_no_fleet sa_T25 pid=12956
+started greedy 02_growth_no_fleet sa_T75 pid=12957
+Extend finished  failed=0
