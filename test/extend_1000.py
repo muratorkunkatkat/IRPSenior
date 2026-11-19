@@ -2,6 +2,7 @@
 
     python test/extend_1000.py plots
     python test/extend_1000.py extplots
+    python test/extend_1000.py combined
     python test/extend_1000.py
     python test/extend_1000.py job greedy 00_original sa_T75
 """
@@ -223,6 +224,52 @@ def plot_extended():
         _log(f"extended plots {start} {config_name}")
 
 
+def plot_combined():
+    """Best objective of all six algorithms; extended ones drawn with their 1000-minute run."""
+    groups = {}
+    for start, config_name, algo_key in JOBS:
+        groups.setdefault((start, config_name), set()).add(algo_key)
+    for (start, config_name), extended in groups.items():
+        spec = study.SPEC_BY_NAME[config_name]
+        start_word = "greedy plan" if start == "greedy" else "random plan"
+        fig, ax = plt.subplots(figsize=(11, 6.5))
+        greedy_total = None
+        for algo in study.ALGOS:
+            key = algo["key"]
+            if key in extended:
+                run = _load_extended(start, config_name, key)
+                label = f"{algo['label']} (1000 min)"
+            else:
+                run = study._load_run(start, config_name, key)
+                if run is None:
+                    raise SystemExit(f"missing 400-minute run {start} {config_name} {key}")
+                label = f"{algo['label']} (400 min)"
+            greedy_total = run.get("greedy_total", greedy_total)
+            history = run["history"]
+            ax.plot(
+                study._minutes(history),
+                [row["best"] for row in history],
+                color=study.COLORS[key],
+                linewidth=2,
+                label=label,
+            )
+        ax.axvline(400, color="#999999", linestyle="--", linewidth=1)
+        if start == "random" and greedy_total is not None:
+            ax.axhline(greedy_total, color="#666666", linestyle=":", linewidth=1.2, label="Greedy plan")
+        study._style(
+            ax,
+            f"{study._title(spec)} — best objective, {start_word}, 400 + 1000 min",
+            "Minutes",
+            "Best objective",
+        )
+        fig.tight_layout()
+        folder = OUT / start / config_name
+        folder.mkdir(parents=True, exist_ok=True)
+        fig.savefig(folder / "cost_vs_time_combined.png", dpi=140)
+        plt.close(fig)
+        _log(f"combined plot {start} {config_name}")
+
+
 def _run_job(start, config_name, algo_key):
     study._apply_weights()
     spec = study.SPEC_BY_NAME[config_name]
@@ -291,6 +338,10 @@ def main():
         return
     if len(sys.argv) >= 2 and sys.argv[1] == "extplots":
         plot_extended()
+        plot_combined()
+        return
+    if len(sys.argv) >= 2 and sys.argv[1] == "combined":
+        plot_combined()
         return
     if len(sys.argv) >= 2 and sys.argv[1] == "job":
         _run_job(sys.argv[2], sys.argv[3], sys.argv[4])

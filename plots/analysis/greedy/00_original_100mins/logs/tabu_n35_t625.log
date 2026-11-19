@@ -1,0 +1,22 @@
+greedy 00_original Tabu 35/625
+  Transport                 1,902,665.00
+  Holding                           0.00
+  Backorder                   173,500.00   (347 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                     2,076,165.00
+  Cars delivered                   4,306
+Tabu start  total=2,076,165.00  neighbors=35  tabu_size=625
+Tabu  iter  2000  current=1,704,091.82  best=1,704,091.82
+Tabu  iter  4000  current=1,676,996.64  best=1,676,996.12
+Tabu  iter  6000  current=1,657,110.29  best=1,657,002.95
+Tabu  iter  8000  current=1,643,482.11  best=1,643,482.11
+Tabu  iter 10000  current=1,634,293.18  best=1,634,274.63
+Tabu  iter 12000  current=1,624,306.45  best=1,624,238.69
+Tabu  iter 14000  current=1,617,113.45  best=1,616,888.38
+Tabu  iter 16000  current=1,612,412.97  best=1,611,506.83
+Tabu  iter 18000  current=1,605,519.01  best=1,605,390.19
+Tabu  iter 20000  current=1,598,472.02  best=1,598,222.28
+Tabu  iter 22000  current=1,593,746.23  best=1,593,688.50
+Tabu done  best=1,589,912.08  iter=23779  seconds=6000.2  stop=time limit  forbidden=0.12%  all_tabu=0  worse_steps=10183
+done Tabu 35/625  best=1,589,912.08  imp=23.42%  iter=23779/23781

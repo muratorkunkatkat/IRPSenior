@@ -23,3 +23,6 @@ Extend finished  failed=0
 extended plots greedy 00_original
 extended plots random 00_original
 extended plots greedy 02_growth_no_fleet
+combined plot greedy 00_original
+combined plot random 00_original
+combined plot greedy 02_growth_no_fleet

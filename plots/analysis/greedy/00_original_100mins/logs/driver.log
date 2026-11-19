@@ -1,0 +1,21 @@
+Original 100 min  jobs=9  one core each
+started sa_T75 pid=32080
+started sa_T50 pid=32081
+started sa_T25 pid=32082
+started sa_500 pid=32083
+started sa_50 pid=32084
+started tabu_n35_t25 pid=32085
+started tabu_n35_t625 pid=32086
+started tabu_n70_t25 pid=32087
+started tabu_n70_t625 pid=32088
+done SA T25  best=2,076,165.00  imp=0.00%  iter=0/765299
+done SA T75  best=2,076,165.00  imp=0.00%  iter=0/690666
+done SA 500  best=1,776,258.22  imp=14.45%  iter=920179/920371
+done SA 50  best=1,622,358.43  imp=21.86%  iter=760289/761971
+done Tabu 70/625  best=1,577,179.93  imp=24.03%  iter=14895/14898
+done Tabu 35/625  best=1,589,912.08  imp=23.42%  iter=23779/23781
+done SA T50  best=2,076,165.00  imp=0.00%  iter=0/712323
+done Tabu 70/25  best=1,576,074.07  imp=24.09%  iter=14727/14796
+done Tabu 35/25  best=1,592,909.58  imp=23.28%  iter=26589/27029
+finished  failed=0
+plots done

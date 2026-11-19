@@ -1,0 +1,26 @@
+greedy 00_original SA 50
+  Transport                 1,902,665.00
+  Holding                           0.00
+  Backorder                   173,500.00   (347 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                     2,076,165.00
+  Cars delivered                   4,306
+SA start  total=2,076,165.00  T0=50.00  T_final=0.75  clock cool over 6000s
+SA  iter 50000  current=1,782,097.91  best=1,781,953.61  T=39.62
+SA  iter 100000  current=1,748,805.02  best=1,748,682.77  T=27.34
+SA  iter 150000  current=1,728,858.27  best=1,728,813.12  T=18.19
+SA  iter 200000  current=1,706,974.73  best=1,706,880.31  T=12.24
+SA  iter 250000  current=1,693,735.97  best=1,693,710.49  T=8.29
+SA  iter 300000  current=1,682,166.61  best=1,682,166.61  T=6.47
+SA  iter 350000  current=1,669,991.41  best=1,669,988.23  T=4.47
+SA  iter 400000  current=1,660,414.95  best=1,660,404.87  T=3.49
+SA  iter 450000  current=1,649,470.72  best=1,649,456.33  T=2.81
+SA  iter 500000  current=1,644,070.04  best=1,644,062.32  T=2.26
+SA  iter 550000  current=1,639,025.98  best=1,639,023.63  T=1.83
+SA  iter 600000  current=1,635,055.66  best=1,635,055.66  T=1.48
+SA  iter 650000  current=1,631,099.31  best=1,631,098.17  T=1.20
+SA  iter 700000  current=1,628,123.47  best=1,628,117.05  T=0.97
+SA  iter 750000  current=1,623,703.49  best=1,623,699.41  T=0.79
+SA done  best=1,622,358.43  iter=760289  seconds=6000.0  stop=time limit  T_end=0.75
+done SA 50  best=1,622,358.43  imp=21.86%  iter=760289/761971

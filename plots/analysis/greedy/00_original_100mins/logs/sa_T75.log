@@ -1,0 +1,24 @@
+greedy 00_original SA T75
+  Transport                 1,902,665.00
+  Holding                           0.00
+  Backorder                   173,500.00   (347 car-days)
+  End-of-month unsold               0.00   (0 cars)
+  Capacity penalty                  0.00
+  Total                     2,076,165.00
+  Cars delivered                   4,306
+SA start  total=2,076,165.00  T0=23,237.46  T_final=72.58  clock cool over 6000s
+SA  iter 50000  current=15,328,460.31  best=2,076,165.00  T=16,709.08
+SA  iter 100000  current=15,239,348.19  best=2,076,165.00  T=10,029.99
+SA  iter 150000  current=13,829,775.28  best=2,076,165.00  T=7,078.84
+SA  iter 200000  current=11,509,823.88  best=2,076,165.00  T=4,175.38
+SA  iter 250000  current=9,744,353.20  best=2,076,165.00  T=2,326.26
+SA  iter 300000  current=8,547,126.40  best=2,076,165.00  T=1,278.92
+SA  iter 350000  current=7,823,220.05  best=2,076,165.00  T=732.03
+SA  iter 400000  current=7,194,415.85  best=2,076,165.00  T=513.98
+SA  iter 450000  current=6,659,894.96  best=2,076,165.00  T=340.32
+SA  iter 500000  current=6,156,800.95  best=2,076,165.00  T=244.75
+SA  iter 550000  current=5,726,628.99  best=2,076,165.00  T=178.06
+SA  iter 600000  current=5,254,951.05  best=2,076,165.00  T=130.82
+SA  iter 650000  current=4,947,332.65  best=2,076,165.00  T=96.68
+SA done  best=2,076,165.00  iter=0  seconds=6000.0  stop=time limit  T_end=72.58
+done SA T75  best=2,076,165.00  imp=0.00%  iter=0/690666
