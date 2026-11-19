@@ -1,6 +1,7 @@
 """1000-minute extensions. Does not touch the 400-minute cache.
 
     python test/extend_1000.py plots
+    python test/extend_1000.py extplots
     python test/extend_1000.py
     python test/extend_1000.py job greedy 00_original sa_T75
 """
@@ -98,6 +99,130 @@ def plot_current():
             _log(f"plots {start} {spec['name']}")
 
 
+def _load_extended(start, config_name, algo_key):
+    path = CACHE / f"{start}__{config_name}__{algo_key}.pkl"
+    if not path.exists():
+        raise SystemExit(f"missing 1000-minute run {start} {config_name} {algo_key}")
+    with open(path, "rb") as handle:
+        run = pickle.load(handle)
+    run["label"] = study.ALGO_BY_KEY[algo_key]["label"]
+    run["algo_key"] = algo_key
+    return run
+
+
+def plot_extended():
+    groups = {}
+    for start, config_name, algo_key in JOBS:
+        groups.setdefault((start, config_name), []).append(algo_key)
+    order = [algo["key"] for algo in study.ALGOS]
+    for (start, config_name), keys in groups.items():
+        keys.sort(key=order.index)
+        runs = [_load_extended(start, config_name, key) for key in keys]
+        spec = study.SPEC_BY_NAME[config_name]
+        name = study._title(spec)
+        folder = OUT / start / config_name
+        conv = folder / "convergence"
+        conv.mkdir(parents=True, exist_ok=True)
+        initial = runs[0]["initial_cost"].total
+        greedy_total = runs[0].get("greedy_total", initial)
+        start_word = "greedy plan" if start == "greedy" else "random plan"
+        tag = "1000 min"
+
+        def lines(path, title, ylabel, value, width, limit=None, greedy_line=False):
+            fig, ax = plt.subplots(figsize=(11, 6.5))
+            for run in runs:
+                history = run["history"]
+                ax.plot(
+                    study._minutes(history),
+                    [value(row) for row in history],
+                    color=study.COLORS[run["algo_key"]],
+                    linewidth=width,
+                    label=run["label"],
+                )
+            if greedy_line:
+                ax.axhline(greedy_total, color="#666666", linestyle=":", linewidth=1.2, label="Greedy plan")
+            if limit is not None:
+                ax.set_ylim(*limit)
+            study._style(ax, title, "Minutes", ylabel)
+            fig.tight_layout()
+            fig.savefig(folder / path, dpi=140)
+            plt.close(fig)
+
+        lines(
+            "cost_vs_time.png",
+            f"{name} — best objective, {start_word}, {tag}",
+            "Best objective",
+            lambda row: row["best"],
+            2,
+            greedy_line=(start == "random"),
+        )
+        lines(
+            "improvement_vs_time.png",
+            f"{name} — improvement vs {start_word}, {tag}",
+            "Improvement (%)",
+            lambda row: improvement(initial, row["best"]),
+            2,
+        )
+        lines(
+            "curr_cost_vs_time.png",
+            f"{name} — current objective, {start_word}, {tag}",
+            "Current objective",
+            lambda row: row["current"],
+            1.2,
+        )
+        best_values = [row["best"] for run in runs for row in run["history"]]
+        low, high = min(best_values), max(best_values)
+        span = max(high - low, 1.0)
+        lines(
+            "curr_cost_vs_time_rescaled.png",
+            f"{name} — current objective, best-cost axis, {start_word}, {tag}",
+            "Current objective",
+            lambda row: row["current"],
+            1.2,
+            limit=(low - 0.05 * span, high + 0.05 * span),
+        )
+
+        names = ["Start"] + [run["label"] for run in runs]
+        totals = [initial] + [run["best_cost"].total for run in runs]
+        colors = ["#999999"] + [study.COLORS[run["algo_key"]] for run in runs]
+        fig, ax = plt.subplots(figsize=(11, 6))
+        bars = ax.bar(names, totals, color=colors)
+        for bar, value in zip(bars, totals):
+            ax.annotate(
+                f"{value:,.0f}",
+                xy=(bar.get_x() + bar.get_width() / 2, bar.get_height()),
+                ha="center",
+                va="bottom",
+                fontsize=7,
+                rotation=90,
+            )
+        ax.set_ylim(0, max(totals) * 1.28)
+        ax.set_title(f"{name} — final objective, {start_word}, {tag}")
+        ax.set_ylabel("Objective value")
+        ax.tick_params(axis="x", labelrotation=25)
+        ax.grid(True, axis="y", linestyle="--", linewidth=0.5, alpha=0.7)
+        fig.tight_layout()
+        fig.savefig(folder / "total_cost.png", dpi=140)
+        plt.close(fig)
+
+        for run in runs:
+            history = run["history"]
+            fig, ax = plt.subplots(figsize=(10, 5.5))
+            ax.plot(study._minutes(history), [row["current"] for row in history],
+                    color="#56B4E9", linewidth=1, label="Current")
+            ax.plot(study._minutes(history), [row["best"] for row in history],
+                    color=study.COLORS[run["algo_key"]], linewidth=2, label="Best")
+            ax.set_title(f"{name} — {run['label']} — {start_word}, {tag}")
+            ax.set_xlabel("Minutes")
+            ax.set_ylabel("Objective value")
+            ax.grid(True, linestyle="--", linewidth=0.5, alpha=0.7)
+            ax.legend()
+            fig.tight_layout()
+            fig.savefig(conv / f"{run['algo_key']}.png", dpi=140)
+            plt.close(fig)
+        _log(f"extended plots {start} {config_name}")
+
+
 def _run_job(start, config_name, algo_key):
     study._apply_weights()
     spec = study.SPEC_BY_NAME[config_name]
@@ -163,6 +288,9 @@ def main():
     signal.signal(signal.SIGHUP, signal.SIG_IGN)
     if len(sys.argv) >= 2 and sys.argv[1] == "plots":
         plot_current()
+        return
+    if len(sys.argv) >= 2 and sys.argv[1] == "extplots":
+        plot_extended()
         return
     if len(sys.argv) >= 2 and sys.argv[1] == "job":
         _run_job(sys.argv[2], sys.argv[3], sys.argv[4])

@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{graphicx} % Required for inserting images
 \usepackage{amsmath}
-\usepackage{amssymb} 
+\usepackage{amssymb}
 \usepackage{geometry}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -142,10 +142,10 @@ Let $u_{kit}$ be an auxiliary continuous variable representing the sequence posi
         \While{(available trucks $> 0$) \textbf{and} (critical dealers for $c > 0$)}
             \State $current = 0$ (Factory)
             \State Pick an available truck $k \in K$
-            \State $available\_capacity = Q_c$   (given that car type is c)
+            \State $available\_capacity = Q_c$ (given that car type is c)
             \State $route = [\,]$
             \State $route\_time = 0$
-            
+
             \While{($available\_capacity > 0$) \textbf{and} (critical dealers for $c > 0$)}
                 \State $route$.append($current$)
                 \For{dealer $j \in N_{sorted}$ (by $A_{current, j}$)}
@@ -157,7 +157,7 @@ Let $u_{kit}$ be an auxiliary continuous variable representing the sequence posi
                             \State $available\_capacity = 0$
                             \State \textbf{break}
                         \EndIf
-                        
+
                         \State $route\_time = route\_time + A_{current, j}$
                         \State $current = j$
                         \State $available\_capacity = available\_capacity - $ cars needed for $j$
@@ -165,13 +165,13 @@ Let $u_{kit}$ be an auxiliary continuous variable representing the sequence posi
                     \EndIf
                 \EndFor
             \EndWhile
-            
+
             \If{$available\_capacity \neq 0$}
                 \If{remaining capacity for $route[-1] > available\_capacity$}
                     \State Drop off $available\_capacity$ at node $route[-1]$
                 \EndIf
             \EndIf
-            
+
             \State $route$.append($0$)
             \State $route\_time = route\_time + A_{current, 0}$
             \State Lock truck $k$ for $route\_time$ days

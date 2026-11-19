@@ -20,3 +20,6 @@ done greedy 02_growth_no_fleet SA 500  best=20,105,294.57  stop=time limit  iter
 done greedy 02_growth_no_fleet SA T75  best=15,152,473.28  stop=time limit  iter=4619112/4619347
 done greedy 02_growth_no_fleet SA T25  best=13,471,818.03  stop=time limit  iter=4520738/4520868
 Extend finished  failed=0
+extended plots greedy 00_original
+extended plots random 00_original
+extended plots greedy 02_growth_no_fleet
