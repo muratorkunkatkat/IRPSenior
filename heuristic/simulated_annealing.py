@@ -14,7 +14,9 @@ allowed below the T_final passed for this run. Each initial temperature needs
 its own alpha: the paper fixes one final temperature and one neighbor budget,
 so the multiplier that lands on that floor is different for each T0. If
 `alpha` is omitted and a time limit is set, temperature follows the clock
-from T0 to T_final.
+from T0 to T_final. With `keep_cooling`, the same geometric rate continues
+past the cooling horizon, so a 1000-minute run follows the 400-minute schedule
+for its first 400 minutes and then keeps cooling below T_final.
 """
 
 import math
@@ -56,17 +58,19 @@ def _accept(delta, temperature, rng):
     return rng.random() < math.exp(-scaled)
 
 
-def _temperature(temperature0, t_final, elapsed, time_limit_sec):
+def _temperature(temperature0, t_final, elapsed, time_limit_sec, keep_cooling=False):
     if time_limit_sec <= 0 or temperature0 <= t_final:
         return t_final
-    progress = min(1.0, max(0.0, elapsed / time_limit_sec))
+    progress = max(0.0, elapsed / time_limit_sec)
+    if not keep_cooling:
+        progress = min(1.0, progress)
     return temperature0 * (t_final / temperature0) ** progress
 
 
 def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
                             t0=None, t_final=None, time_limit_sec=None,
                             log_every=None, alpha=None, cool_every=10,
-                            history_every=1, cool_seconds=None):
+                            history_every=1, cool_seconds=None, keep_cooling=False):
     rng = random.Random(seed)
     sol = Solution(data, clone_trips(trips) if trips is not None else build_initial_trips(data))
     initial, aux = evaluate(sol)
@@ -114,7 +118,8 @@ def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
     if alpha is not None:
         cool_note = f"alpha={alpha} every {cool_every} neighbors"
     elif cool_horizon and time_limit_sec and cool_horizon < time_limit_sec:
-        cool_note = f"clock cool over {cool_horizon:.0f}s, search until {time_limit_sec:.0f}s"
+        after = "keep cooling" if keep_cooling else "hold T_final"
+        cool_note = f"clock cool over {cool_horizon:.0f}s, {after} until {time_limit_sec:.0f}s"
     elif time_limit_sec:
         cool_note = f"clock cool over {time_limit_sec:.0f}s"
     else:
@@ -131,7 +136,7 @@ def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
             stopped = "time limit"
             break
         if alpha is None and cool_horizon:
-            temperature = _temperature(temperature0, final_t, elapsed_now, cool_horizon)
+            temperature = _temperature(temperature0, final_t, elapsed_now, cool_horizon, keep_cooling)
         ran = iteration
         proposal = propose_move(sol, rng)
         accepted = False
@@ -212,6 +217,7 @@ def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
         "initial_cost": initial,
         "best_cost": exact,
         "best_trips": best_trips,
+        "current_trips": clone_trips(sol.trips),
         "best_iteration": best_iteration,
         "history": history,
         "elapsed": elapsed,
@@ -232,6 +238,7 @@ def run_simulated_annealing(data, iterations=1_000_000, seed=44, trips=None,
             "cool_every": cool_every,
             "time_limit_sec": time_limit_sec,
             "cool_seconds": cool_horizon,
+            "keep_cooling": keep_cooling,
             "temps": temps,
         },
     }

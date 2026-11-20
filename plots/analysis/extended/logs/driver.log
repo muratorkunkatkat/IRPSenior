@@ -26,3 +26,22 @@ extended plots greedy 02_growth_no_fleet
 combined plot greedy 00_original
 combined plot random 00_original
 combined plot greedy 02_growth_no_fleet
+Extend 60000s  jobs=7  one core each
+started greedy 00_original sa_T75 pid=63988
+started greedy 00_original sa_500 pid=63989
+started greedy 00_original sa_T25 pid=63990
+started random 00_original sa_T75 pid=63991
+started greedy 02_growth_no_fleet sa_500 pid=63992
+started greedy 02_growth_no_fleet sa_T25 pid=63993
+started greedy 02_growth_no_fleet sa_T75 pid=63994
+done greedy 00_original SA 500  best=1,437,904.68  stop=time limit  iter=10508305/10519426
+done greedy 00_original SA T25  best=1,480,882.62  stop=time limit  iter=9822819/9824359
+done greedy 00_original SA T75  best=1,702,472.14  stop=time limit  iter=9702389/9720480
+done random 00_original SA T75  best=4,012,500.59  stop=time limit  iter=10161478/10240853
+done greedy 02_growth_no_fleet SA 500  best=21,253,793.78  stop=time limit  iter=5828164/5828667
+done greedy 02_growth_no_fleet SA T25  best=17,161,095.16  stop=time limit  iter=5029450/5029759
+done greedy 02_growth_no_fleet SA T75  best=19,303,783.74  stop=time limit  iter=5107743/5111995
+Extend finished  failed=0
+extended plots greedy 00_original
+extended plots random 00_original
+extended plots greedy 02_growth_no_fleet

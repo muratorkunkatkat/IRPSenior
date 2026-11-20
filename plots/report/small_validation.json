@@ -1,0 +1,83 @@
+[
+ {
+  "trucks": 4,
+  "algo": "500",
+  "total": 51057.91,
+  "transport": 13817.91,
+  "holding": 740.0,
+  "backorder": 36500.0,
+  "unsold": 0.0
+ },
+ {
+  "trucks": 4,
+  "algo": "50",
+  "total": 62561.020000000004,
+  "transport": 12581.02,
+  "holding": 980.0,
+  "backorder": 49000.0,
+  "unsold": 0.0
+ },
+ {
+  "trucks": 4,
+  "algo": "tabu",
+  "total": 60377.54,
+  "transport": 13577.54,
+  "holding": 800.0,
+  "backorder": 46000.0,
+  "unsold": 0.0
+ },
+ {
+  "trucks": 6,
+  "algo": "500",
+  "total": 26975.44,
+  "transport": 13195.439999999999,
+  "holding": 2780.0,
+  "backorder": 11000.0,
+  "unsold": 0.0
+ },
+ {
+  "trucks": 6,
+  "algo": "50",
+  "total": 37850.020000000004,
+  "transport": 18950.02,
+  "holding": 1400.0,
+  "backorder": 17500.0,
+  "unsold": 0.0
+ },
+ {
+  "trucks": 6,
+  "algo": "tabu",
+  "total": 31265.75,
+  "transport": 18525.75,
+  "holding": 1240.0,
+  "backorder": 11500.0,
+  "unsold": 0.0
+ },
+ {
+  "trucks": 8,
+  "algo": "500",
+  "total": 19436.74,
+  "transport": 15476.740000000002,
+  "holding": 2960.0,
+  "backorder": 1000.0,
+  "unsold": 0.0
+ },
+ {
+  "trucks": 8,
+  "algo": "50",
+  "total": 24887.02,
+  "transport": 19347.02,
+  "holding": 2040.0,
+  "backorder": 3500.0,
+  "unsold": 0.0
+ },
+ {
+  "trucks": 8,
+  "algo": "tabu",
+  "total": 24169.86,
+  "transport": 19609.86,
+  "holding": 2060.0,
+  "backorder": 2500.0,
+  "unsold": 0.0
+ }
+]

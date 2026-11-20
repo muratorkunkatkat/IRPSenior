@@ -1,8 +1,10 @@
 """1000-minute extensions. Does not touch the 400-minute cache.
 
+The first 400 minutes follow the 400-minute cooling schedule; after that the
+temperature keeps falling at the same geometric rate (no floor).
+
     python test/extend_1000.py plots
     python test/extend_1000.py extplots
-    python test/extend_1000.py combined
     python test/extend_1000.py
     python test/extend_1000.py job greedy 00_original sa_T75
 """
@@ -31,14 +33,16 @@ from calibrate_metaheuristics import improvement, load_instance, print_cost
 from heuristic.search_problem import Solution, clone_trips, evaluate
 from heuristic.simulated_annealing import run_simulated_annealing
 
-EXTEND_SECONDS = 1000 * 60
+EXTEND_SECONDS = int(os.environ.get("EXTEND_SECONDS", 1000 * 60))
+COOL_SECONDS = int(os.environ.get("COOL_SECONDS", study.RUN_SECONDS))
 SA_ITERATIONS = 80_000_000
-OUT = study.OUT / "extended"
+OUT = Path(os.environ["EXTEND_OUT"]) if os.environ.get("EXTEND_OUT") else study.OUT / "extended"
 CACHE = OUT / "_cache"
 LOGS = OUT / "logs"
 JOBS = (
     ("greedy", "00_original", "sa_T75"),
     ("greedy", "00_original", "sa_500"),
+    ("greedy", "00_original", "sa_T25"),
     ("random", "00_original", "sa_T75"),
     ("greedy", "02_growth_no_fleet", "sa_500"),
     ("greedy", "02_growth_no_fleet", "sa_T25"),
@@ -111,25 +115,51 @@ def _load_extended(start, config_name, algo_key):
     return run
 
 
+STALE = ("cost_vs_time_combined.png", "curr_cost_vs_time.png", "curr_cost_vs_time_rescaled.png")
+
+
+def _combined_runs(start, config_name, extended):
+    runs = []
+    for algo in study.ALGOS:
+        key = algo["key"]
+        if key in extended:
+            run = _load_extended(start, config_name, key)
+            run["minutes"] = 1000
+        else:
+            run = study._load_run(start, config_name, key)
+            if run is None:
+                raise SystemExit(f"missing 400-minute run {start} {config_name} {key}")
+            run["minutes"] = 400
+        run["label"] = f"{algo['label']} ({run['minutes']} min)"
+        run["algo_key"] = key
+        runs.append(run)
+    return runs
+
+
 def plot_extended():
+    """Every extended plot is combined: extended algorithms use their 1000-minute run,
+    the others their 400-minute run. Convergence plots cover the extended runs."""
     groups = {}
     for start, config_name, algo_key in JOBS:
-        groups.setdefault((start, config_name), []).append(algo_key)
-    order = [algo["key"] for algo in study.ALGOS]
-    for (start, config_name), keys in groups.items():
-        keys.sort(key=order.index)
-        runs = [_load_extended(start, config_name, key) for key in keys]
+        groups.setdefault((start, config_name), set()).add(algo_key)
+    for (start, config_name), extended in groups.items():
+        runs = _combined_runs(start, config_name, extended)
         spec = study.SPEC_BY_NAME[config_name]
         name = study._title(spec)
         folder = OUT / start / config_name
         conv = folder / "convergence"
         conv.mkdir(parents=True, exist_ok=True)
+        for stale in STALE:
+            (folder / stale).unlink(missing_ok=True)
+        for stale in conv.glob("*.png"):
+            if stale.stem not in extended:
+                stale.unlink()
         initial = runs[0]["initial_cost"].total
-        greedy_total = runs[0].get("greedy_total", initial)
+        greedy_total = next((run["greedy_total"] for run in runs if run.get("greedy_total")), None)
         start_word = "greedy plan" if start == "greedy" else "random plan"
-        tag = "1000 min"
+        tag = "400 + 1000 min"
 
-        def lines(path, title, ylabel, value, width, limit=None, greedy_line=False):
+        def lines(path, title, ylabel, value, greedy_line=False):
             fig, ax = plt.subplots(figsize=(11, 6.5))
             for run in runs:
                 history = run["history"]
@@ -137,51 +167,21 @@ def plot_extended():
                     study._minutes(history),
                     [value(row) for row in history],
                     color=study.COLORS[run["algo_key"]],
-                    linewidth=width,
+                    linewidth=2,
                     label=run["label"],
                 )
-            if greedy_line:
+            ax.axvline(400, color="#999999", linestyle="--", linewidth=1)
+            if greedy_line and greedy_total is not None:
                 ax.axhline(greedy_total, color="#666666", linestyle=":", linewidth=1.2, label="Greedy plan")
-            if limit is not None:
-                ax.set_ylim(*limit)
             study._style(ax, title, "Minutes", ylabel)
             fig.tight_layout()
             fig.savefig(folder / path, dpi=140)
             plt.close(fig)
 
-        lines(
-            "cost_vs_time.png",
-            f"{name} — best objective, {start_word}, {tag}",
-            "Best objective",
-            lambda row: row["best"],
-            2,
-            greedy_line=(start == "random"),
-        )
-        lines(
-            "improvement_vs_time.png",
-            f"{name} — improvement vs {start_word}, {tag}",
-            "Improvement (%)",
-            lambda row: improvement(initial, row["best"]),
-            2,
-        )
-        lines(
-            "curr_cost_vs_time.png",
-            f"{name} — current objective, {start_word}, {tag}",
-            "Current objective",
-            lambda row: row["current"],
-            1.2,
-        )
-        best_values = [row["best"] for run in runs for row in run["history"]]
-        low, high = min(best_values), max(best_values)
-        span = max(high - low, 1.0)
-        lines(
-            "curr_cost_vs_time_rescaled.png",
-            f"{name} — current objective, best-cost axis, {start_word}, {tag}",
-            "Current objective",
-            lambda row: row["current"],
-            1.2,
-            limit=(low - 0.05 * span, high + 0.05 * span),
-        )
+        lines("cost_vs_time.png", f"{name} — best objective, {start_word}, {tag}",
+              "Best objective", lambda row: row["best"], greedy_line=(start == "random"))
+        lines("improvement_vs_time.png", f"{name} — improvement vs {start_word}, {tag}",
+              "Improvement (%)", lambda row: improvement(initial, row["best"]))
 
         names = ["Start"] + [run["label"] for run in runs]
         totals = [initial] + [run["best_cost"].total for run in runs]
@@ -207,13 +207,16 @@ def plot_extended():
         plt.close(fig)
 
         for run in runs:
+            if run["algo_key"] not in extended:
+                continue
             history = run["history"]
             fig, ax = plt.subplots(figsize=(10, 5.5))
             ax.plot(study._minutes(history), [row["current"] for row in history],
                     color="#56B4E9", linewidth=1, label="Current")
             ax.plot(study._minutes(history), [row["best"] for row in history],
                     color=study.COLORS[run["algo_key"]], linewidth=2, label="Best")
-            ax.set_title(f"{name} — {run['label']} — {start_word}, {tag}")
+            ax.axvline(400, color="#999999", linestyle="--", linewidth=1)
+            ax.set_title(f"{name} — {study.ALGO_BY_KEY[run['algo_key']]['label']} — {start_word}, 1000 min")
             ax.set_xlabel("Minutes")
             ax.set_ylabel("Objective value")
             ax.grid(True, linestyle="--", linewidth=0.5, alpha=0.7)
@@ -222,52 +225,6 @@ def plot_extended():
             fig.savefig(conv / f"{run['algo_key']}.png", dpi=140)
             plt.close(fig)
         _log(f"extended plots {start} {config_name}")
-
-
-def plot_combined():
-    """Best objective of all six algorithms; extended ones drawn with their 1000-minute run."""
-    groups = {}
-    for start, config_name, algo_key in JOBS:
-        groups.setdefault((start, config_name), set()).add(algo_key)
-    for (start, config_name), extended in groups.items():
-        spec = study.SPEC_BY_NAME[config_name]
-        start_word = "greedy plan" if start == "greedy" else "random plan"
-        fig, ax = plt.subplots(figsize=(11, 6.5))
-        greedy_total = None
-        for algo in study.ALGOS:
-            key = algo["key"]
-            if key in extended:
-                run = _load_extended(start, config_name, key)
-                label = f"{algo['label']} (1000 min)"
-            else:
-                run = study._load_run(start, config_name, key)
-                if run is None:
-                    raise SystemExit(f"missing 400-minute run {start} {config_name} {key}")
-                label = f"{algo['label']} (400 min)"
-            greedy_total = run.get("greedy_total", greedy_total)
-            history = run["history"]
-            ax.plot(
-                study._minutes(history),
-                [row["best"] for row in history],
-                color=study.COLORS[key],
-                linewidth=2,
-                label=label,
-            )
-        ax.axvline(400, color="#999999", linestyle="--", linewidth=1)
-        if start == "random" and greedy_total is not None:
-            ax.axhline(greedy_total, color="#666666", linestyle=":", linewidth=1.2, label="Greedy plan")
-        study._style(
-            ax,
-            f"{study._title(spec)} — best objective, {start_word}, 400 + 1000 min",
-            "Minutes",
-            "Best objective",
-        )
-        fig.tight_layout()
-        folder = OUT / start / config_name
-        folder.mkdir(parents=True, exist_ok=True)
-        fig.savefig(folder / "cost_vs_time_combined.png", dpi=140)
-        plt.close(fig)
-        _log(f"combined plot {start} {config_name}")
 
 
 def _run_job(start, config_name, algo_key):
@@ -288,6 +245,8 @@ def _run_job(start, config_name, algo_key):
         t0=algo["t0"],
         t_final=algo["floor"],
         time_limit_sec=EXTEND_SECONDS,
+        cool_seconds=COOL_SECONDS,
+        keep_cooling=True,
         log_every=50_000,
         alpha=None,
         history_every=study.HISTORY_EVERY,
@@ -312,14 +271,23 @@ def _run_job(start, config_name, algo_key):
         "elapsed": run["elapsed"],
         "stopped": run["stopped"],
         "seconds": EXTEND_SECONDS,
+        "cool_seconds": COOL_SECONDS,
+        "t_end": run["history"][-1]["temperature"],
         "t0": algo["t0"],
         "floor": algo["floor"],
         "meta": meta,
     }
     CACHE.mkdir(parents=True, exist_ok=True)
-    run.pop("best_trips", None)
-    run.pop("accepted_flags", None)
     stem = f"{start}__{config_name}__{algo_key}"
+    states = OUT / "_states"
+    states.mkdir(parents=True, exist_ok=True)
+    with open(states / f"{stem}.pkl", "wb") as handle:
+        pickle.dump({"best_trips": run.pop("best_trips", None),
+                     "current_trips": run.pop("current_trips", None),
+                     "temperature": run["history"][-1]["temperature"],
+                     "elapsed": run["elapsed"]},
+                    handle, protocol=pickle.HIGHEST_PROTOCOL)
+    run.pop("accepted_flags", None)
     with open(CACHE / f"{stem}.pkl", "wb") as handle:
         pickle.dump(run, handle, protocol=pickle.HIGHEST_PROTOCOL)
     with open(CACHE / f"{stem}.json", "w") as handle:
@@ -338,10 +306,6 @@ def main():
         return
     if len(sys.argv) >= 2 and sys.argv[1] == "extplots":
         plot_extended()
-        plot_combined()
-        return
-    if len(sys.argv) >= 2 and sys.argv[1] == "combined":
-        plot_combined()
         return
     if len(sys.argv) >= 2 and sys.argv[1] == "job":
         _run_job(sys.argv[2], sys.argv[3], sys.argv[4])
@@ -369,6 +333,8 @@ def main():
             failed += 1
             _log(f"FAILED {start} {config_name} {algo_key} code={code}")
     _log(f"Extend finished  failed={failed}")
+    if failed == 0:
+        plot_extended()
 
 
 if __name__ == "__main__":
