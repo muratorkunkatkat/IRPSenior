@@ -32,6 +32,7 @@ MERGE = Path(
 )
 
 GREEN, RED = "green", "red"
+FINAL = False  # True: build the clean document (removals deleted, additions not marked)
 FILL = {GREEN: "00FF00", RED: "FF0000"}
 
 RPR_ORDER = ["rStyle", "rFonts", "b", "bCs", "i", "iCs", "caps", "smallCaps", "strike", "dstrike", "outline",
@@ -116,7 +117,12 @@ def make_run(text, like, color):
     t = parse_xml(f'<w:t {nsdecls("w")} xml:space="preserve"/>')
     t.text = text
     run.append(t)
-    set_highlight(run, color)
+    if FINAL:
+        old = run.find(f"{qn('w:rPr')}/{qn('w:highlight')}")
+        if old is not None:
+            old.getparent().remove(old)
+    else:
+        set_highlight(run, color)
     return run
 
 
@@ -147,6 +153,11 @@ def brace_paragraph(char):
 
 def added(*elements):
     """Mark freshly built elements (paragraphs, tables, figures) as IE 402 additions."""
+    if FINAL:
+        flat = []
+        for element in elements:
+            flat += list(element) if isinstance(element, (list, tuple)) else [element]
+        return flat
     out = []
     for element in elements:
         if isinstance(element, (list, tuple)):
@@ -165,6 +176,11 @@ def removed(first, last=None):
         if nxt is None:
             raise SystemExit("removed(): last element not reached")
         block.append(nxt)
+    if FINAL:
+        anchor = block[0].getprevious()
+        for element in block:
+            element.getparent().remove(element)
+        return anchor
     for element in block:
         paint(element, RED)
     head, tail = block[0], block[-1]
@@ -230,6 +246,10 @@ def isolate(p, text, occurrence=0):
 
 def strike(p, text, occurrence=0):
     runs = isolate(p, text, occurrence)
+    if FINAL:
+        for run in runs:
+            run.getparent().remove(run)
+        return None
     for run in runs:
         set_highlight(run, RED)
     runs[0].addprevious(make_run("{", runs[0], RED))
@@ -239,6 +259,12 @@ def strike(p, text, occurrence=0):
 
 
 def swap(p, old, new, occurrence=0):
+    if FINAL:
+        runs = isolate(p, old, occurrence)
+        runs[0].addprevious(make_run(new, runs[0], GREEN))
+        for run in runs:
+            run.getparent().remove(run)
+        return
     closing = strike(p, old, occurrence)
     closing.addnext(make_run(new, closing, GREEN))
 

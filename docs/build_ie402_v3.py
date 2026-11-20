@@ -4,7 +4,8 @@ Green: added. Red inside { }: taken out (kept in the file so the change can be a
 hand in Google Docs). Pictures get a green or red band. Text of IE 401 that is still true
 is left as it is; only the parts that changed are marked.
 
-    python docs/build_ie402_v3.py
+    python docs/build_ie402_v3.py           # marked version (IE 402 v3.docx)
+    python docs/build_ie402_v3.py final     # clean version (IE 402 Final.docx)
 """
 
 import json
@@ -18,6 +19,7 @@ from docx.oxml.ns import qn
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_ie402 import Builder, caption, fmt, heading, label_line, para  # noqa: E402
+import build_ie402_v2  # noqa: E402
 from build_ie402_v2 import (MERGE, GREEN, added, add_after, append, block_until, element_text,  # noqa: E402
                             removed, strike, swap)
 
@@ -25,7 +27,9 @@ ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
 PLOTS = ROOT / "plots"
 SRC = DOCS / "IE 401.docx"
-OUT = DOCS / "IE 402 v3.docx"
+FINAL = len(sys.argv) > 1 and sys.argv[1] == "final"
+build_ie402_v2.FINAL = FINAL
+OUT = DOCS / ("IE 402 Final.docx" if FINAL else "IE 402 v3.docx")
 REPORT = PLOTS / "report"
 CFG = PLOTS / "analysis"
 EXT = CFG / "extended"
@@ -817,7 +821,8 @@ def main():
 
     d.save(str(OUT))
     work.unlink()
-    lint(docx.Document(str(OUT)))
+    if not FINAL:
+        lint(docx.Document(str(OUT)))
     print("saved", OUT)
 
 
